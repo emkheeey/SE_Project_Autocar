@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'recommendation',  # Ensure this is correctly written
+    'accounts',  # Add this
 ]
+
 
 
 MIDDLEWARE = [
@@ -53,10 +54,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'SE_Project.urls'
 
+import os
+
+from pathlib import Path  # Make sure this is imported
+
+BASE_DIR = Path(__file__).resolve().parent.parent  # Convert it to a Path object
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],  # Add this line
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +76,10 @@ TEMPLATES = [
     },
 ]
 
+
+
+
+
 WSGI_APPLICATION = 'SE_Project.wsgi.application'
 
 
@@ -78,7 +89,7 @@ WSGI_APPLICATION = 'SE_Project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Now this will work correctly
     }
 }
 

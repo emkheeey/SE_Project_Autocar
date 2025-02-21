@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Toyota Car Ordering</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><img src="Toyota-logo.png" alt="Toyota Logo"></div>
+      <div class="nav-links">
+    <a href="about.html">About Us</a>
+    <a href="maintanance.html">Maintenance</a>
+    <a href="helpcenter.html">Help Center</a>
+    <a href="dealerships.html">Dealerships</a>
+       </div>
+    </div>
+    
+    <div class="container-wrapper">
+        <div class="banner">Welcome to AutoCar<br> <br>Explore Toyota's latest models and find the perfect car for you. </div>
+        <div class="form-container" id="login-container">
+            <h2>Login</h2>
+            <input type="text" class="input-field" id="login-username" placeholder="Username" required>
+            <input type="password" class="input-field" id="login-password" placeholder="Password" required>
+            <button class="btn" onclick="login()">Log In</button>
+            <p class="switch">Don't have an account? <a onclick="toggleForm()">Sign Up</a></p>
+        </div>
+        <div class="form-container" id="signup-container" style="display: none;">
+            <h2>Sign Up</h2>
+            <input type="text" class="input-field" id="signup-firstname" placeholder="First Name" required>
+            <input type="text" class="input-field" id="signup-lastname" placeholder="Last Name" required>
+            <input type="email" class="input-field" id="signup-email" placeholder="Email" required>
+            <input type="password" class="input-field" id="signup-password" placeholder="Password" required>
+            <button class="btn" onclick="signup()">Sign Up</button>
+            <p class="switch">Already have an account? <a onclick="toggleForm()">Log In</a></p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
