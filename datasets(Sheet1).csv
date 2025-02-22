@@ -1,0 +1,501 @@
+User ID,Name,Age,Location,Budget Range,Preferred Car Type,Fuel Type,Transmission,Features,Purpose,Search History,Saved Cars,Purchase
+0001,Angela Castillo,18,Sorsogon,899k - 2600k,Van,Electric,Manual,"4WD, Adaptive Cruise Control",First Car,Car Model 7,Car Model 9,No
+0002,Juan Dela Cruz,50,Legazpi,734k - 1179k,Pickup,Diesel,Manual,"4WD, Cruise Control",Daily Commute,Car Model 8,Car Model 7,Yes
+0003,Josefa Ramos,37,Daet,962k - 1663k,Hatchback,Electric,Automatic,"Cruise Control, Parking Sensors",Eco-Friendly,Car Model 5,Car Model 7,Yes
+0004,Daniel Villanueva,47,Tabaco,541k - 2708k,Sedan,Hybrid,Automatic,"4WD, Bluetooth",Business,Car Model 5,Car Model 3,No
+0005,Pedro Reyes,42,Naga,1212k - 1094k,Coupe,Hybrid,Manual,"Airbags, Bluetooth",First Car,Car Model 8,Car Model 8,Yes
+0006,Carmen Ortega,34,Tabaco,612k - 2002k,Sedan,Diesel,Automatic,"Adaptive Cruise Control, Bluetooth",Business,Car Model 4,Car Model 7,No
+0007,Emilio Cruz,29,Sorsogon,1387k - 1293k,Sedan,Gasoline,Manual,"Sunroof, Parking Sensors",Eco-Friendly,Car Model 3,Car Model 5,Yes
+0008,Victoria Morales,27,Tabaco,797k - 2281k,Hatchback,Gasoline,Manual,"Cruise Control, 4WD",Family Use,Car Model 3,Car Model 1,No
+0009,Carmen Ortega,32,Sorsogon,1874k - 2499k,Pickup,Diesel,Manual,"Bluetooth, Parking Sensors",Daily Commute,Car Model 5,Car Model 8,Yes
+0010,Mariano Salazar,45,Legazpi,1271k - 1132k,Crossover,Hybrid,Manual,"Bluetooth, Cruise Control",Business,Car Model 6,Car Model 6,Yes
+0011,Fernando Aquino,31,Legazpi,1979k - 1214k,Crossover,Diesel,Automatic,"Adaptive Cruise Control, Airbags",Family Use,Car Model 5,Car Model 1,No
+0012,Ricardo Gomez,30,Sorsogon,1525k - 1420k,Pickup,Electric,Manual,"Bluetooth, ABS",Eco-Friendly,Car Model 9,Car Model 6,No
+0013,Sofia Dominguez,28,Tabaco,1568k - 1675k,Van,Electric,Manual,"Bluetooth, Sunroof",Family Use,Car Model 7,Car Model 6,No
+0014,Victoria Morales,35,Iriga,1183k - 1528k,Crossover,Hybrid,Manual,"Sunroof, Parking Sensors",First Car,Car Model 2,Car Model 8,Yes
+0015,Maria Santos,55,Legazpi,1241k - 2086k,Van,Diesel,Automatic,"ABS, Parking Sensors",First Car,Car Model 9,Car Model 1,No
+0016,Emilio Cruz,23,Naga,1280k - 1059k,Crossover,Electric,Manual,"Cruise Control, 4WD",Eco-Friendly,Car Model 2,Car Model 5,No
+0017,Isabel Torres,28,Tabaco,1772k - 1766k,Pickup,Gasoline,Manual,"Bluetooth, 4WD",Eco-Friendly,Car Model 3,Car Model 6,Yes
+0018,Ricardo Gomez,49,Iriga,1228k - 1954k,Pickup,Electric,Automatic,"Parking Sensors, 4WD",Daily Commute,Car Model 6,Car Model 1,Yes
+0019,Victoria Morales,55,Iriga,1350k - 2745k,SUV,Hybrid,Automatic,"Airbags, Parking Sensors",Daily Commute,Car Model 4,Car Model 3,Yes
+0020,Ricardo Gomez,45,Legazpi,1915k - 1672k,Sedan,Gasoline,Automatic,"Bluetooth, Adaptive Cruise Control",Business,Car Model 1,Car Model 4,Yes
+0021,Ricardo Gomez,44,Legazpi,1420k - 1678k,Coupe,Diesel,Manual,"Bluetooth, Adaptive Cruise Control",Eco-Friendly,Car Model 9,Car Model 8,No
+0022,Sofia Dominguez,20,Daet,707k - 2698k,Hatchback,Electric,Automatic,"Airbags, Cruise Control",Family Use,Car Model 1,Car Model 7,No
+0023,Carlos Lim,35,Sorsogon,1694k - 2207k,Sedan,Electric,Automatic,"ABS, Cruise Control",First Car,Car Model 6,Car Model 2,No
+0024,Elena Navarro,19,Naga,1536k - 1753k,SUV,Electric,Manual,"Parking Sensors, Sunroof",Business,Car Model 6,Car Model 6,Yes
+0025,Carmen Ortega,50,Daet,1399k - 2244k,SUV,Hybrid,Automatic,"ABS, 4WD",Business,Car Model 9,Car Model 3,No
+0026,Ricardo Gomez,47,Tabaco,1645k - 1290k,Pickup,Gasoline,Manual,"Parking Sensors, Airbags",Eco-Friendly,Car Model 5,Car Model 8,Yes
+0027,Ricardo Gomez,19,Iriga,827k - 2370k,Coupe,Hybrid,Manual,"Bluetooth, ABS",Eco-Friendly,Car Model 8,Car Model 8,Yes
+0028,Victoria Morales,59,Tabaco,617k - 1380k,Hatchback,Diesel,Automatic,"ABS, Airbags",Family Use,Car Model 9,Car Model 1,No
+0029,Roberto Fernandez,25,Legazpi,1848k - 1809k,Pickup,Diesel,Automatic,"Adaptive Cruise Control, 4WD",Eco-Friendly,Car Model 3,Car Model 4,Yes
+0030,Angela Castillo,48,Tabaco,1406k - 1695k,SUV,Electric,Automatic,"Sunroof, Bluetooth",Business,Car Model 1,Car Model 8,Yes
+0031,Carlos Lim,39,Tabaco,1273k - 2051k,Pickup,Electric,Manual,"Adaptive Cruise Control, ABS",Family Use,Car Model 3,Car Model 9,Yes
+0032,Angela Castillo,56,Sorsogon,1509k - 2404k,Sedan,Gasoline,Automatic,"ABS, Adaptive Cruise Control",Family Use,Car Model 9,Car Model 2,No
+0033,Josefa Ramos,23,Masbate,1145k - 1762k,Crossover,Electric,Manual,"4WD, Sunroof",Business,Car Model 7,Car Model 6,No
+0034,Mariano Salazar,33,Legazpi,1930k - 1828k,Crossover,Hybrid,Manual,"Airbags, 4WD",Family Use,Car Model 5,Car Model 6,Yes
+0035,Pedro Reyes,23,Sorsogon,1151k - 1079k,SUV,Hybrid,Automatic,"Adaptive Cruise Control, Airbags",Eco-Friendly,Car Model 7,Car Model 3,Yes
+0036,Pedro Reyes,21,Legazpi,1813k - 1122k,Crossover,Gasoline,Automatic,"Airbags, Parking Sensors",Daily Commute,Car Model 6,Car Model 3,No
+0037,Carmen Ortega,42,Legazpi,1972k - 1748k,Crossover,Diesel,Manual,"Bluetooth, Airbags",First Car,Car Model 8,Car Model 7,No
+0038,Isabel Torres,40,Naga,1169k - 1306k,Sedan,Diesel,Manual,"Adaptive Cruise Control, Bluetooth",First Car,Car Model 7,Car Model 9,No
+0039,Roberto Fernandez,55,Sorsogon,526k - 1662k,Hatchback,Diesel,Manual,"Airbags, Parking Sensors",First Car,Car Model 9,Car Model 8,Yes
+0040,Emilio Cruz,57,Naga,1368k - 2289k,Pickup,Gasoline,Manual,"Airbags, Parking Sensors",Daily Commute,Car Model 5,Car Model 7,No
+0041,Elena Navarro,58,Sorsogon,1470k - 1422k,Coupe,Electric,Automatic,"4WD, Bluetooth",Daily Commute,Car Model 1,Car Model 7,No
+0042,Daniel Villanueva,45,Naga,1870k - 2367k,Coupe,Diesel,Automatic,"Adaptive Cruise Control, Sunroof",Family Use,Car Model 1,Car Model 1,No
+0043,Daniel Villanueva,37,Naga,959k - 2286k,SUV,Electric,Manual,"Cruise Control, Parking Sensors",Daily Commute,Car Model 9,Car Model 8,Yes
+0044,Miguel Santiago,41,Sorsogon,1518k - 1297k,Coupe,Electric,Manual,"Sunroof, Cruise Control",First Car,Car Model 3,Car Model 6,No
+0045,Emilio Cruz,23,Daet,890k - 1968k,Crossover,Diesel,Manual,"ABS, Bluetooth",Family Use,Car Model 3,Car Model 9,No
+0046,Carlos Lim,52,Tabaco,1636k - 1135k,Hatchback,Diesel,Manual,"ABS, Airbags",First Car,Car Model 8,Car Model 9,Yes
+0047,Rosa Bautista,38,Legazpi,1067k - 1959k,Hatchback,Electric,Manual,"Bluetooth, Sunroof",First Car,Car Model 6,Car Model 1,No
+0048,Elena Navarro,34,Iriga,1245k - 1747k,Crossover,Hybrid,Automatic,"Adaptive Cruise Control, Bluetooth",Eco-Friendly,Car Model 7,Car Model 8,Yes
+0049,Sofia Dominguez,35,Sorsogon,1212k - 2165k,Coupe,Electric,Manual,"ABS, Bluetooth",Eco-Friendly,Car Model 9,Car Model 4,Yes
+0050,Carlos Lim,55,Tabaco,1066k - 1354k,Coupe,Hybrid,Automatic,"Parking Sensors, Cruise Control",Daily Commute,Car Model 4,Car Model 2,Yes
+0051,Emilio Cruz,31,Masbate,821k - 2367k,Hatchback,Hybrid,Automatic,"4WD, Adaptive Cruise Control",Daily Commute,Car Model 7,Car Model 6,Yes
+0052,Ana Mendoza,42,Tabaco,1837k - 2835k,Coupe,Electric,Manual,"Airbags, ABS",Eco-Friendly,Car Model 3,Car Model 8,No
+0053,Isabel Torres,29,Legazpi,572k - 2724k,Van,Diesel,Automatic,"Airbags, Sunroof",Eco-Friendly,Car Model 4,Car Model 4,No
+0054,Ana Mendoza,46,Masbate,1534k - 1495k,SUV,Hybrid,Automatic,"Airbags, Adaptive Cruise Control",Business,Car Model 2,Car Model 2,Yes
+0055,Fernando Aquino,25,Daet,1363k - 2450k,Sedan,Gasoline,Automatic,"Adaptive Cruise Control, Airbags",Eco-Friendly,Car Model 1,Car Model 6,Yes
+0056,Pedro Reyes,25,Naga,1759k - 2066k,Coupe,Diesel,Automatic,"Parking Sensors, 4WD",Daily Commute,Car Model 5,Car Model 1,No
+0057,Isabel Torres,18,Sorsogon,820k - 1938k,Crossover,Diesel,Manual,"Adaptive Cruise Control, 4WD",Daily Commute,Car Model 9,Car Model 9,Yes
+0058,Mariano Salazar,27,Iriga,1684k - 2168k,Hatchback,Gasoline,Manual,"Airbags, Bluetooth",Business,Car Model 6,Car Model 4,No
+0059,Fernando Aquino,57,Legazpi,1192k - 1015k,Crossover,Electric,Manual,"4WD, ABS",First Car,Car Model 9,Car Model 7,No
+0060,Elena Navarro,42,Iriga,1874k - 2505k,SUV,Diesel,Automatic,"Bluetooth, Cruise Control",Business,Car Model 1,Car Model 9,No
+0061,Ana Mendoza,37,Legazpi,665k - 1156k,Coupe,Gasoline,Automatic,"4WD, Parking Sensors",Family Use,Car Model 8,Car Model 7,No
+0062,Angela Castillo,52,Iriga,1114k - 2540k,Pickup,Hybrid,Automatic,"Parking Sensors, ABS",Business,Car Model 4,Car Model 2,No
+0063,Carlos Lim,53,Legazpi,529k - 1356k,SUV,Diesel,Manual,"Sunroof, Airbags",Eco-Friendly,Car Model 4,Car Model 5,Yes
+0064,Isabel Torres,30,Daet,689k - 1525k,Sedan,Diesel,Automatic,"Parking Sensors, Cruise Control",Daily Commute,Car Model 4,Car Model 3,Yes
+0065,Carlos Lim,30,Iriga,1630k - 1755k,Hatchback,Hybrid,Manual,"Sunroof, Airbags",Daily Commute,Car Model 4,Car Model 6,Yes
+0066,Daniel Villanueva,25,Sorsogon,986k - 2691k,Hatchback,Diesel,Manual,"Sunroof, Adaptive Cruise Control",Eco-Friendly,Car Model 8,Car Model 8,No
+0067,Juan Dela Cruz,34,Naga,529k - 1493k,Coupe,Gasoline,Manual,"Cruise Control, Bluetooth",First Car,Car Model 1,Car Model 5,No
+0068,Juan Dela Cruz,32,Iriga,1573k - 1490k,Van,Gasoline,Manual,"Bluetooth, Airbags",Business,Car Model 5,Car Model 3,Yes
+0069,Josefa Ramos,55,Daet,1343k - 1500k,Hatchback,Hybrid,Automatic,"Airbags, Bluetooth",First Car,Car Model 1,Car Model 8,Yes
+0070,Carmen Ortega,46,Masbate,1572k - 2480k,Van,Diesel,Automatic,"Parking Sensors, 4WD",Daily Commute,Car Model 3,Car Model 6,Yes
+0071,Ricardo Gomez,48,Sorsogon,1356k - 2185k,Coupe,Electric,Automatic,"ABS, Airbags",Eco-Friendly,Car Model 3,Car Model 6,No
+0072,Josefa Ramos,33,Daet,1866k - 1219k,Sedan,Gasoline,Manual,"Bluetooth, Sunroof",Daily Commute,Car Model 5,Car Model 6,Yes
+0073,Angela Castillo,54,Iriga,1535k - 1948k,Hatchback,Electric,Automatic,"Adaptive Cruise Control, Cruise Control",Daily Commute,Car Model 5,Car Model 3,No
+0074,Victoria Morales,42,Iriga,1706k - 1272k,Hatchback,Hybrid,Manual,"4WD, ABS",Eco-Friendly,Car Model 2,Car Model 9,Yes
+0075,Daniel Villanueva,27,Sorsogon,653k - 1689k,Sedan,Hybrid,Manual,"Airbags, Parking Sensors",Family Use,Car Model 3,Car Model 2,Yes
+0076,Sofia Dominguez,51,Naga,859k - 1818k,Coupe,Electric,Manual,"ABS, Sunroof",First Car,Car Model 3,Car Model 2,Yes
+0077,Carmen Ortega,57,Naga,1426k - 1150k,Crossover,Electric,Automatic,"Parking Sensors, 4WD",Family Use,Car Model 3,Car Model 4,No
+0078,Angela Castillo,57,Sorsogon,816k - 1035k,Sedan,Hybrid,Manual,"Sunroof, Cruise Control",Family Use,Car Model 6,Car Model 9,Yes
+0079,Mariano Salazar,51,Legazpi,1606k - 1892k,Pickup,Electric,Manual,"4WD, Adaptive Cruise Control",Business,Car Model 9,Car Model 7,Yes
+0080,Mariano Salazar,34,Legazpi,977k - 2843k,Crossover,Hybrid,Automatic,"ABS, 4WD",First Car,Car Model 9,Car Model 8,Yes
+0081,Ana Mendoza,22,Sorsogon,1648k - 2264k,Van,Diesel,Manual,"Parking Sensors, Adaptive Cruise Control",Eco-Friendly,Car Model 5,Car Model 3,No
+0082,Josefa Ramos,47,Iriga,542k - 1854k,Coupe,Electric,Automatic,"4WD, Cruise Control",First Car,Car Model 2,Car Model 7,No
+0083,Daniel Villanueva,39,Naga,973k - 1742k,Pickup,Hybrid,Manual,"Cruise Control, 4WD",First Car,Car Model 2,Car Model 3,No
+0084,Pedro Reyes,44,Daet,531k - 2517k,Van,Diesel,Manual,"4WD, Parking Sensors",Eco-Friendly,Car Model 3,Car Model 4,No
+0085,Sofia Dominguez,20,Legazpi,1046k - 2511k,SUV,Hybrid,Automatic,"Bluetooth, Parking Sensors",Eco-Friendly,Car Model 1,Car Model 4,Yes
+0086,Juan Dela Cruz,23,Iriga,1649k - 1178k,Hatchback,Hybrid,Manual,"Adaptive Cruise Control, Parking Sensors",First Car,Car Model 5,Car Model 7,Yes
+0087,Daniel Villanueva,18,Tabaco,639k - 1671k,Pickup,Electric,Manual,"Cruise Control, Sunroof",Daily Commute,Car Model 4,Car Model 3,Yes
+0088,Fernando Aquino,59,Masbate,1876k - 1968k,Crossover,Electric,Manual,"Airbags, 4WD",Daily Commute,Car Model 3,Car Model 9,No
+0089,Rosa Bautista,41,Legazpi,505k - 2489k,Crossover,Hybrid,Automatic,"ABS, Bluetooth",Eco-Friendly,Car Model 7,Car Model 4,No
+0090,Juan Dela Cruz,38,Naga,1827k - 2042k,Sedan,Diesel,Manual,"Adaptive Cruise Control, Parking Sensors",Business,Car Model 1,Car Model 3,Yes
+0091,Elena Navarro,26,Tabaco,1517k - 2715k,Hatchback,Gasoline,Manual,"Sunroof, Parking Sensors",First Car,Car Model 6,Car Model 3,Yes
+0092,Ana Mendoza,18,Iriga,1927k - 2807k,Van,Diesel,Manual,"Bluetooth, Adaptive Cruise Control",First Car,Car Model 3,Car Model 6,No
+0093,Ricardo Gomez,39,Naga,1626k - 1389k,Sedan,Diesel,Manual,"Sunroof, Adaptive Cruise Control",First Car,Car Model 1,Car Model 4,Yes
+0094,Isabel Torres,36,Iriga,1820k - 1022k,Pickup,Diesel,Automatic,"Airbags, 4WD",Business,Car Model 4,Car Model 2,Yes
+0095,Josefa Ramos,37,Legazpi,1634k - 2967k,Hatchback,Gasoline,Manual,"4WD, Sunroof",First Car,Car Model 2,Car Model 4,No
+0096,Ricardo Gomez,45,Naga,1384k - 2802k,Coupe,Electric,Manual,"Bluetooth, Adaptive Cruise Control",Daily Commute,Car Model 7,Car Model 1,No
+0097,Maria Santos,38,Daet,1365k - 2394k,Hatchback,Hybrid,Automatic,"Sunroof, ABS",First Car,Car Model 7,Car Model 6,Yes
+0098,Fernando Aquino,41,Daet,1023k - 1515k,Coupe,Diesel,Manual,"Airbags, Adaptive Cruise Control",Eco-Friendly,Car Model 8,Car Model 5,No
+0099,Carlos Lim,50,Naga,791k - 2186k,Sedan,Diesel,Automatic,"Sunroof, Adaptive Cruise Control",First Car,Car Model 8,Car Model 9,No
+0100,Miguel Santiago,26,Tabaco,1393k - 1456k,Sedan,Diesel,Automatic,"Bluetooth, Adaptive Cruise Control",First Car,Car Model 4,Car Model 5,No
+0101,Angela Castillo,41,Tabaco,1657k - 2456k,Pickup,Electric,Manual,"4WD, Sunroof",First Car,Car Model 8,Car Model 3,No
+0102,Sofia Dominguez,28,Iriga,1751k - 1572k,Pickup,Diesel,Manual,"ABS, Sunroof",Family Use,Car Model 1,Car Model 1,No
+0103,Daniel Villanueva,34,Daet,1853k - 1301k,Hatchback,Diesel,Manual,"Sunroof, 4WD",Business,Car Model 2,Car Model 2,Yes
+0104,Roberto Fernandez,59,Masbate,1886k - 1605k,Hatchback,Hybrid,Automatic,"4WD, Parking Sensors",Daily Commute,Car Model 1,Car Model 7,Yes
+0105,Mariano Salazar,37,Legazpi,1633k - 2002k,Coupe,Hybrid,Automatic,"Bluetooth, Airbags",Business,Car Model 3,Car Model 8,No
+0106,Daniel Villanueva,25,Legazpi,1532k - 2684k,Sedan,Diesel,Manual,"Sunroof, Adaptive Cruise Control",Family Use,Car Model 9,Car Model 2,Yes
+0107,Ana Mendoza,34,Naga,1100k - 2009k,Hatchback,Electric,Manual,"Adaptive Cruise Control, Bluetooth",Business,Car Model 1,Car Model 6,Yes
+0108,Victoria Morales,35,Legazpi,1708k - 1584k,Coupe,Hybrid,Automatic,"Airbags, ABS",Business,Car Model 3,Car Model 1,Yes
+0109,Maria Santos,53,Tabaco,1898k - 2734k,Hatchback,Hybrid,Manual,"4WD, Parking Sensors",Eco-Friendly,Car Model 2,Car Model 3,No
+0110,Daniel Villanueva,39,Iriga,1189k - 1481k,Hatchback,Electric,Automatic,"Sunroof, Parking Sensors",Daily Commute,Car Model 2,Car Model 9,No
+0111,Juan Dela Cruz,33,Daet,560k - 1785k,Hatchback,Hybrid,Manual,"Cruise Control, ABS",First Car,Car Model 5,Car Model 8,Yes
+0112,Carlos Lim,52,Sorsogon,1935k - 2128k,Sedan,Diesel,Manual,"ABS, Bluetooth",Business,Car Model 8,Car Model 6,No
+0113,Carmen Ortega,27,Daet,1319k - 2744k,Coupe,Diesel,Automatic,"Sunroof, Airbags",Daily Commute,Car Model 3,Car Model 1,Yes
+0114,Ana Mendoza,46,Masbate,800k - 1842k,Hatchback,Diesel,Manual,"Airbags, ABS",First Car,Car Model 8,Car Model 7,No
+0115,Elena Navarro,35,Sorsogon,1330k - 1824k,Pickup,Hybrid,Automatic,"Airbags, ABS",Business,Car Model 8,Car Model 8,No
+0116,Daniel Villanueva,53,Iriga,1169k - 2819k,SUV,Electric,Manual,"4WD, Parking Sensors",Eco-Friendly,Car Model 3,Car Model 1,No
+0117,Miguel Santiago,57,Tabaco,1844k - 1317k,Van,Diesel,Automatic,"4WD, Cruise Control",Family Use,Car Model 7,Car Model 7,Yes
+0118,Ricardo Gomez,41,Iriga,1140k - 1748k,Van,Hybrid,Manual,"Parking Sensors, Sunroof",Family Use,Car Model 8,Car Model 5,No
+0119,Maria Santos,36,Masbate,1825k - 2449k,Coupe,Gasoline,Manual,"Cruise Control, Sunroof",Business,Car Model 5,Car Model 3,Yes
+0120,Ana Mendoza,30,Sorsogon,1969k - 1958k,Crossover,Electric,Manual,"ABS, 4WD",Daily Commute,Car Model 9,Car Model 7,Yes
+0121,Elena Navarro,57,Naga,646k - 2297k,SUV,Hybrid,Automatic,"Airbags, ABS",Eco-Friendly,Car Model 2,Car Model 3,No
+0122,Miguel Santiago,29,Masbate,1716k - 1043k,Sedan,Hybrid,Automatic,"4WD, Sunroof",Business,Car Model 8,Car Model 6,No
+0123,Roberto Fernandez,53,Legazpi,1801k - 1432k,Van,Hybrid,Automatic,"Cruise Control, ABS",Eco-Friendly,Car Model 6,Car Model 9,No
+0124,Emilio Cruz,52,Sorsogon,1084k - 2144k,Pickup,Gasoline,Manual,"Airbags, Sunroof",Eco-Friendly,Car Model 2,Car Model 9,No
+0125,Emilio Cruz,58,Legazpi,815k - 1736k,Crossover,Diesel,Manual,"4WD, ABS",First Car,Car Model 3,Car Model 1,Yes
+0126,Pedro Reyes,59,Masbate,766k - 2040k,Coupe,Diesel,Manual,"Bluetooth, ABS",Eco-Friendly,Car Model 6,Car Model 7,Yes
+0127,Fernando Aquino,40,Daet,589k - 1228k,Van,Hybrid,Manual,"ABS, Cruise Control",First Car,Car Model 8,Car Model 9,Yes
+0128,Elena Navarro,22,Sorsogon,1523k - 2422k,Crossover,Electric,Automatic,"Cruise Control, 4WD",First Car,Car Model 2,Car Model 9,Yes
+0129,Ricardo Gomez,55,Tabaco,703k - 1722k,Van,Gasoline,Automatic,"Bluetooth, Parking Sensors",Daily Commute,Car Model 3,Car Model 2,No
+0130,Isabel Torres,20,Sorsogon,901k - 1930k,Coupe,Hybrid,Automatic,"ABS, Sunroof",Business,Car Model 7,Car Model 4,No
+0131,Rosa Bautista,49,Daet,1605k - 1216k,Coupe,Hybrid,Manual,"4WD, Adaptive Cruise Control",Daily Commute,Car Model 8,Car Model 8,No
+0132,Roberto Fernandez,35,Naga,529k - 1715k,Sedan,Diesel,Manual,"Sunroof, ABS",Business,Car Model 8,Car Model 8,Yes
+0133,Miguel Santiago,50,Daet,1738k - 1283k,Sedan,Hybrid,Automatic,"Parking Sensors, Bluetooth",Daily Commute,Car Model 2,Car Model 6,No
+0134,Mariano Salazar,57,Daet,811k - 1349k,Coupe,Diesel,Automatic,"ABS, Sunroof",Family Use,Car Model 6,Car Model 2,No
+0135,Rosa Bautista,59,Naga,1919k - 2320k,Crossover,Diesel,Manual,"ABS, Sunroof",First Car,Car Model 7,Car Model 2,No
+0136,Maria Santos,24,Iriga,825k - 1643k,Sedan,Diesel,Automatic,"Cruise Control, Parking Sensors",First Car,Car Model 2,Car Model 4,Yes
+0137,Maria Santos,35,Naga,618k - 1229k,Pickup,Gasoline,Manual,"Airbags, Adaptive Cruise Control",First Car,Car Model 3,Car Model 1,No
+0138,Victoria Morales,27,Iriga,1904k - 2989k,SUV,Gasoline,Automatic,"Sunroof, 4WD",Business,Car Model 2,Car Model 6,Yes
+0139,Angela Castillo,31,Masbate,1417k - 1369k,Sedan,Electric,Manual,"Airbags, 4WD",Daily Commute,Car Model 8,Car Model 9,No
+0140,Josefa Ramos,22,Tabaco,706k - 1876k,Hatchback,Gasoline,Automatic,"Sunroof, Bluetooth",First Car,Car Model 8,Car Model 3,No
+0141,Mariano Salazar,31,Masbate,1845k - 1063k,Sedan,Hybrid,Manual,"4WD, Cruise Control",Daily Commute,Car Model 7,Car Model 5,Yes
+0142,Emilio Cruz,20,Daet,888k - 2186k,SUV,Electric,Automatic,"4WD, ABS",Eco-Friendly,Car Model 5,Car Model 6,No
+0143,Fernando Aquino,41,Tabaco,648k - 2136k,Coupe,Hybrid,Manual,"Bluetooth, Adaptive Cruise Control",First Car,Car Model 9,Car Model 8,Yes
+0144,Pedro Reyes,55,Sorsogon,1347k - 1153k,Crossover,Hybrid,Automatic,"Adaptive Cruise Control, Parking Sensors",First Car,Car Model 3,Car Model 2,Yes
+0145,Ana Mendoza,24,Daet,1619k - 2956k,Van,Diesel,Automatic,"Airbags, Parking Sensors",Eco-Friendly,Car Model 4,Car Model 9,Yes
+0146,Elena Navarro,43,Daet,795k - 2702k,Sedan,Hybrid,Automatic,"Cruise Control, 4WD",Business,Car Model 1,Car Model 8,No
+0147,Victoria Morales,36,Naga,1058k - 1493k,Pickup,Diesel,Automatic,"Cruise Control, Sunroof",Family Use,Car Model 7,Car Model 3,Yes
+0148,Isabel Torres,23,Legazpi,1277k - 2077k,Sedan,Electric,Manual,"Adaptive Cruise Control, Cruise Control",Daily Commute,Car Model 4,Car Model 6,Yes
+0149,Isabel Torres,52,Legazpi,1357k - 1826k,SUV,Hybrid,Manual,"Sunroof, Cruise Control",Daily Commute,Car Model 4,Car Model 5,No
+0150,Josefa Ramos,48,Tabaco,1430k - 1440k,Coupe,Electric,Automatic,"4WD, Sunroof",Daily Commute,Car Model 5,Car Model 9,Yes
+0151,Elena Navarro,49,Legazpi,1740k - 2517k,Hatchback,Diesel,Automatic,"Cruise Control, ABS",Business,Car Model 6,Car Model 2,No
+0152,Roberto Fernandez,44,Masbate,755k - 2270k,SUV,Diesel,Manual,"Airbags, 4WD",Family Use,Car Model 8,Car Model 4,Yes
+0153,Maria Santos,23,Iriga,1909k - 1501k,Van,Hybrid,Automatic,"Airbags, Cruise Control",Family Use,Car Model 5,Car Model 6,Yes
+0154,Fernando Aquino,48,Legazpi,895k - 2901k,Van,Electric,Automatic,"4WD, Parking Sensors",Family Use,Car Model 1,Car Model 5,No
+0155,Miguel Santiago,47,Masbate,1684k - 2233k,Sedan,Electric,Manual,"ABS, Airbags",First Car,Car Model 8,Car Model 5,Yes
+0156,Josefa Ramos,52,Sorsogon,1565k - 1154k,Coupe,Gasoline,Manual,"4WD, Sunroof",Family Use,Car Model 3,Car Model 6,No
+0157,Josefa Ramos,48,Daet,799k - 2235k,Hatchback,Hybrid,Automatic,"Sunroof, Bluetooth",Family Use,Car Model 1,Car Model 1,No
+0158,Elena Navarro,55,Daet,901k - 2996k,Pickup,Hybrid,Manual,"Airbags, Bluetooth",Daily Commute,Car Model 2,Car Model 4,No
+0159,Miguel Santiago,32,Naga,1131k - 2093k,Van,Electric,Manual,"4WD, ABS",First Car,Car Model 4,Car Model 5,Yes
+0160,Mariano Salazar,44,Masbate,1076k - 1670k,Crossover,Electric,Manual,"Adaptive Cruise Control, Bluetooth",Eco-Friendly,Car Model 1,Car Model 1,No
+0161,Josefa Ramos,49,Naga,1565k - 1192k,Hatchback,Gasoline,Automatic,"Bluetooth, Airbags",First Car,Car Model 7,Car Model 5,Yes
+0162,Sofia Dominguez,57,Tabaco,1106k - 2751k,Coupe,Hybrid,Manual,"ABS, Cruise Control",Family Use,Car Model 6,Car Model 4,Yes
+0163,Rosa Bautista,40,Iriga,625k - 2673k,Hatchback,Electric,Automatic,"Parking Sensors, Airbags",First Car,Car Model 9,Car Model 4,No
+0164,Josefa Ramos,19,Naga,603k - 1283k,Hatchback,Gasoline,Manual,"Cruise Control, Sunroof",Business,Car Model 4,Car Model 4,No
+0165,Carmen Ortega,57,Iriga,1751k - 2359k,Hatchback,Electric,Manual,"4WD, Bluetooth",First Car,Car Model 6,Car Model 9,No
+0166,Carmen Ortega,32,Legazpi,1185k - 1199k,SUV,Hybrid,Manual,"Cruise Control, Sunroof",Daily Commute,Car Model 7,Car Model 7,Yes
+0167,Elena Navarro,35,Daet,579k - 2811k,Coupe,Gasoline,Manual,"Bluetooth, Adaptive Cruise Control",First Car,Car Model 1,Car Model 7,Yes
+0168,Carlos Lim,48,Tabaco,716k - 1599k,Sedan,Electric,Manual,"4WD, Adaptive Cruise Control",Daily Commute,Car Model 4,Car Model 7,Yes
+0169,Emilio Cruz,46,Naga,1415k - 2439k,Pickup,Electric,Manual,"ABS, Adaptive Cruise Control",First Car,Car Model 7,Car Model 4,Yes
+0170,Victoria Morales,55,Sorsogon,1956k - 2192k,Coupe,Electric,Manual,"Sunroof, Parking Sensors",Business,Car Model 6,Car Model 1,Yes
+0171,Ana Mendoza,32,Iriga,856k - 2474k,Pickup,Hybrid,Manual,"4WD, Adaptive Cruise Control",Business,Car Model 5,Car Model 8,No
+0172,Josefa Ramos,32,Daet,1857k - 2296k,Sedan,Diesel,Manual,"Cruise Control, 4WD",Family Use,Car Model 4,Car Model 9,Yes
+0173,Isabel Torres,44,Tabaco,559k - 1880k,Sedan,Gasoline,Manual,"Parking Sensors, ABS",Business,Car Model 5,Car Model 7,Yes
+0174,Daniel Villanueva,50,Naga,1724k - 1984k,Hatchback,Diesel,Manual,"4WD, Bluetooth",Business,Car Model 5,Car Model 1,No
+0175,Ricardo Gomez,48,Naga,532k - 2676k,Pickup,Electric,Automatic,"Adaptive Cruise Control, ABS",Daily Commute,Car Model 4,Car Model 7,No
+0176,Rosa Bautista,37,Tabaco,1834k - 2021k,SUV,Electric,Manual,"Airbags, Parking Sensors",First Car,Car Model 9,Car Model 2,No
+0177,Fernando Aquino,48,Legazpi,1381k - 1115k,Van,Electric,Automatic,"Parking Sensors, Bluetooth",Business,Car Model 2,Car Model 7,Yes
+0178,Sofia Dominguez,27,Iriga,1758k - 1780k,Sedan,Electric,Automatic,"ABS, Parking Sensors",First Car,Car Model 8,Car Model 4,Yes
+0179,Maria Santos,56,Naga,509k - 2009k,Crossover,Hybrid,Manual,"ABS, Parking Sensors",First Car,Car Model 5,Car Model 9,No
+0180,Daniel Villanueva,48,Daet,1301k - 2413k,Hatchback,Diesel,Manual,"ABS, 4WD",Daily Commute,Car Model 6,Car Model 8,Yes
+0181,Daniel Villanueva,51,Legazpi,1719k - 2245k,Sedan,Hybrid,Manual,"ABS, 4WD",Eco-Friendly,Car Model 5,Car Model 8,No
+0182,Juan Dela Cruz,59,Legazpi,1616k - 1731k,Coupe,Hybrid,Manual,"Sunroof, Adaptive Cruise Control",Eco-Friendly,Car Model 9,Car Model 8,No
+0183,Sofia Dominguez,53,Daet,1232k - 1895k,Van,Hybrid,Automatic,"Parking Sensors, Adaptive Cruise Control",Business,Car Model 3,Car Model 4,No
+0184,Josefa Ramos,59,Tabaco,719k - 1096k,Coupe,Hybrid,Automatic,"Adaptive Cruise Control, Cruise Control",Eco-Friendly,Car Model 3,Car Model 8,No
+0185,Elena Navarro,30,Sorsogon,1907k - 1097k,Crossover,Diesel,Automatic,"Parking Sensors, 4WD",Business,Car Model 7,Car Model 5,Yes
+0186,Sofia Dominguez,24,Sorsogon,1463k - 2311k,Sedan,Diesel,Automatic,"Sunroof, Parking Sensors",Family Use,Car Model 1,Car Model 7,No
+0187,Rosa Bautista,37,Tabaco,896k - 2876k,SUV,Electric,Manual,"Cruise Control, 4WD",Business,Car Model 9,Car Model 1,Yes
+0188,Angela Castillo,25,Sorsogon,1789k - 2248k,Hatchback,Diesel,Automatic,"Parking Sensors, Cruise Control",Family Use,Car Model 4,Car Model 6,Yes
+0189,Angela Castillo,35,Daet,1663k - 1035k,Van,Electric,Manual,"ABS, Airbags",Eco-Friendly,Car Model 2,Car Model 3,Yes
+0190,Ana Mendoza,53,Masbate,505k - 2881k,Van,Hybrid,Automatic,"Airbags, Bluetooth",First Car,Car Model 9,Car Model 9,Yes
+0191,Carmen Ortega,32,Daet,809k - 2719k,Pickup,Electric,Automatic,"Cruise Control, Parking Sensors",Daily Commute,Car Model 6,Car Model 5,Yes
+0192,Ana Mendoza,30,Iriga,859k - 1837k,Van,Electric,Automatic,"Parking Sensors, Cruise Control",Business,Car Model 9,Car Model 5,Yes
+0193,Ana Mendoza,30,Iriga,722k - 1349k,Van,Electric,Manual,"Parking Sensors, Adaptive Cruise Control",Daily Commute,Car Model 6,Car Model 4,No
+0194,Juan Dela Cruz,30,Tabaco,712k - 2900k,SUV,Hybrid,Automatic,"Airbags, ABS",First Car,Car Model 2,Car Model 4,Yes
+0195,Victoria Morales,36,Legazpi,578k - 1014k,Coupe,Hybrid,Automatic,"Airbags, Adaptive Cruise Control",First Car,Car Model 7,Car Model 8,Yes
+0196,Mariano Salazar,32,Daet,695k - 1425k,SUV,Electric,Manual,"Adaptive Cruise Control, Sunroof",Business,Car Model 1,Car Model 5,No
+0197,Rosa Bautista,52,Naga,1207k - 2987k,SUV,Hybrid,Automatic,"Sunroof, ABS",Business,Car Model 9,Car Model 8,No
+0198,Roberto Fernandez,22,Naga,1246k - 2655k,Sedan,Hybrid,Automatic,"4WD, Sunroof",Family Use,Car Model 9,Car Model 1,No
+0199,Sofia Dominguez,45,Iriga,1962k - 2968k,Pickup,Hybrid,Automatic,"Adaptive Cruise Control, Airbags",Daily Commute,Car Model 7,Car Model 8,No
+0200,Josefa Ramos,21,Legazpi,1158k - 1199k,SUV,Diesel,Automatic,"ABS, Airbags",Daily Commute,Car Model 8,Car Model 9,Yes
+0001,Miguel Santiago,38,Taguig,1874k - 1916k,Pickup,Hybrid,Manual,"Adaptive Cruise Control, 4WD",First Car,Car Model 3,Car Model 5,Yes
+0002,Emilio Cruz,30,Pasay,1733k - 1533k,Van,Hybrid,Manual,"Parking Sensors, Cruise Control",Daily Commute,Car Model 7,Car Model 3,Yes
+0003,Emilio Cruz,36,Parañaque,1474k - 1245k,Sedan,Gasoline,Manual,"ABS, Bluetooth",First Car,Car Model 4,Car Model 3,Yes
+0004,Isabel Torres,29,Pasay,1768k - 1078k,Coupe,Gasoline,Automatic,"ABS, 4WD",Daily Commute,Car Model 9,Car Model 3,No
+0005,Victoria Morales,47,Pasay,1154k - 1752k,Hatchback,Diesel,Automatic,"Sunroof, Bluetooth",Business,Car Model 8,Car Model 2,Yes
+0006,Carlos Lim,43,Makati,1934k - 1088k,Sedan,Electric,Manual,"Parking Sensors, ABS",Family Use,Car Model 1,Car Model 6,Yes
+0007,Rosa Bautista,36,Pasig,520k - 2922k,Van,Hybrid,Manual,"ABS, Cruise Control",Daily Commute,Car Model 4,Car Model 4,Yes
+0008,Rosa Bautista,33,Pasay,871k - 1151k,Crossover,Hybrid,Automatic,"Cruise Control, Bluetooth",Business,Car Model 7,Car Model 3,No
+0009,Elena Navarro,46,Taguig,950k - 2298k,Hatchback,Diesel,Automatic,"4WD, Airbags",Business,Car Model 6,Car Model 1,No
+0010,Carlos Lim,55,Manila,1076k - 2809k,Crossover,Hybrid,Manual,"Airbags, ABS",Daily Commute,Car Model 6,Car Model 9,Yes
+0011,Ricardo Gomez,18,Parañaque,1790k - 2009k,Hatchback,Diesel,Automatic,"Bluetooth, Cruise Control",Daily Commute,Car Model 6,Car Model 3,No
+0012,Fernando Aquino,36,Mandaluyong,1069k - 1479k,Sedan,Hybrid,Automatic,"Bluetooth, Adaptive Cruise Control",Daily Commute,Car Model 6,Car Model 3,No
+0013,Ricardo Gomez,30,Quezon City,1885k - 1415k,SUV,Diesel,Manual,"Sunroof, Airbags",Daily Commute,Car Model 4,Car Model 3,Yes
+0014,Ana Mendoza,26,Pasig,1800k - 1099k,Hatchback,Hybrid,Manual,"Cruise Control, Adaptive Cruise Control",Daily Commute,Car Model 9,Car Model 1,Yes
+0015,Carlos Lim,34,Parañaque,937k - 2351k,Hatchback,Diesel,Automatic,"Airbags, Adaptive Cruise Control",Eco-Friendly,Car Model 1,Car Model 2,Yes
+0016,Miguel Santiago,46,Taguig,1048k - 1583k,SUV,Diesel,Automatic,"Cruise Control, Adaptive Cruise Control",Eco-Friendly,Car Model 7,Car Model 6,No
+0017,Miguel Santiago,54,Mandaluyong,1864k - 1511k,Van,Electric,Automatic,"Cruise Control, Sunroof",Business,Car Model 1,Car Model 5,Yes
+0018,Isabel Torres,27,Pasig,1265k - 1026k,Hatchback,Gasoline,Automatic,"Airbags, Parking Sensors",First Car,Car Model 7,Car Model 2,No
+0019,Mariano Salazar,47,Manila,651k - 1963k,SUV,Diesel,Automatic,"Parking Sensors, Adaptive Cruise Control",Daily Commute,Car Model 9,Car Model 5,No
+0020,Carmen Ortega,36,Taguig,1613k - 1854k,Sedan,Gasoline,Manual,"Parking Sensors, ABS",Business,Car Model 3,Car Model 7,No
+0021,Ricardo Gomez,40,Parañaque,613k - 2884k,Hatchback,Electric,Automatic,"Airbags, 4WD",Eco-Friendly,Car Model 6,Car Model 1,Yes
+0022,Ana Mendoza,33,Taguig,1365k - 2551k,Hatchback,Electric,Automatic,"Bluetooth, Parking Sensors",Eco-Friendly,Car Model 1,Car Model 7,Yes
+0023,Pedro Reyes,49,Quezon City,1700k - 2213k,Coupe,Gasoline,Automatic,"Parking Sensors, Adaptive Cruise Control",Business,Car Model 6,Car Model 3,No
+0024,Angela Castillo,19,Pasig,1246k - 1319k,Pickup,Gasoline,Automatic,"ABS, Adaptive Cruise Control",Daily Commute,Car Model 7,Car Model 1,Yes
+0025,Carlos Lim,20,Taguig,807k - 2510k,Pickup,Hybrid,Manual,"4WD, Airbags",Family Use,Car Model 7,Car Model 6,No
+0026,Carmen Ortega,54,Makati,531k - 2175k,Coupe,Electric,Manual,"Cruise Control, Airbags",Business,Car Model 4,Car Model 8,No
+0027,Roberto Fernandez,20,Manila,1710k - 1077k,SUV,Diesel,Automatic,"Sunroof, Parking Sensors",Daily Commute,Car Model 7,Car Model 6,Yes
+0028,Miguel Santiago,41,Makati,1512k - 2403k,Sedan,Diesel,Automatic,"Adaptive Cruise Control, Sunroof",Family Use,Car Model 8,Car Model 5,No
+0029,Pedro Reyes,28,Manila,1713k - 2297k,SUV,Hybrid,Manual,"Adaptive Cruise Control, Airbags",Daily Commute,Car Model 8,Car Model 9,No
+0030,Juan Dela Cruz,38,Taguig,860k - 2562k,Coupe,Diesel,Manual,"ABS, 4WD",First Car,Car Model 7,Car Model 2,Yes
+0031,Ana Mendoza,54,Makati,1286k - 1952k,Crossover,Diesel,Automatic,"Airbags, Cruise Control",Business,Car Model 2,Car Model 8,No
+0032,Emilio Cruz,48,Quezon City,1564k - 1822k,Van,Hybrid,Manual,"Sunroof, Adaptive Cruise Control",Family Use,Car Model 9,Car Model 8,Yes
+0033,Maria Santos,40,Pasay,1677k - 1642k,Coupe,Diesel,Automatic,"4WD, Adaptive Cruise Control",Daily Commute,Car Model 4,Car Model 1,No
+0034,Daniel Villanueva,58,Taguig,1085k - 2485k,SUV,Electric,Automatic,"Bluetooth, Parking Sensors",First Car,Car Model 4,Car Model 7,No
+0035,Angela Castillo,46,Quezon City,727k - 1974k,SUV,Diesel,Automatic,"Parking Sensors, Sunroof",Family Use,Car Model 1,Car Model 8,Yes
+0036,Carlos Lim,31,Taguig,726k - 1019k,Sedan,Hybrid,Manual,"Parking Sensors, Sunroof",Daily Commute,Car Model 4,Car Model 4,Yes
+0037,Fernando Aquino,18,Taguig,557k - 2817k,Van,Diesel,Automatic,"Parking Sensors, Cruise Control",Business,Car Model 9,Car Model 1,No
+0038,Carlos Lim,36,Mandaluyong,952k - 2707k,Sedan,Diesel,Manual,"Airbags, Bluetooth",Eco-Friendly,Car Model 6,Car Model 8,No
+0039,Victoria Morales,52,Pasig,970k - 1881k,Van,Hybrid,Manual,"Parking Sensors, 4WD",Business,Car Model 2,Car Model 5,No
+0040,Isabel Torres,41,Mandaluyong,1172k - 1979k,Pickup,Electric,Manual,"Airbags, Cruise Control",Business,Car Model 7,Car Model 7,No
+0041,Isabel Torres,48,Mandaluyong,671k - 1987k,SUV,Diesel,Automatic,"Bluetooth, ABS",Daily Commute,Car Model 6,Car Model 8,Yes
+0042,Fernando Aquino,54,Pasay,1954k - 2129k,SUV,Diesel,Automatic,"4WD, Adaptive Cruise Control",Eco-Friendly,Car Model 2,Car Model 3,Yes
+0043,Mariano Salazar,30,Quezon City,1268k - 2608k,SUV,Hybrid,Automatic,"4WD, Sunroof",Eco-Friendly,Car Model 8,Car Model 1,Yes
+0044,Mariano Salazar,57,Mandaluyong,1853k - 1587k,Coupe,Diesel,Manual,"Cruise Control, Adaptive Cruise Control",Eco-Friendly,Car Model 1,Car Model 4,No
+0045,Isabel Torres,53,Mandaluyong,574k - 1089k,SUV,Gasoline,Automatic,"Cruise Control, Sunroof",Business,Car Model 6,Car Model 3,Yes
+0046,Roberto Fernandez,48,Parañaque,646k - 1094k,Van,Electric,Manual,"Airbags, Bluetooth",Business,Car Model 6,Car Model 8,No
+0047,Fernando Aquino,54,Mandaluyong,1798k - 2833k,Sedan,Electric,Automatic,"Cruise Control, Airbags",Daily Commute,Car Model 3,Car Model 4,No
+0048,Josefa Ramos,46,Manila,1641k - 2549k,Hatchback,Hybrid,Automatic,"ABS, Sunroof",First Car,Car Model 5,Car Model 8,No
+0049,Miguel Santiago,28,Taguig,718k - 1473k,Coupe,Hybrid,Automatic,"Sunroof, ABS",Eco-Friendly,Car Model 6,Car Model 6,Yes
+0050,Angela Castillo,42,Parañaque,510k - 1095k,Crossover,Gasoline,Automatic,"Cruise Control, ABS",Eco-Friendly,Car Model 9,Car Model 7,No
+0051,Carmen Ortega,54,Manila,999k - 2158k,Pickup,Hybrid,Automatic,"Parking Sensors, Sunroof",Eco-Friendly,Car Model 6,Car Model 4,No
+0052,Pedro Reyes,32,Makati,699k - 2659k,Van,Gasoline,Manual,"Adaptive Cruise Control, Parking Sensors",Family Use,Car Model 6,Car Model 7,No
+0053,Miguel Santiago,31,Parañaque,1701k - 2334k,SUV,Diesel,Manual,"Parking Sensors, Cruise Control",Daily Commute,Car Model 1,Car Model 9,No
+0054,Isabel Torres,58,Manila,1335k - 1136k,Sedan,Diesel,Automatic,"ABS, Cruise Control",Daily Commute,Car Model 5,Car Model 8,Yes
+0055,Sofia Dominguez,38,Quezon City,1069k - 2880k,SUV,Hybrid,Automatic,"Bluetooth, Sunroof",First Car,Car Model 2,Car Model 2,No
+0056,Juan Dela Cruz,21,Taguig,1500k - 1553k,Pickup,Electric,Manual,"Adaptive Cruise Control, Cruise Control",Daily Commute,Car Model 3,Car Model 3,Yes
+0057,Ricardo Gomez,25,Taguig,1291k - 2096k,Van,Electric,Automatic,"Airbags, ABS",Business,Car Model 7,Car Model 6,Yes
+0058,Emilio Cruz,50,Parañaque,1923k - 2696k,SUV,Diesel,Automatic,"Sunroof, Adaptive Cruise Control",First Car,Car Model 1,Car Model 1,No
+0059,Elena Navarro,44,Pasay,1814k - 2742k,SUV,Electric,Automatic,"ABS, Bluetooth",First Car,Car Model 2,Car Model 4,No
+0060,Ricardo Gomez,29,Manila,1500k - 1520k,Hatchback,Electric,Automatic,"Parking Sensors, ABS",First Car,Car Model 2,Car Model 5,No
+0061,Ricardo Gomez,46,Mandaluyong,1912k - 2733k,Pickup,Hybrid,Manual,"Airbags, Bluetooth",First Car,Car Model 3,Car Model 6,No
+0062,Ricardo Gomez,29,Pasay,526k - 1195k,Hatchback,Gasoline,Automatic,"4WD, Airbags",Family Use,Car Model 3,Car Model 6,Yes
+0063,Emilio Cruz,51,Taguig,1998k - 1890k,Sedan,Electric,Automatic,"Adaptive Cruise Control, Parking Sensors",First Car,Car Model 4,Car Model 8,Yes
+0064,Victoria Morales,29,Manila,1588k - 1764k,Pickup,Gasoline,Automatic,"Cruise Control, Parking Sensors",Family Use,Car Model 7,Car Model 4,No
+0065,Isabel Torres,51,Taguig,1239k - 2960k,Hatchback,Gasoline,Manual,"Airbags, 4WD",First Car,Car Model 8,Car Model 8,Yes
+0066,Daniel Villanueva,57,Mandaluyong,1947k - 2525k,SUV,Electric,Automatic,"Sunroof, Parking Sensors",Eco-Friendly,Car Model 5,Car Model 6,Yes
+0067,Maria Santos,50,Taguig,1304k - 2233k,Hatchback,Hybrid,Automatic,"ABS, 4WD",Daily Commute,Car Model 1,Car Model 8,Yes
+0068,Isabel Torres,32,Pasig,696k - 1525k,Van,Electric,Manual,"Adaptive Cruise Control, ABS",Daily Commute,Car Model 8,Car Model 3,Yes
+0069,Victoria Morales,37,Parañaque,1825k - 1562k,Sedan,Hybrid,Automatic,"ABS, Adaptive Cruise Control",Business,Car Model 9,Car Model 2,Yes
+0070,Angela Castillo,23,Mandaluyong,1450k - 2303k,Sedan,Diesel,Automatic,"Airbags, Adaptive Cruise Control",Daily Commute,Car Model 2,Car Model 2,No
+0071,Sofia Dominguez,22,Mandaluyong,1244k - 1657k,Hatchback,Hybrid,Manual,"Bluetooth, Sunroof",Daily Commute,Car Model 6,Car Model 6,No
+0072,Roberto Fernandez,31,Taguig,1526k - 2833k,Crossover,Gasoline,Automatic,"Cruise Control, Parking Sensors",Family Use,Car Model 7,Car Model 3,No
+0073,Pedro Reyes,39,Pasig,1651k - 1917k,Van,Diesel,Automatic,"Adaptive Cruise Control, Cruise Control",Business,Car Model 7,Car Model 9,Yes
+0074,Ana Mendoza,46,Pasay,1463k - 1967k,Pickup,Electric,Automatic,"Parking Sensors, Bluetooth",Family Use,Car Model 7,Car Model 8,No
+0075,Mariano Salazar,49,Makati,506k - 2932k,Pickup,Hybrid,Automatic,"Cruise Control, Airbags",Family Use,Car Model 4,Car Model 4,Yes
+0076,Roberto Fernandez,26,Makati,898k - 2174k,Hatchback,Electric,Manual,"Bluetooth, Parking Sensors",Business,Car Model 7,Car Model 3,Yes
+0077,Daniel Villanueva,31,Manila,1347k - 2934k,Crossover,Hybrid,Manual,"Airbags, Bluetooth",First Car,Car Model 8,Car Model 1,Yes
+0078,Maria Santos,21,Makati,1615k - 2690k,Hatchback,Hybrid,Automatic,"Adaptive Cruise Control, 4WD",Eco-Friendly,Car Model 4,Car Model 9,No
+0079,Rosa Bautista,27,Pasay,1670k - 1905k,Pickup,Electric,Manual,"ABS, Parking Sensors",First Car,Car Model 8,Car Model 6,No
+0080,Rosa Bautista,38,Quezon City,661k - 1282k,Pickup,Hybrid,Automatic,"Airbags, Cruise Control",Family Use,Car Model 5,Car Model 6,Yes
+0081,Angela Castillo,58,Parañaque,1625k - 2760k,Coupe,Diesel,Automatic,"Adaptive Cruise Control, Sunroof",Family Use,Car Model 4,Car Model 3,Yes
+0082,Isabel Torres,53,Pasig,1486k - 1889k,Van,Electric,Manual,"4WD, Adaptive Cruise Control",First Car,Car Model 1,Car Model 8,Yes
+0083,Angela Castillo,34,Pasig,1207k - 1291k,Coupe,Diesel,Automatic,"Airbags, ABS",First Car,Car Model 3,Car Model 3,No
+0084,Rosa Bautista,40,Mandaluyong,1295k - 2423k,Hatchback,Hybrid,Manual,"Parking Sensors, Cruise Control",Eco-Friendly,Car Model 3,Car Model 3,Yes
+0085,Angela Castillo,54,Quezon City,1068k - 2277k,Pickup,Diesel,Manual,"Bluetooth, Sunroof",Business,Car Model 8,Car Model 2,No
+0086,Daniel Villanueva,44,Taguig,1379k - 1017k,Van,Gasoline,Automatic,"Cruise Control, Parking Sensors",Daily Commute,Car Model 6,Car Model 9,No
+0087,Mariano Salazar,35,Quezon City,1360k - 1143k,Van,Diesel,Manual,"Airbags, Bluetooth",Family Use,Car Model 9,Car Model 5,Yes
+0088,Juan Dela Cruz,26,Makati,1401k - 2218k,Coupe,Hybrid,Automatic,"4WD, Parking Sensors",First Car,Car Model 7,Car Model 8,No
+0089,Mariano Salazar,21,Makati,621k - 2356k,SUV,Hybrid,Automatic,"Cruise Control, Parking Sensors",Eco-Friendly,Car Model 4,Car Model 3,Yes
+0090,Fernando Aquino,56,Parañaque,1640k - 2078k,Sedan,Hybrid,Manual,"Bluetooth, Adaptive Cruise Control",First Car,Car Model 8,Car Model 7,No
+0091,Juan Dela Cruz,35,Pasay,620k - 1451k,Coupe,Gasoline,Automatic,"4WD, Adaptive Cruise Control",Business,Car Model 8,Car Model 1,No
+0092,Emilio Cruz,28,Manila,566k - 2158k,SUV,Diesel,Manual,"Airbags, Bluetooth",First Car,Car Model 8,Car Model 9,No
+0093,Carlos Lim,30,Manila,1070k - 2526k,Van,Hybrid,Automatic,"Bluetooth, Parking Sensors",Daily Commute,Car Model 1,Car Model 4,Yes
+0094,Isabel Torres,38,Makati,1495k - 2785k,Coupe,Diesel,Manual,"Sunroof, Cruise Control",First Car,Car Model 4,Car Model 4,No
+0095,Sofia Dominguez,53,Quezon City,1262k - 2821k,Coupe,Gasoline,Automatic,"Bluetooth, Adaptive Cruise Control",Daily Commute,Car Model 9,Car Model 6,Yes
+0096,Mariano Salazar,32,Mandaluyong,1939k - 1016k,Hatchback,Diesel,Manual,"Cruise Control, Parking Sensors",Daily Commute,Car Model 3,Car Model 7,No
+0097,Emilio Cruz,33,Manila,737k - 2597k,Pickup,Gasoline,Automatic,"Sunroof, Parking Sensors",Family Use,Car Model 6,Car Model 7,Yes
+0098,Maria Santos,39,Manila,529k - 2533k,Hatchback,Diesel,Manual,"Airbags, Cruise Control",Eco-Friendly,Car Model 1,Car Model 4,Yes
+0099,Mariano Salazar,40,Manila,958k - 2436k,Van,Diesel,Manual,"ABS, Cruise Control",Family Use,Car Model 1,Car Model 5,No
+0100,Maria Santos,59,Makati,1750k - 2804k,Hatchback,Electric,Automatic,"Cruise Control, Parking Sensors",Business,Car Model 8,Car Model 9,No
+0101,Emilio Cruz,56,Makati,889k - 1010k,SUV,Electric,Automatic,"Bluetooth, Cruise Control",Business,Car Model 4,Car Model 7,Yes
+0102,Fernando Aquino,38,Mandaluyong,1156k - 2581k,Crossover,Diesel,Automatic,"Parking Sensors, Sunroof",Business,Car Model 7,Car Model 3,Yes
+0103,Juan Dela Cruz,33,Makati,1620k - 1158k,Van,Electric,Automatic,"Cruise Control, ABS",Family Use,Car Model 1,Car Model 9,Yes
+0104,Victoria Morales,30,Quezon City,1578k - 2292k,Pickup,Diesel,Automatic,"ABS, Airbags",Daily Commute,Car Model 2,Car Model 8,Yes
+0105,Carmen Ortega,44,Pasig,1394k - 1245k,SUV,Diesel,Manual,"Adaptive Cruise Control, Sunroof",First Car,Car Model 3,Car Model 4,Yes
+0106,Rosa Bautista,19,Taguig,1596k - 2805k,Van,Gasoline,Manual,"Parking Sensors, 4WD",Daily Commute,Car Model 9,Car Model 9,Yes
+0107,Fernando Aquino,42,Parañaque,1681k - 2654k,Coupe,Hybrid,Manual,"Adaptive Cruise Control, Sunroof",Daily Commute,Car Model 3,Car Model 3,Yes
+0108,Emilio Cruz,31,Mandaluyong,566k - 1438k,Hatchback,Electric,Automatic,"4WD, Cruise Control",First Car,Car Model 9,Car Model 7,Yes
+0109,Emilio Cruz,23,Quezon City,1042k - 1767k,Coupe,Hybrid,Manual,"ABS, Parking Sensors",Daily Commute,Car Model 7,Car Model 3,Yes
+0110,Emilio Cruz,18,Pasig,1370k - 1328k,Coupe,Hybrid,Manual,"Sunroof, Cruise Control",Daily Commute,Car Model 2,Car Model 3,No
+0111,Elena Navarro,36,Pasig,574k - 2789k,Hatchback,Electric,Manual,"Bluetooth, Airbags",Eco-Friendly,Car Model 2,Car Model 8,Yes
+0112,Daniel Villanueva,38,Quezon City,1743k - 1118k,Van,Gasoline,Manual,"Airbags, Bluetooth",Daily Commute,Car Model 6,Car Model 2,No
+0113,Sofia Dominguez,53,Pasay,1956k - 1050k,Pickup,Diesel,Manual,"Adaptive Cruise Control, ABS",Eco-Friendly,Car Model 7,Car Model 6,Yes
+0114,Miguel Santiago,19,Makati,1701k - 1946k,Pickup,Diesel,Manual,"Airbags, Parking Sensors",Business,Car Model 2,Car Model 6,No
+0115,Pedro Reyes,57,Pasay,1497k - 2730k,SUV,Hybrid,Manual,"Bluetooth, Cruise Control",First Car,Car Model 1,Car Model 6,Yes
+0116,Juan Dela Cruz,45,Parañaque,1241k - 2674k,Van,Electric,Automatic,"Adaptive Cruise Control, ABS",Family Use,Car Model 8,Car Model 2,No
+0117,Pedro Reyes,54,Pasay,1860k - 1430k,Hatchback,Hybrid,Manual,"4WD, ABS",Business,Car Model 1,Car Model 6,Yes
+0118,Ana Mendoza,46,Parañaque,1187k - 2124k,Van,Hybrid,Manual,"Parking Sensors, 4WD",First Car,Car Model 2,Car Model 4,No
+0119,Juan Dela Cruz,36,Parañaque,1542k - 1765k,Hatchback,Diesel,Automatic,"ABS, Adaptive Cruise Control",Family Use,Car Model 8,Car Model 9,No
+0120,Miguel Santiago,41,Pasay,662k - 1828k,Sedan,Electric,Manual,"Sunroof, Airbags",Daily Commute,Car Model 3,Car Model 9,Yes
+0121,Rosa Bautista,47,Pasay,1359k - 2041k,Coupe,Diesel,Manual,"Sunroof, Parking Sensors",Family Use,Car Model 5,Car Model 1,No
+0122,Ricardo Gomez,23,Pasig,1883k - 1460k,SUV,Electric,Manual,"Sunroof, ABS",Eco-Friendly,Car Model 5,Car Model 5,No
+0123,Daniel Villanueva,36,Pasay,1394k - 1689k,Crossover,Electric,Automatic,"4WD, Parking Sensors",Business,Car Model 6,Car Model 7,No
+0124,Rosa Bautista,56,Pasay,547k - 1542k,SUV,Electric,Automatic,"Sunroof, Bluetooth",First Car,Car Model 7,Car Model 7,No
+0125,Pedro Reyes,55,Taguig,1158k - 2689k,Pickup,Gasoline,Automatic,"Parking Sensors, Cruise Control",Business,Car Model 2,Car Model 8,Yes
+0126,Juan Dela Cruz,23,Parañaque,1567k - 2018k,Van,Hybrid,Automatic,"Cruise Control, Airbags",Family Use,Car Model 9,Car Model 7,No
+0127,Emilio Cruz,26,Pasig,1871k - 2513k,SUV,Diesel,Manual,"Bluetooth, Parking Sensors",First Car,Car Model 4,Car Model 4,No
+0128,Pedro Reyes,28,Taguig,1970k - 2688k,Hatchback,Diesel,Manual,"Parking Sensors, Cruise Control",First Car,Car Model 4,Car Model 9,Yes
+0129,Ricardo Gomez,39,Pasig,1102k - 2665k,Hatchback,Electric,Manual,"Cruise Control, Adaptive Cruise Control",Eco-Friendly,Car Model 9,Car Model 7,Yes
+0130,Josefa Ramos,39,Makati,1037k - 2698k,Crossover,Hybrid,Manual,"4WD, Parking Sensors",Eco-Friendly,Car Model 6,Car Model 2,No
+0131,Rosa Bautista,40,Pasig,1269k - 2190k,Van,Electric,Automatic,"Adaptive Cruise Control, 4WD",First Car,Car Model 3,Car Model 1,No
+0132,Sofia Dominguez,44,Mandaluyong,1752k - 1074k,SUV,Diesel,Automatic,"ABS, Airbags",Family Use,Car Model 7,Car Model 9,Yes
+0133,Miguel Santiago,54,Taguig,526k - 2604k,Coupe,Hybrid,Automatic,"Airbags, Adaptive Cruise Control",Business,Car Model 8,Car Model 2,Yes
+0134,Roberto Fernandez,42,Manila,1873k - 2869k,SUV,Electric,Manual,"4WD, ABS",Eco-Friendly,Car Model 8,Car Model 4,No
+0135,Isabel Torres,39,Manila,1030k - 2849k,Van,Hybrid,Automatic,"ABS, Adaptive Cruise Control",Family Use,Car Model 9,Car Model 2,Yes
+0136,Emilio Cruz,56,Pasay,944k - 2042k,Van,Gasoline,Automatic,"Cruise Control, Bluetooth",Daily Commute,Car Model 6,Car Model 9,Yes
+0137,Pedro Reyes,35,Parañaque,1853k - 1041k,Sedan,Diesel,Manual,"Cruise Control, Airbags",First Car,Car Model 8,Car Model 2,No
+0138,Roberto Fernandez,34,Pasig,1034k - 2389k,Coupe,Diesel,Automatic,"Cruise Control, 4WD",First Car,Car Model 6,Car Model 7,Yes
+0139,Ricardo Gomez,22,Pasay,1651k - 2402k,Van,Hybrid,Automatic,"Bluetooth, ABS",Business,Car Model 7,Car Model 9,Yes
+0140,Isabel Torres,21,Quezon City,1798k - 2280k,SUV,Electric,Manual,"Sunroof, ABS",First Car,Car Model 9,Car Model 8,Yes
+0141,Roberto Fernandez,25,Manila,533k - 2098k,Van,Diesel,Automatic,"ABS, Adaptive Cruise Control",Business,Car Model 5,Car Model 4,Yes
+0142,Rosa Bautista,32,Manila,1915k - 2799k,Crossover,Gasoline,Manual,"Sunroof, 4WD",Daily Commute,Car Model 9,Car Model 4,No
+0143,Ana Mendoza,39,Taguig,1918k - 1512k,Van,Electric,Automatic,"Sunroof, Cruise Control",Family Use,Car Model 6,Car Model 2,No
+0144,Maria Santos,49,Pasay,1162k - 1335k,SUV,Diesel,Manual,"Adaptive Cruise Control, ABS",Eco-Friendly,Car Model 2,Car Model 8,No
+0145,Isabel Torres,36,Quezon City,998k - 2234k,Crossover,Gasoline,Manual,"Parking Sensors, Sunroof",Business,Car Model 8,Car Model 4,Yes
+0146,Ana Mendoza,38,Pasay,1645k - 1204k,Van,Electric,Automatic,"Sunroof, Bluetooth",First Car,Car Model 4,Car Model 5,Yes
+0147,Elena Navarro,22,Manila,1393k - 1864k,Coupe,Diesel,Manual,"4WD, Bluetooth",Eco-Friendly,Car Model 8,Car Model 1,No
+0148,Roberto Fernandez,49,Pasig,1560k - 1388k,Hatchback,Hybrid,Manual,"Parking Sensors, Bluetooth",Business,Car Model 1,Car Model 7,No
+0149,Rosa Bautista,30,Taguig,589k - 1343k,Coupe,Gasoline,Manual,"Adaptive Cruise Control, Cruise Control",Daily Commute,Car Model 5,Car Model 9,No
+0150,Ricardo Gomez,41,Pasay,1873k - 2673k,Crossover,Hybrid,Manual,"Parking Sensors, Bluetooth",Family Use,Car Model 8,Car Model 5,Yes
+0151,Ana Mendoza,28,Pasig,738k - 1381k,Van,Hybrid,Manual,"ABS, 4WD",Eco-Friendly,Car Model 2,Car Model 1,Yes
+0152,Daniel Villanueva,18,Parañaque,593k - 1905k,Hatchback,Electric,Automatic,"Cruise Control, Adaptive Cruise Control",Family Use,Car Model 3,Car Model 3,Yes
+0153,Carlos Lim,43,Pasig,1470k - 1147k,Hatchback,Diesel,Automatic,"Cruise Control, Sunroof",Daily Commute,Car Model 2,Car Model 8,Yes
+0154,Ricardo Gomez,45,Makati,555k - 1613k,Sedan,Electric,Manual,"Adaptive Cruise Control, Sunroof",Daily Commute,Car Model 8,Car Model 6,Yes
+0155,Sofia Dominguez,48,Parañaque,1026k - 2909k,SUV,Electric,Manual,"4WD, Cruise Control",Daily Commute,Car Model 4,Car Model 2,Yes
+0156,Juan Dela Cruz,51,Makati,1173k - 2552k,Crossover,Electric,Manual,"ABS, Parking Sensors",Business,Car Model 8,Car Model 1,No
+0157,Mariano Salazar,39,Quezon City,710k - 2333k,Sedan,Hybrid,Manual,"Bluetooth, Parking Sensors",Eco-Friendly,Car Model 5,Car Model 4,No
+0158,Angela Castillo,37,Quezon City,1715k - 1293k,Sedan,Gasoline,Automatic,"Parking Sensors, Bluetooth",Family Use,Car Model 5,Car Model 2,No
+0159,Daniel Villanueva,53,Taguig,1264k - 1263k,Pickup,Gasoline,Manual,"Adaptive Cruise Control, ABS",First Car,Car Model 4,Car Model 4,No
+0160,Josefa Ramos,45,Makati,1922k - 2441k,Sedan,Electric,Manual,"ABS, Bluetooth",Daily Commute,Car Model 9,Car Model 2,No
+0161,Angela Castillo,54,Pasay,1745k - 2055k,Pickup,Electric,Manual,"Cruise Control, Sunroof",Family Use,Car Model 5,Car Model 8,Yes
+0162,Angela Castillo,35,Makati,1821k - 1860k,Van,Diesel,Manual,"ABS, 4WD",Eco-Friendly,Car Model 9,Car Model 4,Yes
+0163,Daniel Villanueva,50,Parañaque,1093k - 1439k,SUV,Gasoline,Automatic,"ABS, Airbags",First Car,Car Model 5,Car Model 5,Yes
+0164,Miguel Santiago,19,Parañaque,1788k - 1270k,Sedan,Diesel,Manual,"4WD, Parking Sensors",Eco-Friendly,Car Model 5,Car Model 3,Yes
+0165,Emilio Cruz,57,Quezon City,782k - 2748k,SUV,Diesel,Manual,"Bluetooth, Airbags",Daily Commute,Car Model 8,Car Model 6,No
+0166,Rosa Bautista,59,Quezon City,680k - 2498k,Van,Diesel,Automatic,"4WD, Adaptive Cruise Control",First Car,Car Model 4,Car Model 5,No
+0167,Ana Mendoza,43,Makati,590k - 2902k,Pickup,Diesel,Manual,"4WD, Adaptive Cruise Control",Business,Car Model 5,Car Model 2,No
+0168,Ricardo Gomez,20,Makati,1552k - 2014k,Pickup,Gasoline,Automatic,"Adaptive Cruise Control, Sunroof",Eco-Friendly,Car Model 6,Car Model 2,Yes
+0169,Carmen Ortega,34,Taguig,1545k - 2835k,Van,Diesel,Automatic,"Sunroof, Bluetooth",Family Use,Car Model 8,Car Model 1,No
+0170,Isabel Torres,43,Manila,1038k - 2515k,Pickup,Hybrid,Automatic,"4WD, Adaptive Cruise Control",Eco-Friendly,Car Model 9,Car Model 5,Yes
+0171,Carlos Lim,44,Makati,1177k - 1140k,Crossover,Diesel,Manual,"Airbags, Parking Sensors",Eco-Friendly,Car Model 1,Car Model 6,No
+0172,Isabel Torres,35,Makati,644k - 1961k,Coupe,Gasoline,Automatic,"Parking Sensors, Airbags",First Car,Car Model 7,Car Model 7,No
+0173,Josefa Ramos,41,Manila,1885k - 2857k,Coupe,Electric,Automatic,"4WD, Sunroof",First Car,Car Model 2,Car Model 7,No
+0174,Victoria Morales,20,Parañaque,1755k - 1864k,Coupe,Hybrid,Automatic,"Parking Sensors, Bluetooth",Family Use,Car Model 8,Car Model 3,Yes
+0175,Fernando Aquino,47,Taguig,930k - 1644k,Van,Electric,Automatic,"Cruise Control, 4WD",Business,Car Model 8,Car Model 2,No
+0176,Pedro Reyes,18,Taguig,755k - 2999k,Pickup,Gasoline,Manual,"Sunroof, Cruise Control",First Car,Car Model 1,Car Model 6,No
+0177,Rosa Bautista,35,Mandaluyong,726k - 2802k,Van,Electric,Manual,"Cruise Control, Airbags",Business,Car Model 1,Car Model 3,No
+0178,Roberto Fernandez,53,Taguig,1784k - 1593k,Pickup,Electric,Automatic,"4WD, Adaptive Cruise Control",Family Use,Car Model 9,Car Model 9,Yes
+0179,Elena Navarro,26,Pasay,937k - 2159k,Van,Hybrid,Manual,"Sunroof, Bluetooth",Daily Commute,Car Model 2,Car Model 3,Yes
+0180,Emilio Cruz,26,Taguig,1694k - 1729k,Crossover,Electric,Manual,"Airbags, ABS",First Car,Car Model 1,Car Model 4,Yes
+0181,Elena Navarro,28,Mandaluyong,1834k - 1127k,Crossover,Gasoline,Automatic,"4WD, Airbags",First Car,Car Model 9,Car Model 1,No
+0182,Isabel Torres,20,Parañaque,1452k - 2276k,Hatchback,Diesel,Manual,"Adaptive Cruise Control, Parking Sensors",Eco-Friendly,Car Model 1,Car Model 2,Yes
+0183,Victoria Morales,29,Taguig,1230k - 1937k,Coupe,Hybrid,Manual,"ABS, Airbags",Family Use,Car Model 5,Car Model 7,No
+0184,Fernando Aquino,25,Pasay,788k - 2984k,Van,Gasoline,Manual,"Bluetooth, Airbags",Eco-Friendly,Car Model 4,Car Model 9,Yes
+0185,Sofia Dominguez,50,Parañaque,841k - 1510k,SUV,Diesel,Manual,"Adaptive Cruise Control, Airbags",Business,Car Model 4,Car Model 7,Yes
+0186,Ana Mendoza,44,Parañaque,1486k - 2928k,Sedan,Electric,Manual,"Sunroof, Parking Sensors",Family Use,Car Model 2,Car Model 5,No
+0187,Angela Castillo,52,Parañaque,583k - 2890k,Hatchback,Hybrid,Automatic,"4WD, Sunroof",Family Use,Car Model 6,Car Model 9,Yes
+0188,Ricardo Gomez,36,Parañaque,1649k - 1583k,Crossover,Electric,Manual,"Parking Sensors, Cruise Control",Daily Commute,Car Model 2,Car Model 1,Yes
+0189,Victoria Morales,49,Pasig,1511k - 2296k,SUV,Diesel,Manual,"Parking Sensors, Sunroof",Business,Car Model 8,Car Model 5,No
+0190,Daniel Villanueva,38,Taguig,1310k - 1398k,Hatchback,Gasoline,Automatic,"Adaptive Cruise Control, Bluetooth",Business,Car Model 9,Car Model 1,No
+0191,Ana Mendoza,33,Pasay,1536k - 2328k,Hatchback,Gasoline,Manual,"Parking Sensors, Adaptive Cruise Control",First Car,Car Model 4,Car Model 6,Yes
+0192,Ricardo Gomez,29,Quezon City,713k - 1638k,Van,Gasoline,Automatic,"Parking Sensors, 4WD",Daily Commute,Car Model 2,Car Model 9,No
+0193,Josefa Ramos,56,Pasay,715k - 1907k,Sedan,Diesel,Automatic,"Bluetooth, ABS",Daily Commute,Car Model 9,Car Model 8,Yes
+0194,Josefa Ramos,43,Taguig,1202k - 1311k,SUV,Gasoline,Manual,"Sunroof, Cruise Control",Family Use,Car Model 7,Car Model 1,No
+0195,Elena Navarro,39,Manila,1737k - 1411k,Sedan,Diesel,Automatic,"Parking Sensors, Cruise Control",Eco-Friendly,Car Model 3,Car Model 2,Yes
+0196,Mariano Salazar,35,Taguig,987k - 2467k,Sedan,Electric,Manual,"Parking Sensors, Sunroof",Eco-Friendly,Car Model 6,Car Model 8,No
+0197,Miguel Santiago,36,Makati,1914k - 1206k,Pickup,Electric,Automatic,"4WD, Airbags",Eco-Friendly,Car Model 6,Car Model 9,No
+0198,Maria Santos,59,Taguig,1290k - 1814k,Hatchback,Electric,Automatic,"ABS, Parking Sensors",Business,Car Model 4,Car Model 3,Yes
+0199,Maria Santos,21,Mandaluyong,1010k - 2409k,Coupe,Hybrid,Manual,"Adaptive Cruise Control, 4WD",Family Use,Car Model 9,Car Model 6,No
+0200,Rosa Bautista,31,Manila,541k - 1338k,Van,Diesel,Manual,"Parking Sensors, Airbags",First Car,Car Model 2,Car Model 4,Yes
+0201,Isabel Torres,30,Pasig,721k - 1560k,Sedan,Electric,Manual,"ABS, Airbags",First Car,Car Model 1,Car Model 6,Yes
+0202,Daniel Villanueva,36,Pasig,1557k - 2597k,Sedan,Hybrid,Automatic,"Airbags, Cruise Control",Business,Car Model 2,Car Model 4,No
+0203,Victoria Morales,23,Pasay,1670k - 2808k,Coupe,Gasoline,Manual,"Adaptive Cruise Control, Parking Sensors",Business,Car Model 1,Car Model 8,No
+0204,Elena Navarro,41,Manila,1774k - 1112k,Pickup,Electric,Automatic,"Bluetooth, Parking Sensors",Business,Car Model 9,Car Model 4,Yes
+0205,Ricardo Gomez,34,Makati,1382k - 1195k,Hatchback,Hybrid,Manual,"ABS, Adaptive Cruise Control",First Car,Car Model 7,Car Model 8,Yes
+0206,Mariano Salazar,20,Manila,816k - 2592k,Van,Hybrid,Automatic,"ABS, Adaptive Cruise Control",First Car,Car Model 4,Car Model 7,Yes
+0207,Elena Navarro,35,Taguig,684k - 1034k,Pickup,Gasoline,Automatic,"Adaptive Cruise Control, ABS",Daily Commute,Car Model 3,Car Model 7,No
+0208,Sofia Dominguez,32,Taguig,1099k - 2970k,Pickup,Diesel,Automatic,"Adaptive Cruise Control, Sunroof",Family Use,Car Model 8,Car Model 6,No
+0209,Carlos Lim,25,Taguig,943k - 2418k,Crossover,Diesel,Manual,"Adaptive Cruise Control, Parking Sensors",First Car,Car Model 3,Car Model 3,Yes
+0210,Carlos Lim,26,Taguig,601k - 1589k,SUV,Electric,Automatic,"Adaptive Cruise Control, Airbags",Eco-Friendly,Car Model 9,Car Model 4,Yes
+0211,Sofia Dominguez,19,Parañaque,1402k - 1506k,SUV,Gasoline,Manual,"ABS, 4WD",First Car,Car Model 8,Car Model 3,No
+0212,Angela Castillo,46,Mandaluyong,1536k - 2712k,Crossover,Diesel,Manual,"Cruise Control, Parking Sensors",Business,Car Model 6,Car Model 8,No
+0213,Pedro Reyes,57,Taguig,716k - 1299k,Van,Gasoline,Automatic,"Adaptive Cruise Control, Airbags",First Car,Car Model 7,Car Model 7,Yes
+0214,Josefa Ramos,34,Quezon City,1700k - 2245k,Van,Diesel,Manual,"Adaptive Cruise Control, Bluetooth",Business,Car Model 9,Car Model 5,Yes
+0215,Pedro Reyes,42,Pasig,1579k - 2465k,SUV,Hybrid,Manual,"Airbags, Sunroof",Eco-Friendly,Car Model 7,Car Model 8,No
+0216,Carlos Lim,57,Mandaluyong,1557k - 2854k,SUV,Diesel,Automatic,"Bluetooth, 4WD",Business,Car Model 7,Car Model 8,No
+0217,Roberto Fernandez,19,Pasig,1942k - 2206k,Pickup,Diesel,Manual,"Airbags, Bluetooth",Family Use,Car Model 6,Car Model 8,Yes
+0218,Victoria Morales,45,Mandaluyong,1233k - 2265k,Crossover,Diesel,Manual,"ABS, Adaptive Cruise Control",Family Use,Car Model 9,Car Model 2,Yes
+0219,Fernando Aquino,50,Manila,556k - 2898k,Hatchback,Diesel,Automatic,"Airbags, ABS",Eco-Friendly,Car Model 4,Car Model 4,Yes
+0220,Sofia Dominguez,46,Mandaluyong,1202k - 2631k,Crossover,Diesel,Manual,"Cruise Control, Sunroof",Family Use,Car Model 7,Car Model 1,Yes
+0221,Rosa Bautista,53,Manila,1108k - 1358k,Coupe,Hybrid,Manual,"4WD, Sunroof",Eco-Friendly,Car Model 3,Car Model 4,Yes
+0222,Carlos Lim,45,Pasig,539k - 2458k,Pickup,Hybrid,Automatic,"Airbags, Parking Sensors",Family Use,Car Model 9,Car Model 5,No
+0223,Mariano Salazar,30,Pasig,1356k - 2419k,Van,Gasoline,Manual,"Cruise Control, Parking Sensors",Family Use,Car Model 5,Car Model 6,Yes
+0224,Elena Navarro,50,Taguig,1263k - 1318k,SUV,Gasoline,Manual,"Cruise Control, Bluetooth",Family Use,Car Model 8,Car Model 9,No
+0225,Sofia Dominguez,25,Mandaluyong,1362k - 1570k,Van,Gasoline,Manual,"Parking Sensors, Adaptive Cruise Control",Eco-Friendly,Car Model 5,Car Model 3,No
+0226,Fernando Aquino,32,Pasig,1900k - 2909k,SUV,Gasoline,Automatic,"Adaptive Cruise Control, Bluetooth",Eco-Friendly,Car Model 6,Car Model 9,No
+0227,Daniel Villanueva,59,Parañaque,1886k - 2686k,Hatchback,Electric,Automatic,"ABS, Sunroof",Family Use,Car Model 6,Car Model 7,No
+0228,Elena Navarro,55,Pasay,605k - 1035k,Coupe,Hybrid,Automatic,"Sunroof, Airbags",Family Use,Car Model 5,Car Model 1,No
+0229,Sofia Dominguez,29,Taguig,1385k - 2330k,Coupe,Hybrid,Automatic,"Bluetooth, Parking Sensors",Eco-Friendly,Car Model 1,Car Model 3,No
+0230,Elena Navarro,43,Pasay,791k - 2599k,Hatchback,Hybrid,Automatic,"Cruise Control, Bluetooth",Eco-Friendly,Car Model 9,Car Model 2,Yes
+0231,Elena Navarro,50,Manila,1129k - 2989k,Sedan,Hybrid,Manual,"Parking Sensors, Bluetooth",Business,Car Model 6,Car Model 8,No
+0232,Ana Mendoza,49,Mandaluyong,942k - 2398k,Hatchback,Hybrid,Automatic,"Bluetooth, Parking Sensors",Eco-Friendly,Car Model 3,Car Model 8,No
+0233,Emilio Cruz,51,Pasig,1274k - 1766k,Sedan,Diesel,Automatic,"4WD, ABS",Daily Commute,Car Model 1,Car Model 7,Yes
+0234,Juan Dela Cruz,41,Pasay,1848k - 2579k,Van,Electric,Automatic,"Sunroof, ABS",First Car,Car Model 5,Car Model 1,Yes
+0235,Elena Navarro,48,Pasay,1081k - 1653k,Hatchback,Hybrid,Manual,"Sunroof, Airbags",Daily Commute,Car Model 6,Car Model 6,No
+0236,Roberto Fernandez,21,Pasig,908k - 2913k,Crossover,Gasoline,Automatic,"Sunroof, Bluetooth",Family Use,Car Model 1,Car Model 5,Yes
+0237,Ricardo Gomez,52,Manila,1158k - 1888k,Crossover,Electric,Manual,"4WD, Bluetooth",First Car,Car Model 8,Car Model 8,No
+0238,Josefa Ramos,57,Parañaque,611k - 1671k,Pickup,Gasoline,Manual,"Sunroof, ABS",Family Use,Car Model 6,Car Model 1,Yes
+0239,Angela Castillo,28,Taguig,1307k - 1830k,Coupe,Gasoline,Manual,"ABS, Adaptive Cruise Control",Business,Car Model 9,Car Model 5,No
+0240,Pedro Reyes,59,Taguig,1420k - 2953k,Coupe,Gasoline,Manual,"Cruise Control, Airbags",Family Use,Car Model 6,Car Model 4,Yes
+0241,Emilio Cruz,33,Mandaluyong,945k - 2842k,Van,Gasoline,Manual,"Adaptive Cruise Control, Cruise Control",Family Use,Car Model 5,Car Model 2,No
+0242,Victoria Morales,19,Mandaluyong,1274k - 2634k,Van,Electric,Manual,"Cruise Control, Adaptive Cruise Control",Eco-Friendly,Car Model 5,Car Model 9,No
+0243,Miguel Santiago,33,Quezon City,1495k - 2475k,Hatchback,Gasoline,Automatic,"Sunroof, Adaptive Cruise Control",First Car,Car Model 2,Car Model 7,Yes
+0244,Angela Castillo,36,Manila,1377k - 1315k,SUV,Hybrid,Manual,"4WD, Bluetooth",Family Use,Car Model 1,Car Model 7,Yes
+0245,Fernando Aquino,30,Taguig,512k - 2817k,Van,Electric,Manual,"ABS, Sunroof",First Car,Car Model 3,Car Model 9,Yes
+0246,Roberto Fernandez,31,Quezon City,1060k - 1079k,SUV,Gasoline,Manual,"Parking Sensors, Sunroof",First Car,Car Model 6,Car Model 5,Yes
+0247,Mariano Salazar,29,Manila,525k - 2403k,Hatchback,Hybrid,Manual,"Parking Sensors, ABS",Family Use,Car Model 5,Car Model 7,No
+0248,Emilio Cruz,30,Manila,557k - 1634k,Pickup,Electric,Automatic,"Bluetooth, 4WD",First Car,Car Model 7,Car Model 2,No
+0249,Ana Mendoza,52,Taguig,1240k - 2341k,Sedan,Diesel,Automatic,"Cruise Control, Parking Sensors",First Car,Car Model 4,Car Model 2,Yes
+0250,Roberto Fernandez,58,Taguig,1615k - 1014k,Pickup,Hybrid,Manual,"Adaptive Cruise Control, 4WD",Family Use,Car Model 8,Car Model 6,Yes
+0251,Carmen Ortega,42,Pasay,1945k - 1114k,Sedan,Diesel,Manual,"ABS, Bluetooth",Daily Commute,Car Model 5,Car Model 5,No
+0252,Elena Navarro,44,Quezon City,651k - 1788k,Coupe,Hybrid,Manual,"Airbags, Cruise Control",Eco-Friendly,Car Model 1,Car Model 2,No
+0253,Victoria Morales,29,Taguig,1011k - 2701k,Hatchback,Gasoline,Automatic,"Parking Sensors, Bluetooth",Family Use,Car Model 1,Car Model 8,No
+0254,Mariano Salazar,51,Parañaque,1198k - 1675k,Sedan,Hybrid,Automatic,"Parking Sensors, Airbags",First Car,Car Model 6,Car Model 3,No
+0255,Sofia Dominguez,53,Manila,1916k - 1863k,Sedan,Electric,Manual,"Adaptive Cruise Control, Parking Sensors",Business,Car Model 8,Car Model 8,No
+0256,Angela Castillo,38,Quezon City,1106k - 2875k,Sedan,Gasoline,Automatic,"Bluetooth, Adaptive Cruise Control",First Car,Car Model 3,Car Model 6,No
+0257,Victoria Morales,34,Pasig,1614k - 1963k,Sedan,Gasoline,Automatic,"Bluetooth, Adaptive Cruise Control",First Car,Car Model 3,Car Model 5,Yes
+0258,Ana Mendoza,43,Pasay,610k - 2109k,Coupe,Hybrid,Automatic,"4WD, Sunroof",Family Use,Car Model 2,Car Model 9,Yes
+0259,Pedro Reyes,47,Parañaque,1726k - 2656k,Van,Gasoline,Manual,"Cruise Control, ABS",First Car,Car Model 3,Car Model 4,No
+0260,Sofia Dominguez,51,Pasig,748k - 2080k,Hatchback,Electric,Manual,"Bluetooth, 4WD",Daily Commute,Car Model 7,Car Model 3,Yes
+0261,Mariano Salazar,37,Mandaluyong,1747k - 1302k,Van,Electric,Manual,"Adaptive Cruise Control, Bluetooth",Daily Commute,Car Model 8,Car Model 2,No
+0262,Miguel Santiago,56,Taguig,1856k - 1342k,Crossover,Diesel,Manual,"Sunroof, Adaptive Cruise Control",Eco-Friendly,Car Model 9,Car Model 9,Yes
+0263,Victoria Morales,39,Taguig,588k - 2443k,Pickup,Hybrid,Manual,"Adaptive Cruise Control, Airbags",First Car,Car Model 5,Car Model 8,Yes
+0264,Emilio Cruz,27,Pasay,703k - 2658k,Van,Electric,Manual,"Sunroof, Airbags",First Car,Car Model 4,Car Model 9,Yes
+0265,Rosa Bautista,34,Pasig,1219k - 2852k,Van,Electric,Manual,"ABS, Bluetooth",Daily Commute,Car Model 3,Car Model 2,No
+0266,Juan Dela Cruz,47,Mandaluyong,1948k - 2403k,Sedan,Electric,Manual,"ABS, Adaptive Cruise Control",First Car,Car Model 5,Car Model 2,No
+0267,Emilio Cruz,37,Quezon City,1203k - 1891k,Sedan,Electric,Manual,"Airbags, Bluetooth",Family Use,Car Model 5,Car Model 3,No
+0268,Mariano Salazar,54,Mandaluyong,1868k - 2553k,Pickup,Diesel,Automatic,"Adaptive Cruise Control, ABS",Business,Car Model 3,Car Model 7,Yes
+0269,Juan Dela Cruz,49,Mandaluyong,647k - 2708k,Crossover,Hybrid,Manual,"Parking Sensors, ABS",Daily Commute,Car Model 2,Car Model 9,Yes
+0270,Fernando Aquino,57,Mandaluyong,1526k - 2865k,SUV,Hybrid,Automatic,"Airbags, Cruise Control",Eco-Friendly,Car Model 5,Car Model 1,No
+0271,Ana Mendoza,33,Pasay,1753k - 2638k,SUV,Diesel,Manual,"ABS, Adaptive Cruise Control",Business,Car Model 9,Car Model 6,No
+0272,Isabel Torres,20,Quezon City,1539k - 1119k,Coupe,Gasoline,Manual,"Sunroof, Adaptive Cruise Control",Daily Commute,Car Model 2,Car Model 5,No
+0273,Victoria Morales,23,Quezon City,1409k - 1038k,Crossover,Electric,Automatic,"Adaptive Cruise Control, Cruise Control",Eco-Friendly,Car Model 6,Car Model 9,Yes
+0274,Juan Dela Cruz,21,Makati,1633k - 2977k,Coupe,Gasoline,Automatic,"Sunroof, Airbags",First Car,Car Model 3,Car Model 5,No
+0275,Angela Castillo,50,Taguig,726k - 1260k,Coupe,Diesel,Automatic,"Parking Sensors, Bluetooth",Eco-Friendly,Car Model 1,Car Model 9,No
+0276,Daniel Villanueva,41,Pasig,1785k - 1928k,SUV,Electric,Manual,"Sunroof, Airbags",Daily Commute,Car Model 8,Car Model 8,Yes
+0277,Sofia Dominguez,58,Parañaque,1642k - 2176k,Coupe,Hybrid,Automatic,"Sunroof, Parking Sensors",Daily Commute,Car Model 3,Car Model 7,No
+0278,Mariano Salazar,48,Pasig,626k - 1680k,Pickup,Hybrid,Manual,"Airbags, Bluetooth",Daily Commute,Car Model 3,Car Model 3,Yes
+0279,Carmen Ortega,39,Pasig,1839k - 1893k,Crossover,Diesel,Manual,"Adaptive Cruise Control, ABS",Business,Car Model 1,Car Model 7,Yes
+0280,Ana Mendoza,24,Taguig,1597k - 2567k,Hatchback,Hybrid,Automatic,"Adaptive Cruise Control, Parking Sensors",Eco-Friendly,Car Model 5,Car Model 2,No
+0281,Angela Castillo,21,Makati,1490k - 1051k,Crossover,Electric,Automatic,"4WD, ABS",Daily Commute,Car Model 8,Car Model 9,Yes
+0282,Sofia Dominguez,29,Pasig,577k - 2066k,Van,Hybrid,Manual,"Bluetooth, ABS",Business,Car Model 6,Car Model 2,Yes
+0283,Elena Navarro,40,Pasig,1059k - 2295k,Hatchback,Diesel,Automatic,"Adaptive Cruise Control, Sunroof",Daily Commute,Car Model 2,Car Model 3,No
+0284,Roberto Fernandez,54,Pasay,1287k - 2969k,Crossover,Hybrid,Manual,"Parking Sensors, Cruise Control",Business,Car Model 3,Car Model 4,No
+0285,Fernando Aquino,51,Pasay,797k - 2350k,Hatchback,Electric,Automatic,"4WD, Cruise Control",Daily Commute,Car Model 9,Car Model 8,Yes
+0286,Victoria Morales,48,Mandaluyong,1633k - 2144k,Hatchback,Hybrid,Manual,"Cruise Control, Sunroof",Daily Commute,Car Model 3,Car Model 9,Yes
+0287,Roberto Fernandez,29,Parañaque,1448k - 1308k,Pickup,Gasoline,Automatic,"Parking Sensors, Cruise Control",Family Use,Car Model 2,Car Model 8,Yes
+0288,Ana Mendoza,52,Makati,1980k - 2086k,Hatchback,Gasoline,Manual,"Parking Sensors, Adaptive Cruise Control",First Car,Car Model 2,Car Model 3,No
+0289,Emilio Cruz,19,Mandaluyong,966k - 2242k,Sedan,Hybrid,Automatic,"Adaptive Cruise Control, Sunroof",Business,Car Model 9,Car Model 1,Yes
+0290,Juan Dela Cruz,30,Taguig,1780k - 2834k,SUV,Hybrid,Automatic,"ABS, 4WD",Family Use,Car Model 2,Car Model 6,Yes
+0291,Ricardo Gomez,42,Parañaque,546k - 2114k,Hatchback,Hybrid,Automatic,"Airbags, Adaptive Cruise Control",First Car,Car Model 6,Car Model 4,No
+0292,Emilio Cruz,57,Makati,767k - 1035k,Sedan,Electric,Automatic,"4WD, Airbags",Family Use,Car Model 4,Car Model 9,No
+0293,Carmen Ortega,26,Quezon City,1123k - 1226k,Hatchback,Diesel,Automatic,"Adaptive Cruise Control, ABS",Business,Car Model 9,Car Model 7,Yes
+0294,Angela Castillo,45,Taguig,1094k - 2559k,Crossover,Hybrid,Automatic,"Sunroof, Adaptive Cruise Control",Family Use,Car Model 2,Car Model 3,No
+0295,Isabel Torres,55,Pasig,1945k - 2503k,Crossover,Hybrid,Automatic,"Bluetooth, 4WD",Family Use,Car Model 1,Car Model 4,Yes
+0296,Pedro Reyes,50,Pasig,775k - 2299k,Hatchback,Hybrid,Manual,"ABS, Sunroof",Business,Car Model 9,Car Model 3,No
+0297,Maria Santos,48,Pasig,679k - 2005k,Van,Hybrid,Manual,"Cruise Control, 4WD",First Car,Car Model 7,Car Model 5,No
+0298,Daniel Villanueva,33,Quezon City,1398k - 2652k,SUV,Hybrid,Manual,"Sunroof, Airbags",Daily Commute,Car Model 1,Car Model 7,Yes
+0299,Fernando Aquino,45,Pasay,1681k - 1895k,Sedan,Electric,Manual,"Cruise Control, ABS",Daily Commute,Car Model 9,Car Model 2,Yes
+0300,Emilio Cruz,37,Makati,1436k - 1845k,Hatchback,Diesel,Manual,"Cruise Control, 4WD",Business,Car Model 5,Car Model 2,No
