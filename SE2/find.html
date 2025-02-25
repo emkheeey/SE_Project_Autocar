@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Best Car</title>
+  <link rel="stylesheet" href="find.css">
+
+</head>
+<body>
+  <header>
+    <div class="logo"><img src="finallogo(red text).png"></div>
+    <nav>
+      <a href="#home">HOME</a>
+      <a href="#browse">BROWSE CARS</a>
+      <a href="#recommend">RECOMMENDATIONS</a>
+      <a href="#help">HELP CENTER</a>
+    </nav>
+    <div class="icon">👤</div>
+  </header>
+
+  <div class="container">
+    <div class="left-column">
+      <h1>Find Your Perfect Car</h1>
+      <form id="carQuizForm">
+        <label for="budget">Budget Range?</label>
+        <select id="budget" required>
+          <option value="below">Below ₱800,000</option>
+          <option value="medium">₱800,000 – ₱1,200,000</option>
+          <option value="average">₱1,200,000 – ₱2,000,000</option>
+          <option value="above">Above ₱2,000,000</option>
+          <option value="n/a">No preference</option>
+        </select>
+        
+        <label for="carType">Preferred car type?</label>
+        <select id="carType" required>
+          <option value="sedan">Sedan</option>
+          <option value="suv">SUV</option>
+          <option value="pick-up">Pickup</option>
+          <option value="hatchback">Hatchback</option>
+          <option value="van">Van</option>
+          <option value="truck">Truck</option>
+          <option value="convertible">Convertible</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label for="fuelType">Fuel preference?</label>
+        <select id="fuelType" required>
+          <option value="gasoline">Gasoline</option>
+          <option value="diesel">Diesel</option>
+          <option value="electric">Electric</option>
+          <option value="hybrid">Hybrid</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label for="transmission">Transmission type?</label>
+        <select id="transmission" required>
+          <option value="automatic">Automatic</option>
+          <option value="manual">Manual</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label for="passengerCapacity">Minimum passenger capacity?</label>
+        <select id="passengerCapacity" required>
+            <option value="solo">1 – 2 (For solo or couple use)</option>
+            <option value="smallFamily">3 – 5 (Small family or group)</option>
+            <option value="bigFamily">6 – 8 (Larger families, group travel)</option>
+            <option value="n/a">No preference</option>
+          </select>
+
+        <label for="drivetrain">Primary used for?</label>
+        <select id="drivetrain">
+          <option value="daily">Daily City Driving (Good fuel efficiency, compact size)</option>
+          <option value="longDrive">Long Drives & Road Trips (Comfort, large fuel tank)</option>
+          <option value="family">Family Use (Safety, space)</option>
+          <option value="business">Business/Work (Durability, cargo space)</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label for="keyFeatures">Key features?</label>
+        <select id="keyFeatures">
+            <option value="fuel">Fuel Efficiency</option>
+            <option value="safety">Safety Features (Airbags, ABS, Sensors)</option>
+            <option value="cargo">Cargo Space</option>
+            <option value="comfort">Comfort (Spacious Interior, Soft Suspension)</option>
+            <option value="advanced">Advanced Technology (Touchscreen, Apple CarPlay)</option>
+            <option value="n/a">No preference</option>
+          </select>
+
+        <button type="submit">Find My Car</button>
+      </form>
+    </div>
+
+    <div class="right-column">
+      <h2>Recommended Cars</h2>
+      <div id="carResults"></div>
+    </div>
+  </div>
+
+  <script src="find.js"></script>
+</body>
+</html>

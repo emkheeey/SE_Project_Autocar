@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #e0e0e0;
+        }
+
+        nav a {
+            text-decoration: none;
+            margin: 0 15px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .car-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .car-image {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .nav-button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .car-info {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">LOGO</div>
+        <nav>
+            <a href="#">HOME</a>
+            <a href="#">ABOUT US</a>
+            <a href="#">HELP CENTER</a>
+        </nav>
+    </header>
+    
+    <div class="car-container">
+        <div class="navigation">
+            <button class="nav-button" onclick="prevCar()">&#10094;</button>
+            <img src="car_image.jpg" alt="Car Image" class="car-image">
+            <button class="nav-button" onclick="nextCar()">&#10095;</button>
+        </div>
+        
+        <div class="car-info">
+            <h2>MODEL NAME</h2>
+            <p><strong>Specs:</strong> High performance engine, fuel efficient</p>
+            <p><strong>Details:</strong> Advanced safety features, latest technology</p>
+            <p><strong>Colors:</strong> Red, Blue, Black, White</p>
+        </div>
+    </div>
+
+    <script>
+        function prevCar() {
+            alert('Previous car clicked');
+        }
+
+        function nextCar() {
+            alert('Next car clicked');
+        }
+    </script>
+</body>
+</html>
