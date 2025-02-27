@@ -1,6 +1,52 @@
-   <h2>Login</h2>
-   <form method="post">
-       {% csrf_token %}
-       {{ form.as_p }}
-       <button type="submit">Login</button>
-   </form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://assets.onecompiler.app/439bz4kx2/439bxgtt6/Toyota-logo.png" alt="Toyota Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#about">ABOUT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container-wrapper">
+        <div class="form-container" id="login-container">
+            <h2>Login</h2>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" class="input-field" name="username" placeholder="Username" required>
+                <input type="password" class="input-field" name="password" placeholder="Password" required>
+                <button type="submit" class="btn">Log In</button>
+            </form>
+            <p class="switch">Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+        </div>
+        <div class="form-container" id="signup-container" style="display: none;">
+            <h2>Sign Up</h2>
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <input type="text" class="input-field" name="first_name" placeholder="First Name" required>
+                <input type="text" class="input-field" name="last_name" placeholder="Last Name" required>
+                <input type="email" class="input-field" name="email" placeholder="Email" required>
+                <input type="password" class="input-field" name="password" placeholder="Password" required>
+                <input type="password" class="input-field" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+            <p class="switch">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+        </div>
+    </div>
+
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

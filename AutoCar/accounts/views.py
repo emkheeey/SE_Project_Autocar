@@ -8,15 +8,15 @@ from .forms import UserUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
 
 def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Log the user in after registration
-            return redirect('profile')  # Redirect to the profile page
-    else:
-        form = UserCreationForm()
-    return render(request, 'accounts/profile.html', {'form': form})
+       if request.method == 'POST':
+           form = UserCreationForm(request.POST)
+           if form.is_valid():
+               user = form.save()
+               login(request, user)  # Log the user in after registration
+               return redirect('login')  # Redirect to the login page after registration
+       else:
+           form = UserCreationForm()
+       return render(request, 'accounts/register.html', {'form': form})
 
 @login_required
 def profile(request):
