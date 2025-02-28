@@ -1,17 +1,28 @@
 /* General Styles */
-body, html {
+body,
+html {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden; /* Prevent scrolling */
+    overflow: hidden;
+    /* Prevent scrolling */
+    background-image: url('/static/images/landingbg.png');
+    /* Update with your image file name */
+    background-size: cover;
+    /* This will cover the entire background */
+    background-position: center;
+    /* Center the image */
+    background-repeat: no-repeat;
+    /* Prevent the image from repeating */
 }
 
 /* Header Styles */
 header {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Align items to the left */
+    justify-content: flex-start;
+    /* Align items to the left */
     padding: 15px 50px;
     position: fixed;
     width: 100%;
@@ -26,7 +37,8 @@ header {
 
 /* Navigation */
 nav {
-    margin-left: 50px; /* Space between logo and menu */
+    margin-left: 50px;
+    /* Space between logo and menu */
 }
 
 header nav ul {
@@ -37,7 +49,8 @@ header nav ul {
 }
 
 header nav ul li {
-    margin-left: 20px; /* Adjust spacing */
+    margin-left: 20px;
+    /* Adjust spacing */
 }
 
 header nav ul li a {
@@ -59,9 +72,12 @@ header nav ul li a:hover {
     align-items: center;
     justify-content: flex-start;
     text-align: left;
-    height: 100vh; /* Full screen */
-    width: 100vw; /* Full width */
-    padding-left: 80px; /* Adjust text position */
+    height: 100vh;
+    /* Full screen */
+    width: 100vw;
+    /* Full width */
+    padding-left: 80px;
+    /* Adjust text position */
     background-image: url(landingbg.png);
     background-size: 100%;
     background-repeat: no-repeat;
@@ -111,8 +127,33 @@ header nav ul li a:hover {
 footer {
     text-align: center;
     padding: 15px;
-    color: #D84040;
+    color: #FFFF;
     position: absolute;
     width: 100%;
     bottom: 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    /* Adjust padding for size */
+    background-color: #FF0000;
+    /* Red background */
+    color: white;
+    /* White text */
+    text-decoration: none;
+    /* Remove underline */
+    border: none;
+    /* No border */
+    border-radius: 5px;
+    /* Rounded corners */
+    font-size: 16px;
+    /* Font size */
+    transition: background-color 0.3s;
+    /* Smooth transition */
+}
+
+.btn:hover {
+    background-color: #CC0000;
+    /* Darker red on hover */
 }

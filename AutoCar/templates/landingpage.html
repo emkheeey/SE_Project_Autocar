@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoCar</title>
-    <link rel="stylesheet" href="landingpage.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="finallogo(red text).png">
+            <img src="{% static 'images/toyota_logo.png' %}" alt="Toyota Logo">
         </div>
         <nav>
             <ul>
@@ -23,8 +24,8 @@
         <div class="text-container">
             <h1>Find the Perfect Car for You</h1>
             <p class="highlight">Drive Your Dream Car Today</p> 
-            <p>Explore a wide range of car model. Whether for work or adventure, we have the right car for you.</p>
-            <button id="loginBtn">Login</button>
+            <p>Explore a wide range of car models. Whether for work or adventure, we have the right car for you.</p>
+            <a href="{% url 'login' %}" class="btn">Login</a>
         </div>
     </section>
 
@@ -32,6 +33,6 @@
         <p>&copy; 2025 AutoCar System | Avila, Pelgone, Lorena, Rectra</p>
     </footer>
 
-    <script src="landingpage.js"></script>
+    <script src="{% static 'js/landingpage.js' %}"></script>
 </body>
 </html>

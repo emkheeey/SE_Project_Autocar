@@ -1,105 +1,112 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: url(loginbg.png) no-repeat center center/cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+   body {
+       background-image: url('/static/images/loginbg.png');
+       /* Ensure this path is correct */
+       background-size: cover;
+       /* Cover the entire background */
+       background-position: center;
+       /* Center the image */
+       background-repeat: no-repeat;
+       /* Prevent the image from repeating */
+       height: 100vh;
+       /* Full height */
+       margin: 0;
+       /* Remove default margin */
+   }
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Align items to the left */
-    padding: 15px 50px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
+   header {
+       display: flex;
+       align-items: center;
+       justify-content: flex-start;
+       /* Align items to the left */
+       padding: 15px 50px;
+       position: fixed;
+       width: 100%;
+       top: 0;
+       z-index: 1000;
+   }
 
-/* Logo */
-.logo img {
-    height: 65px;
-}
+   /* Logo */
+   .logo img {
+       height: 65px;
+   }
 
-/* Navigation */
-nav {
-    margin-left: 50px; /* Space between logo and menu */
-}
+   /* Navigation */
+   nav {
+       margin-left: 50px;
+       /* Space between logo and menu */
+   }
 
-header nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
+   header nav ul {
+       list-style: none;
+       margin: 0;
+       padding: 0;
+       display: flex;
+   }
 
-header nav ul li {
-    margin-left: 20px; /* Adjust spacing */
-}
+   header nav ul li {
+       margin-left: 20px;
+       /* Adjust spacing */
+   }
 
-header nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1em;
-    font-weight: bold;
-    transition: color 0.3s ease-in-out;
-}
+   header nav ul li a {
+       color: white;
+       text-decoration: none;
+       font-size: 1.1em;
+       font-weight: bold;
+       transition: color 0.3s ease-in-out;
+   }
 
-header nav ul li a:hover {
-    color: rgb(243, 13, 13);
-}
+   header nav ul li a:hover {
+       color: rgb(243, 13, 13);
+   }
 
-.container-wrapper {
-    width: 400px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    padding: 30px;
-    text-align: center;
-}
+   .container-wrapper {
+       width: 400px;
+       background: white;
+       border-radius: 10px;
+       box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+       padding: 30px;
+       text-align: center;
+   }
 
-.form-container {
-    width: 100%;
-}
+   .form-container {
+       width: 100%;
+   }
 
-.input-field {
-    width: 90%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+   .input-field {
+       width: 90%;
+       padding: 12px;
+       margin: 10px 0;
+       border: 1px solid #ccc;
+       border-radius: 5px;
+       box-sizing: border-box;
+   }
 
-.btn {
-    width: 90%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background: #d32f2f;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 10px;
-}
+   .btn {
+       width: 90%;
+       padding: 12px;
+       border: none;
+       border-radius: 5px;
+       background: #d32f2f;
+       color: white;
+       font-size: 16px;
+       cursor: pointer;
+       transition: 0.3s;
+       margin-top: 10px;
+   }
 
-.btn:hover {
-    background: #b71c1c;
-}
+   .btn:hover {
+       background: #b71c1c;
+   }
 
-.switch {
-    margin-top: 15px;
-    font-size: 14px;
-}
+   .switch {
+       margin-top: 15px;
+       font-size: 14px;
+   }
 
-.switch a {
-    color: #d32f2f;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-}
+   .switch a {
+       color: #d32f2f;
+       text-decoration: none;
+       font-weight: bold;
+       cursor: pointer;
+   }
