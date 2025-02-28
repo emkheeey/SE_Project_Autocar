@@ -3,6 +3,8 @@
 ## Project Overview
 This project is a Django-based application for managing and finding Toyota cars. It includes user authentication and registration features.
 
+## If you don't know what bash means, ignore it. Just mind the commands. Thank you.
+
 ## Installation
 1. Clone the repository:
    ```bash
