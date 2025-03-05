@@ -1,0 +1,19 @@
+   <!-- AutoCar/templates/survey/survey.html -->
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Car Recommendation Survey</title>
+       {% load static %}  <!-- Load the static files tag library -->
+       <link rel="stylesheet" href="{% static 'css/survey.css' %}">
+   </head>
+   <body>
+       <h2>Car Recommendation Survey</h2>
+       <form method="post" action="">
+           {% csrf_token %}
+           {{ form.as_p }}  <!-- Render the form fields -->
+           <button type="submit">Submit Survey</button>
+       </form>
+   </body>
+   </html>
