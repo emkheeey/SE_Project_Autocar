@@ -1,0 +1,215 @@
+{% load car_extras %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Car Comparison</h1>
+    
+    {% if car_count < 2 %}
+    <div class="alert alert-warning">
+        Please select at least 2 cars to compare.
+        <a href="{% url 'car_list' %}" class="btn btn-primary btn-sm ms-3">Back to Car List</a>
+    </div>
+    {% else %}
+    
+    <div class="mb-3">
+        <a href="{% url 'car_list' %}" class="btn btn-secondary">Back to Car List</a>
+    </div>
+    
+    <!-- SCORE SUMMARY -->
+    <div class="row mb-4">
+        <h2 class="mb-3">Car Ratings</h2>
+        {% for score in car_scores %}
+        <div class="col">
+            <div class="card {% if forloop.first %}border-success{% endif %}">
+                <div class="card-header {% if forloop.first %}bg-success text-white{% endif %}">
+                    <h5 class="mb-0">{{ score.car.make }} {{ score.car.model }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3>{{ score.total_score }}%</h3>
+                        {% if forloop.first %}<span class="badge bg-success">BEST OVERALL</span>{% endif %}
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h6>Performance</h6>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ score.performance_score }}0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h6>Value</h6>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ score.value_score }}0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h6>Comfort & Space</h6>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ score.comfort_score }}0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h6>Features</h6>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ score.feature_score }}0%"></div>
+                        </div>
+                    </div>
+                    
+                    {% if score.winning_categories %}
+                    <div class="mt-3">
+                        <h6>Best In:</h6>
+                        <ul class="list-unstyled">
+                            {% for category in score.winning_categories %}
+                            <li><small>✓ {{ category }}</small></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- DETAILED COMPARISON TABLE -->
+    <div class="table-responsive">
+        <table class="table table-bordered comparison-table">
+            <thead>
+                <tr class="bg-light">
+                    <th style="width: 15%;">Specification</th>
+                    {% for car in cars %}
+                    <th style="width: {% if car_count == 2 %}42.5{% elif car_count == 3 %}28.3{% elif car_count == 4 %}21.25{% else %}auto{% endif %}%;" class="text-center">
+                        {% if car.image_url %}
+                        <img src="{{ car.image_url }}" alt="{{ car }}" class="img-fluid mb-2" style="max-height: 100px;">
+                        {% endif %}
+                        <h5>{{ car.year }} {{ car.make }} {{ car.model }}</h5>
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- PRICE SECTION -->
+                <tr class="table-secondary">
+                    <td colspan="{{ car_count|add:1 }}" class="fw-bold">Price & Value</td>
+                </tr>
+                {% for category in spec_categories %}
+                {% if category.key == 'price' %}
+                <tr>
+                    <td class="fw-bold">{{ category.name }}</td>
+                    {% for car in cars %}
+                    <td class="text-center {% if car == best_car and category.key == 'price' %}highlight-best{% endif %}">
+                        {% with value=car|get_attr:category.key %}
+                            {% if value != None %}
+                                {% if category.format == 'currency' and value %}
+                                    ₱{{ value|floatformat:2 }}
+                                {% elif category.format == 'number' and value %}
+                                    {{ value }}
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+                
+                <!-- PERFORMANCE SECTION -->
+                <tr class="table-secondary">
+                    <td colspan="{{ car_count|add:1 }}" class="fw-bold">Performance</td>
+                </tr>
+                {% for category in spec_categories %}
+                {% if category.key in 'horsepower,engine,transmission,drivetrain' %}
+                <tr>
+                    <td class="fw-bold">{{ category.name }}</td>
+                    {% for car in cars %}
+                    <td class="text-center {% if car == best_car and category.key == 'horsepower' %}highlight-best{% endif %}">
+                        {% with value=car|get_attr:category.key %}
+                            {% if value != None %}
+                                {% if category.format == 'currency' and value %}
+                                    ₱{{ value|floatformat:2 }}
+                                {% elif category.format == 'number' and value %}
+                                    {{ value }}
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+                
+                <!-- PRACTICALITY & COMFORT SECTION -->
+                <tr class="table-secondary">
+                    <td colspan="{{ car_count|add:1 }}" class="fw-bold">Practicality & Comfort</td>
+                </tr>
+                {% for category in spec_categories %}
+                {% if category.key in 'body_type,seats,fuel_type,wheel_size' %}
+                <tr>
+                    <td class="fw-bold">{{ category.name }}</td>
+                    {% for car in cars %}
+                    <td class="text-center">
+                        {% with value=car|get_attr:category.key %}
+                            {% if value != None %}
+                                {{ value }}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+                
+                <!-- FEATURES SECTION -->
+                <tr class="table-secondary">
+                    <td colspan="{{ car_count|add:1 }}" class="fw-bold">Features</td>
+                </tr>
+                {% for category in spec_categories %}
+                {% if category.key in 'safety_features,technology_features,warranty' %}
+                <tr>
+                    <td class="fw-bold">{{ category.name }}</td>
+                    {% for car in cars %}
+                    <td class="text-center">
+                        {% with value=car|get_attr:category.key %}
+                            {% if value != None %}
+                                {{ value }}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.comparison-table th, .comparison-table td {
+    vertical-align: middle;
+}
+.highlight-best {
+    background-color: #d4edda;
+    font-weight: bold;
+}
+.table-secondary {
+    background-color: #f8f9fa;
+}
+</style>
+{% endblock %}
