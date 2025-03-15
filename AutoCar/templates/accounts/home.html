@@ -6,16 +6,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="{% static 'css/home.css' %}"> <!-- Use static tag for CSS -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <style>
+        .nav-banner {
+            background-image: url("{%static 'images/Navigation2.jpg'%}");
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        body {
+            background-image: url("{% static 'images/HomeBg.jpg' %}");
+            background-position: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="{% static 'images/logo.png' %}" alt="Logo"> <!-- Use static tag for images -->
+            <img src="{% static 'images/autocar-logo.png' %}" alt="Logo">
         </div>
 
         <div class="profile-icon" onclick="toggleMenu()">
-            <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon"> <!-- Use static tag for images -->
+            <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon">
         </div>
         <div class="user-menu" id="userMenu">
             <div class="menu-header">
@@ -33,6 +55,6 @@
     <button class="browsebtn">BROWSE CARS</button>
     <button class="findbtn">FIND MY BEST CAR</button>
 
-    <script src="{% static 'js/home.js' %}"></script> <!-- Use static tag for JS -->
+    <script src="{% static 'js/home.js' %}"></script>
 </body>
 </html>
