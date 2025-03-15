@@ -7,5 +7,6 @@ urlpatterns = [
     path('', landing_page, name='landing_page'),
     path('accounts/', include('accounts.urls')),
     path('', include('accounts.urls')),
+    path('cars/', include('cars.urls')),
     
 ]

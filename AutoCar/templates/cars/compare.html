@@ -1,0 +1,45 @@
+
+
+{% block content %}
+<div class="container">
+    <h1>Car Comparison</h1>
+    
+    <div class="comparison-table-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    {% for car in cars %}
+                    <th>{{ car.year }} {{ car.model }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Price</td>
+                    {% for car in cars %}
+                    <td>${{ car.price }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>Engine</td>
+                    {% for car in cars %}
+                    <td>{{ car.engine|default:"N/A" }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>Horsepower</td>
+                    {% for car in cars %}
+                    <td>{{ car.horsepower|default:"N/A" }}</td>
+                    {% endfor %}
+                </tr>
+                <!-- Add more rows for other car specifications -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="mt-3">
+        <a href="{% url 'car_list' %}" class="btn btn-secondary">Back to Car List</a>
+    </div>
+</div>
+{% endblock %}

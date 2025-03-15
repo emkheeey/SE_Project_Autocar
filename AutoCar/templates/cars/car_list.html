@@ -1,0 +1,35 @@
+
+
+{% block content %}
+<div class="container">
+    <h1>Toyota Car Collection</h1>
+    
+    <form id="compare-form" action="{% url 'compare_cars' %}" method="get">
+        <div class="row">
+            {% for car in cars %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if car.image_url %}
+                    <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</h5>
+                        <p class="card-text">Starting at ${{ car.price }}</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="car_id" value="{{ car.id }}" id="car{{ car.id }}">
+                            <label class="form-check-label" for="car{{ car.id }}">
+                                Add to comparison
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mb-5">
+            <button type="submit" class="btn btn-primary">Compare Selected Cars</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
