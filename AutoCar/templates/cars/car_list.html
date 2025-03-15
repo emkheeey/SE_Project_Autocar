@@ -1,35 +1,83 @@
-
-
 {% block content %}
-<div class="container">
-    <h1>Toyota Car Collection</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Toyota Car Collection</h1>
+    
+    {% if not cars %}
+    <div class="alert alert-warning">
+        No cars found in the database.
+        <a href="{% url 'load_cars' %}" class="btn btn-primary btn-sm ms-3">Load Cars from JSON</a>
+    </div>
+    {% else %}
     
     <form id="compare-form" action="{% url 'compare_cars' %}" method="get">
+        <div class="mb-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary" id="compare-btn" disabled>Compare Selected Cars</button>
+            <span class="ms-2 text-muted" id="selection-counter">Select at least 2 cars to compare</span>
+            <a href="{% url 'clear_cars' %}" class="btn btn-danger ms-auto">Delete All Cars</a>
+        </div>
+        
         <div class="row">
             {% for car in cars %}
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    {% if car.image_url %}
-                    <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</h5>
-                        <p class="card-text">Starting at ${{ car.price }}</p>
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="car_id" value="{{ car.id }}" id="car{{ car.id }}">
+                            <input class="form-check-input car-checkbox" type="checkbox" name="car_id" value="{{ car.id }}" id="car{{ car.id }}">
                             <label class="form-check-label" for="car{{ car.id }}">
-                                Add to comparison
+                                Compare
                             </label>
                         </div>
                     </div>
+                    {% if car.image_url %}
+                    <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car }}" style="height: 150px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <span class="text-muted">No image available</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</h5>
+                        {% if car.price %}
+                        <p class="card-text">₱{{ car.price|floatformat:2 }}</p>
+                        {% endif %}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% if car.engine %}
+                        <li class="list-group-item"><small>Engine: {{ car.engine }}</small></li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
             {% endfor %}
         </div>
-        
-        <div class="text-center mb-5">
-            <button type="submit" class="btn btn-primary">Compare Selected Cars</button>
-        </div>
     </form>
+    {% endif %}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.car-checkbox');
+    const compareBtn = document.getElementById('compare-btn');
+    const selectionCounter = document.getElementById('selection-counter');
+    
+    function updateCompareButton() {
+        const checkedCount = document.querySelectorAll('.car-checkbox:checked').length;
+        compareBtn.disabled = checkedCount < 2;
+        
+        if (checkedCount === 0) {
+            selectionCounter.textContent = 'Select at least 2 cars to compare';
+        } else if (checkedCount === 1) {
+            selectionCounter.textContent = '1 car selected (select at least one more)';
+        } else {
+            selectionCounter.textContent = `${checkedCount} cars selected`;
+        }
+    }
+    
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', updateCompareButton);
+    });
+    
+    updateCompareButton();
+});
+</script>
 {% endblock %}

@@ -1,0 +1,778 @@
+[
+  {
+    "make": "Toyota",
+    "model": "Alphard",
+    "year": 2025,
+    "image_url": null,
+    "price": 4671000.0,
+    "specs": {
+      "body_type": "Minivan",
+      "seats": "7",
+      "fuel_type": "Hybrid",
+      "transmission": "CVT",
+      "max_output": "247 hp @ 6,000 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "19 in",
+      "airbags": 6,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, Apple CarPlay, Android Auto and Voice Comm\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 247
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 4671000.0,
+    "price_max": 4691000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Avanza",
+    "year": 2025,
+    "image_url": null,
+    "price": 844000.0,
+    "specs": {
+      "body_type": "MPV",
+      "seats": "7",
+      "fuel_type": "Gasoline",
+      "transmission": "Manual\nCVT",
+      "max_output": "97 hp @ 6,000 rpm - 105 hp @ 6,000 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "15 in - 16 in",
+      "airbags": 2,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, AUX & USB, Apple Carplay, Android Auto and Bluetooth & USB\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 97
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 844000.0,
+    "price_max": 1071000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Camry",
+    "year": 2025,
+    "image_url": null,
+    "price": 2657000.0,
+    "specs": {
+      "body_type": "Sedan",
+      "seats": "5",
+      "fuel_type": "Hybrid",
+      "transmission": "CVT",
+      "max_output": "193 hp @ 6,000 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "18 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Aux, USB, Bluetooth, Apple CarPlay, Android Auto, Smart Device Link and Miracast\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 193
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 2657000.0,
+    "price_max": 2677000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Coaster",
+    "year": 2025,
+    "image_url": null,
+    "price": 4114000.0,
+    "specs": {
+      "body_type": "Van",
+      "seats": "29",
+      "fuel_type": "Diesel",
+      "transmission": "Manual",
+      "max_output": "134 hp @ 2,500 rpm",
+      "drivetrain": "Rear-Wheel Drive",
+      "wheel_size": "17 in",
+      "airbags": 1,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM and CD 4-Speaker\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 134
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    }
+  },
+  {
+    "make": "Toyota",
+    "model": "Corolla Altis",
+    "year": 2025,
+    "image_url": null,
+    "price": 1213000.0,
+    "specs": {
+      "body_type": "Sedan",
+      "seats": "5",
+      "fuel_type": "Gasoline\nHybrid",
+      "transmission": "CVT",
+      "max_output": "97 hp @ 5,200 rpm - 138 hp @ 6,400 rpm",
+      "drivetrain": "Front-wheel drive\nFront-Wheel Drive",
+      "wheel_size": "16 in - 17 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, USB, Voice Comm, Android Auto, Apple CarPlay, Apple Carplay + Android Auto and Wireless Apple Carplay + Android Auto\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 97
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1213000.0,
+    "price_max": 1761000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Corolla Cross",
+    "year": 2025,
+    "image_url": null,
+    "price": 1514000.0,
+    "specs": {
+      "body_type": "Crossover",
+      "seats": "4",
+      "fuel_type": "Hybrid",
+      "transmission": "CVT",
+      "max_output": "120 hp @ 5,200 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "17 in - 18 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Apple Carplay, Android Auto, AM, FM, Bluetooth, USB and Voice Comm\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 120
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1514000.0,
+    "price_max": 1948000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Fortuner",
+    "year": 2025,
+    "image_url": null,
+    "price": 1775000.0,
+    "specs": {
+      "body_type": "SUV",
+      "seats": "7",
+      "fuel_type": "Diesel",
+      "transmission": "Manual\nAutomatic",
+      "max_output": "148 hp @ 3,400 rpm - 224 hp @ 3,000 rpm",
+      "drivetrain": "Rear Wheel Drive\nRear-Wheel Drive\nFour-Wheel Drive",
+      "wheel_size": "17 in - 18 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Apple Carplay, Android Auto, AM, FM, Bluetooth, USB, Voice Comm and Wireless Apple Carplay\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 148
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1775000.0,
+    "price_max": 2656000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "GR Supra",
+    "year": 2025,
+    "image_url": null,
+    "price": 5552000.0,
+    "specs": {
+      "body_type": "Coupe",
+      "seats": "2",
+      "fuel_type": "Gasoline",
+      "transmission": "Automatic",
+      "max_output": "387 hp @ 6,500 rpm",
+      "drivetrain": "Rear-Wheel Drive",
+      "wheel_size": "19 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Aux-in, USB and Bluetooth\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 387
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 5552000.0,
+    "price_max": 5652000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "GR Yaris",
+    "year": 2025,
+    "image_url": null,
+    "price": 3391000.0,
+    "specs": {
+      "body_type": "Hatchback",
+      "seats": "4",
+      "fuel_type": "Gasoline",
+      "transmission": "Manual",
+      "max_output": "257 hp @ 6,500 rpm",
+      "drivetrain": "All-Wheel Drive",
+      "wheel_size": "18 in",
+      "airbags": 6,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Apple Carplay, Android Auto, Smart device link, Miracast, AM, FM, Bluetooth, USB and Voice comm\n                        *Depending on variant",
+      "warranty": "3 Years or 100,000 km",
+      "horsepower": 257
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 3391000.0,
+    "price_max": 3411000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "GR86",
+    "year": 2025,
+    "image_url": null,
+    "price": 2716000.0,
+    "specs": {
+      "body_type": "Coupe",
+      "seats": "4",
+      "fuel_type": "Gasoline",
+      "transmission": "Manual\nAutomatic",
+      "max_output": "233 hp @ 7,000 rpm - 234 hp @ 7,000 rpm",
+      "drivetrain": "Rear Wheel Drive",
+      "wheel_size": "17 in - 18 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Android Auto, Apple CarPlay, Bluetooth and USB\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 233
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 2716000.0,
+    "price_max": 2876000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Hiace",
+    "year": 2025,
+    "image_url": null,
+    "price": 1195000.0,
+    "specs": {
+      "body_type": "Commercial Vehicle\nVan",
+      "seats": "3",
+      "fuel_type": "Diesel",
+      "transmission": "Manual\nAutomatic",
+      "max_output": "134 hp @ 3,400 rpm - 174 hp @ 3,400 rpm",
+      "drivetrain": "Rear-Wheel Drive",
+      "wheel_size": "15 in - 16 in",
+      "airbags": 2,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Tuner, MP3, Bluetooth, AUX, USB, Apple Carplay + Android Auto and BT\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)\n\n                                                    \n*Depending on variant",
+      "horsepower": 134
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1195000.0,
+    "price_max": 2542000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Hiace Super Grandia",
+    "year": 2025,
+    "image_url": null,
+    "price": 2906000.0,
+    "specs": {
+      "body_type": "Van",
+      "seats": "10",
+      "fuel_type": "Diesel",
+      "transmission": "Automatic",
+      "max_output": "174 hp @ 3,400 rpm",
+      "drivetrain": "Rear-Wheel-Drive",
+      "wheel_size": "17 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Tuner, USB, Bluetooth, Apple Carplay and Android Auto\n                        *Depending on variant",
+      "warranty": "3-year (100,000 km)",
+      "horsepower": 174
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 2906000.0,
+    "price_max": 3312000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Hilux",
+    "year": 2025,
+    "image_url": null,
+    "price": 891000.0,
+    "specs": {
+      "body_type": "Pickup Truck",
+      "seats": "2",
+      "fuel_type": "Diesel",
+      "transmission": "Manual\nAutomatic",
+      "max_output": "148 hp @ 3,400 rpm - 221 hp @ 3,000 rpm",
+      "drivetrain": "Rear Wheel Drive\nRear-Wheel Drive\nFour-Wheel Drive",
+      "wheel_size": "15 in - 18 in",
+      "airbags": 3,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, USB, AUX, CD, Apple Carplay, Android Auto, Apple Carplay (Wireless) and Android Auto (Wireless)\n                        *Depending on variant",
+      "warranty": "3-years (100,000 km)",
+      "horsepower": 148
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 891000.0,
+    "price_max": 2184000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Innova",
+    "year": 2025,
+    "image_url": null,
+    "price": 1267000.0,
+    "specs": {
+      "body_type": "MPV",
+      "seats": "7",
+      "fuel_type": "Diesel",
+      "transmission": "Manual\nAutomatic",
+      "max_output": "168 hp @ 3,600 rpm - 172 hp @ 3,400 rpm",
+      "drivetrain": "Rear Wheel Drive",
+      "wheel_size": "16 in - 17 in",
+      "airbags": 3,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, USB, AUX, Apple Carplay, Android auto, Voice Comm, Apple Carplay + Android Auto + Smart Device Link and Apple Carplay + Android Auto\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 168
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1267000.0,
+    "price_max": 1829000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Land Cruiser",
+    "year": 2025,
+    "image_url": null,
+    "price": 5758000.0,
+    "specs": {
+      "body_type": "SUV",
+      "seats": "7",
+      "fuel_type": "Diesel",
+      "transmission": "Automatic",
+      "max_output": "302 hp @ 4,000 rpm",
+      "drivetrain": "Four-Wheel Drive",
+      "wheel_size": "20 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Aux, Bluetooth, USB, Apple CarPlay and Android Auto\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 302
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 5758000.0,
+    "price_max": 5773000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Land Cruiser Prado",
+    "year": 2025,
+    "image_url": null,
+    "price": 4806000.0,
+    "specs": {
+      "body_type": "SUV",
+      "seats": "7",
+      "fuel_type": "Gasoline",
+      "transmission": "Automatic",
+      "max_output": "277 hp @ 6,000 rpm",
+      "drivetrain": "Four-Wheel Drive",
+      "wheel_size": "20 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Wireless Apple Carplay & Android Auto, AM, FM, Bluetooth, USB, Voice Comm and HDMI\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 277
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 4806000.0,
+    "price_max": 4821000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Lite Ace",
+    "year": 2025,
+    "image_url": null,
+    "price": 651000.0,
+    "specs": {
+      "body_type": "Commercial Vehicle",
+      "seats": "2",
+      "fuel_type": "Gasoline",
+      "transmission": "Manual",
+      "max_output": "97 hp @ 6,000 rpm",
+      "drivetrain": "Rear Wheel Drive",
+      "wheel_size": "14 in",
+      "airbags": 2,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, USB, Bluetooth, Aux and CD\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)\n\n                                                    \n*Depending on variant",
+      "horsepower": 97
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 651000.0,
+    "price_max": 1004000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Raize",
+    "year": 2025,
+    "image_url": null,
+    "price": 757000.0,
+    "specs": {
+      "body_type": "Crossover",
+      "seats": "5",
+      "fuel_type": "Gasoline",
+      "transmission": "Manual\nCVT",
+      "max_output": "86 hp @ 6,000 rpm - 97 hp @ 6,000 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "16 in - 17 in",
+      "airbags": 2,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, USB, Voice comm, Apple CarPlay, Android Auto and Aux\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 86
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 757000.0,
+    "price_max": 1074000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "RAV4",
+    "year": 2025,
+    "image_url": null,
+    "price": 2052000.0,
+    "specs": {
+      "body_type": "Crossover",
+      "seats": "5",
+      "fuel_type": "Hybrid",
+      "transmission": "CVT",
+      "max_output": "175 hp @ 5,700 rpm - 176 hp @ 5,700 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "17 in - 18 in",
+      "airbags": 7,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Apple CarPlay + Android Auto, AM, FM, Bluetooth and USB\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 175
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 2052000.0,
+    "price_max": 2377000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Rush",
+    "year": 2025,
+    "image_url": null,
+    "price": 1208000.0,
+    "specs": {
+      "body_type": "MPV",
+      "seats": "7",
+      "fuel_type": "Gasoline",
+      "transmission": "Automatic",
+      "max_output": "102 hp @ 6,000 rpm",
+      "drivetrain": "Rear-Wheel Drive",
+      "wheel_size": "17 in",
+      "airbags": 6,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Android Auto, Apple CarPlay, Bluetooth and USB\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 102
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    }
+  },
+  {
+    "make": "Toyota",
+    "model": "Tamaraw",
+    "year": 2025,
+    "image_url": null,
+    "price": 757000.0,
+    "specs": {
+      "body_type": "Commercial Vehicle",
+      "seats": "2",
+      "fuel_type": "Gasoline\nDiesel",
+      "transmission": "Manual\nAutomatic",
+      "max_output": "137 hp @ 5,600 rpm - 148 hp @ 3,400 rpm",
+      "drivetrain": "Rear Wheel Drive",
+      "wheel_size": "14 in - 16 in",
+      "airbags": 0,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, USB, Apple Carplay and Android Auto\n                        *Depending on variant",
+      "warranty": null,
+      "horsepower": 137
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 757000.0,
+    "price_max": 1142000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Veloz",
+    "year": 2025,
+    "image_url": null,
+    "price": 1104000.0,
+    "specs": {
+      "body_type": "MPV",
+      "seats": "7",
+      "fuel_type": "Gasoline",
+      "transmission": "CVT",
+      "max_output": "104 hp @ 6,000 rpm - 105 hp @ 6,000 rpm",
+      "drivetrain": "Front Wheel Drive",
+      "wheel_size": "16 in - 17 in",
+      "airbags": 6,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Android Auto, Apple CarPlay, Bluetooth and USB\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 104
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1104000.0,
+    "price_max": 1277000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Vios",
+    "year": 2025,
+    "image_url": null,
+    "price": 738000.0,
+    "specs": {
+      "body_type": "Sedan",
+      "seats": "5",
+      "fuel_type": "Gasoline",
+      "transmission": "Manual\nCVT",
+      "max_output": "98 hp @ 6,000 rpm - 106 hp @ 6,000 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "14 in - 16 in",
+      "airbags": 3,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Aux, Bluetooth, USB, Voice Comm, Apple Carplay and Android Auto\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km) - 5 Years (100,000 km)",
+      "horsepower": 98
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 738000.0,
+    "price_max": 1039000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Wigo",
+    "year": 2025,
+    "image_url": null,
+    "price": 615000.0,
+    "specs": {
+      "body_type": "Hatchback",
+      "seats": "5",
+      "fuel_type": "Gasoline",
+      "transmission": "Manual\nCVT",
+      "max_output": "66 hp @ 6,000 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "14 in",
+      "airbags": 2,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, USB, Bluetooth, Apple Carplay + Andriod Auto, Voice Comm, Aux, Apple Carplay and Android Auto\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 66
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 615000.0,
+    "price_max": 735000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Yaris Cross",
+    "year": 2025,
+    "image_url": null,
+    "price": 1210000.0,
+    "specs": {
+      "body_type": "Crossover",
+      "seats": "5",
+      "fuel_type": "Gasoline\nHybrid",
+      "transmission": "CVT",
+      "max_output": "90 hp @ 5,500 rpm - 105 hp @ 6,000 rpm",
+      "drivetrain": "Front-Wheel Drive",
+      "wheel_size": "17 in - 18 in",
+      "airbags": 4,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "Bluetooth, Wireless Apple CarPlay, Android Auto and Voice Comm\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 90
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1210000.0,
+    "price_max": 1610000.0
+  },
+  {
+    "make": "Toyota",
+    "model": "Zenix",
+    "year": 2025,
+    "image_url": null,
+    "price": 1676000.0,
+    "specs": {
+      "body_type": "MPV",
+      "seats": "7",
+      "fuel_type": "Gasoline\nHybrid",
+      "transmission": "CVT",
+      "max_output": "172 hp @ 6,600 rpm - 183 hp @ 6,000 rpm",
+      "drivetrain": "Front-wheel Drive",
+      "wheel_size": "17 in - 18 in",
+      "airbags": 2,
+      "isofix": true,
+      "front_parking_sensors": true,
+      "rear_parking_sensors": true,
+      "connectivity": "AM, FM, Bluetooth, USB, AUX, Voice Comm, AppleCarPlay and Android Auto\n                        *Depending on variant",
+      "warranty": "3 Years (100,000 km)",
+      "horsepower": 172
+    },
+    "features": {
+      "safety": [],
+      "technology": [],
+      "interior": []
+    },
+    "price_min": 1676000.0,
+    "price_max": 1974000.0
+  }
+]

@@ -1,0 +1,23 @@
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h2>Confirm Deletion</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Are you sure you want to delete all cars?</h5>
+            <p class="card-text">
+                This will remove all {{ car_count }} cars from the database. This action cannot be undone.
+            </p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Yes, Delete All Cars</button>
+                    <a href="{% url 'car_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

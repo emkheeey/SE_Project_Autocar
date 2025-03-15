@@ -1,5 +1,4 @@
 {% load car_extras %}
-
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-4">Car Comparison</h1>
@@ -81,7 +80,7 @@
                 <tr class="bg-light">
                     <th style="width: 15%;">Specification</th>
                     {% for car in cars %}
-                    <th style="width: {% if car_count == 2 %}42.5{% elif car_count == 3 %}28.3{% elif car_count == 4 %}21.25{% else %}auto{% endif %}%;" class="text-center">
+                    <th style="width: {{ 85|divided_by:car_count }}%;" class="text-center">
                         {% if car.image_url %}
                         <img src="{{ car.image_url }}" alt="{{ car }}" class="img-fluid mb-2" style="max-height: 100px;">
                         {% endif %}
@@ -101,7 +100,7 @@
                     <td class="fw-bold">{{ category.name }}</td>
                     {% for car in cars %}
                     <td class="text-center {% if car == best_car and category.key == 'price' %}highlight-best{% endif %}">
-                        {% with value=car|get_attr:category.key %}
+                        {% with value=car|getattr:category.key %}
                             {% if value != None %}
                                 {% if category.format == 'currency' and value %}
                                     ₱{{ value|floatformat:2 }}
@@ -130,7 +129,7 @@
                     <td class="fw-bold">{{ category.name }}</td>
                     {% for car in cars %}
                     <td class="text-center {% if car == best_car and category.key == 'horsepower' %}highlight-best{% endif %}">
-                        {% with value=car|get_attr:category.key %}
+                        {% with value=car|getattr:category.key %}
                             {% if value != None %}
                                 {% if category.format == 'currency' and value %}
                                     ₱{{ value|floatformat:2 }}
@@ -159,7 +158,7 @@
                     <td class="fw-bold">{{ category.name }}</td>
                     {% for car in cars %}
                     <td class="text-center">
-                        {% with value=car|get_attr:category.key %}
+                        {% with value=car|getattr:category.key %}
                             {% if value != None %}
                                 {{ value }}
                             {% else %}
@@ -182,7 +181,7 @@
                     <td class="fw-bold">{{ category.name }}</td>
                     {% for car in cars %}
                     <td class="text-center">
-                        {% with value=car|get_attr:category.key %}
+                        {% with value=car|getattr:category.key %}
                             {% if value != None %}
                                 {{ value }}
                             {% else %}

@@ -13,6 +13,14 @@ class Car(models.Model):
     fuel_economy_city = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)
     fuel_economy_highway = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)
     
+    # Additional specs from AutoDeal
+    body_type = models.CharField(max_length=100, null=True, blank=True)
+    seats = models.CharField(max_length=50, null=True, blank=True)
+    fuel_type = models.CharField(max_length=100, null=True, blank=True)
+    drivetrain = models.CharField(max_length=100, null=True, blank=True)
+    wheel_size = models.CharField(max_length=50, null=True, blank=True)
+    warranty = models.CharField(max_length=100, null=True, blank=True)
+    
     # Features
     interior_features = models.TextField(null=True, blank=True)
     safety_features = models.TextField(null=True, blank=True)
