@@ -1,5 +1,6 @@
 <!-- AutoCar/templates/accounts/browse.html -->
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,20 +39,19 @@
 
     <div class="search-container">
         <input type="text" id="search-input" placeholder="Search for car models...">
-        <button onclick="searchCars()">Search</button>
+        <button class="search-button" onclick="performSearch(document.getElementById('search-input').value.toLowerCase().trim())">Search</button>
     </div>
-
-    <div class="search-filter-container">
+    </div>
         <div class="filter-nav">
-            <div class="filter-box">All</div>
+            <div class="filter-box active">All</div>
             <div class="filter-box">Body Type</div>
             <div class="filter-box">Price</div>
             <div class="filter-box">Transmission</div>
-        </div>
     </div>
+
     <div class="car-list" id="car-list">
         {% for car in cars %}
-        <div class="car-card">
+        <div class="car-card" data-type="{{ car.type|lower }}" data-price="{{ car.price }}">
             <img src="{% static 'images/cars/'|add:car.image %}" alt="{{ car.name }}">
             <p>{{ car.name }}</p>
             <button onclick="viewCar('{{ car.id }}')">View</button>
