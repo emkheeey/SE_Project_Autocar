@@ -1,0 +1,159 @@
+/* General Styles */
+body,
+html {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    /* Prevent scrolling */
+    background-image: url('/static/images/landingbg.png');
+    /* Update with your image file name */
+    background-size: cover;
+    /* This will cover the entire background */
+    background-position: center;
+    /* Center the image */
+    background-repeat: no-repeat;
+    /* Prevent the image from repeating */
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* Align items to the left */
+    padding: 15px 50px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo */
+.logo img {
+    height: 65px;
+}
+
+/* Navigation */
+nav {
+    margin-left: 50px;
+    /* Space between logo and menu */
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+    /* Adjust spacing */
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+header nav ul li a:hover {
+    color: rgb(243, 13, 13);
+}
+
+
+/* Hero Section - Full Screen */
+#home {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    height: 100vh;
+    /* Full screen */
+    width: 100vw;
+    /* Full width */
+    padding-left: 80px;
+    /* Adjust text position */
+    background-image: url(landingbg.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.text-container {
+    max-width: 500px;
+}
+
+#home h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.highlight {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #FFD700;
+    font-weight: bold;
+}
+
+#home p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* Button Styles */
+#home button {
+    padding: 12px 30px;
+    font-size: 1.2em;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+#home button:hover {
+    background-color: #FF9100;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    color: #FFFF;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    /* Adjust padding for size */
+    background-color: #FF0000;
+    /* Red background */
+    color: white;
+    /* White text */
+    text-decoration: none;
+    /* Remove underline */
+    border: none;
+    /* No border */
+    border-radius: 5px;
+    /* Rounded corners */
+    font-size: 16px;
+    /* Font size */
+    transition: background-color 0.3s;
+    /* Smooth transition */
+}
+
+.btn:hover {
+    background-color: #CC0000;
+    /* Darker red on hover */
+}

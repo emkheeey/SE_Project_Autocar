@@ -1,0 +1,64 @@
+<!-- AutoCar/templates/accounts/browse.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse</title>
+    <link rel="stylesheet" href="{% static 'css/browse.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static 'images/autocar-logo.png' %}" alt="Logo">
+        </div>  
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'browse' %}">BROWSE CARS</a></li>
+                <li><a href="#recommend">RECOMMENDATIONS</a></li>
+                <li><a href="#help">HELP CENTER</a></li>
+            </ul>
+        </nav>
+        <div class="profile-icon" onclick="toggleMenu()">
+            <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon">
+        </div> 
+        
+        <div class="user-menu" id="userMenu">
+            <div class="menu-header">
+                <div class="user-name">John Doe</div>
+                <div class="user-email">johndoe@example.com</div>
+            </div>
+            <div class="menu-item" onclick="window.location.href='account-details.html'">Account</div>
+            <div class="menu-item" onclick="window.location.href='{% url 'home' %}'">Saved Favorite</div>
+            <div class="menu-item" onclick="logout()">Log Out</div>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search for car models...">
+        <button onclick="searchCars()">Search</button>
+    </div>
+
+    <div class="search-filter-container">
+        <div class="filter-nav">
+            <div class="filter-box">All</div>
+            <div class="filter-box">Body Type</div>
+            <div class="filter-box">Price</div>
+            <div class="filter-box">Transmission</div>
+        </div>
+    </div>
+    <div class="car-list" id="car-list">
+        {% for car in cars %}
+        <div class="car-card">
+            <img src="{% static 'images/cars/'|add:car.image %}" alt="{{ car.name }}">
+            <p>{{ car.name }}</p>
+            <button onclick="viewCar('{{ car.id }}')">View</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="{% static 'js/browse.js' %}"></script>
+</body>
+</html>
