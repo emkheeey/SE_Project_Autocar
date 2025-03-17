@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from .models import Car
+from django.db import models
 import json
 import os
+from .models import Car
 
 # Import the utility function - place this at the top
 from .load_data import load_cars_from_json as load_cars_data
@@ -164,3 +166,159 @@ def clear_cars(request):
         return render(request, 'cars/confirm_delete.html', {
             'car_count': car_count
         })
+        
+# ...existing code...
+
+def search_cars(request):
+    """
+    View for searching and filtering cars based on various criteria.
+    Handles GET parameters to filter the queryset of Car objects.
+    """
+    # Start with all cars
+    cars = Car.objects.all()
+    
+    # Track applied filters for the template
+    applied_filters = {}
+    
+    # Text search (model name, description)
+    query = request.GET.get('query')
+    if query:
+        cars = cars.filter(model__icontains=query)
+        applied_filters['query'] = query
+    
+    # Handle price filtering - support both new and old parameter formats
+    price_range = request.GET.get('price_range')
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    
+    # First try the new price_range parameter
+    if price_range and price_range != 'all':
+        try:
+            min_val, max_val = price_range.split('-')
+            cars = cars.filter(price__gte=min_val, price__lte=max_val)
+            applied_filters['price_range'] = price_range
+        except (ValueError, TypeError):
+            # If there's an error parsing the range, ignore this filter
+            pass
+    # Fall back to the old min_price/max_price parameters if price_range is not used
+    elif min_price or max_price:
+        if min_price:
+            try:
+                min_price = float(min_price)
+                cars = cars.filter(price__gte=min_price)
+                applied_filters['min_price'] = min_price
+                
+                # Create an equivalent price_range for consistency in the UI
+                if max_price:
+                    max_price = float(max_price)
+                    if min_price <= 500000 and max_price >= 500000:
+                        applied_filters['price_range'] = '0-500000'
+                    elif min_price <= 1000000 and max_price >= 1000000:
+                        applied_filters['price_range'] = '500000-1000000'
+                    elif min_price <= 1500000 and max_price >= 1500000:
+                        applied_filters['price_range'] = '1000000-1500000'
+                    elif min_price <= 2000000 and max_price >= 2000000:
+                        applied_filters['price_range'] = '1500000-2000000'
+                    else:
+                        applied_filters['price_range'] = '2000000-999999999'
+            except (ValueError, TypeError):
+                pass
+                
+        if max_price:
+            try:
+                max_price = float(max_price)
+                cars = cars.filter(price__lte=max_price)
+                applied_filters['max_price'] = max_price
+            except (ValueError, TypeError):
+                pass
+    
+    # Body type filter with improved handling for multi-value fields
+    body_type = request.GET.get('body_type')
+    if body_type and body_type != 'all':
+        # Filter for either exact matches or where body_type is part of a multi-value field
+        cars = cars.filter(
+        models.Q(body_type=body_type) | 
+        models.Q(body_type__contains=f"\n{body_type}") | 
+        models.Q(body_type__contains=f"{body_type}\n")
+    )
+    applied_filters['body_type'] = body_type
+    
+    # Transmission filter - improved handling for multi-value fields
+    transmission = request.GET.get('transmission')
+    if transmission and transmission != 'all':
+        cars = cars.filter(
+            models.Q(transmission=transmission) | 
+            models.Q(transmission__contains=f"\n{transmission}") | 
+            models.Q(transmission__contains=f"{transmission}\n")
+        )
+        applied_filters['transmission'] = transmission
+
+    # Extract unique transmissions from the database - improved to match JSON format
+    raw_transmissions = Car.objects.values_list('transmission', flat=True).distinct()
+    transmissions = set()
+    for t in raw_transmissions:
+        if t and '\n' in t:
+            # Split multi-value transmissions and add each one individually
+            for tx in t.split('\n'):
+                if tx.strip():  # Only add non-empty values
+                    transmissions.add(tx.strip())
+        elif t:
+            transmissions.add(t)
+
+    # Convert to sorted list for the template
+    transmissions = sorted(transmissions)
+    
+    # Sort options
+    sort_by = request.GET.get('sort', 'model')  # Default sort by model
+    sort_direction = request.GET.get('direction', 'asc')
+    
+    # Handle sort direction
+    if sort_direction == 'desc':
+        sort_parameter = f"-{sort_by}"
+    else:
+        sort_parameter = sort_by
+        
+    cars = cars.order_by(sort_parameter)
+    applied_filters['sort'] = sort_by
+    applied_filters['direction'] = sort_direction
+    
+    # Extract unique body types directly from the database
+    # This ensures we only show body types that actually exist
+    raw_body_types = Car.objects.values_list('body_type', flat=True).distinct()
+    
+    # Process the raw body types to handle any with newline characters
+    body_types = set()
+    for bt in raw_body_types:
+        if bt and '\n' in bt:
+            # Split multi-value body types and add each one
+            body_types.update([b.strip() for b in bt.split('\n')])
+        elif bt:
+            body_types.add(bt)
+    
+    # Convert to sorted list for the template
+    body_types = sorted(body_types)
+    
+    # Similar handling for transmissions
+    raw_transmissions = Car.objects.values_list('transmission', flat=True).distinct()
+    transmissions = set()
+    for t in raw_transmissions:
+        if t and '\n' in t:
+            transmissions.update([tx.strip() for tx in t.split('\n')])
+        elif t:
+            transmissions.add(t)
+    
+    transmissions = sorted(transmissions)
+    
+    # Get price range for the form
+    price_range = Car.objects.aggregate(min=models.Min('price'), max=models.Max('price'))
+    
+    context = {
+        'cars': cars,
+        'applied_filters': applied_filters,
+        'body_types': body_types,
+        'transmissions': transmissions,
+        'price_range': price_range,
+        'car_count': cars.count(),
+    }
+    
+    return render(request, 'cars/search.html', context)

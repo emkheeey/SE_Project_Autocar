@@ -6,4 +6,5 @@ urlpatterns = [
     path('compare/', views.compare_cars, name='compare_cars'),
     path('load-data/', views.load_cars_from_json_view, name='load_cars'),
     path('clear/', views.clear_cars, name='clear_cars'),  # Add this line
+    path('search/', views.search_cars, name='search_cars'),
 ]

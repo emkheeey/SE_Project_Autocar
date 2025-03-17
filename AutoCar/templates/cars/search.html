@@ -1,0 +1,227 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Search Toyota Cars{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><img src="/static/images/logo.png"></div>  
+        <nav>
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#browse">BROWSE CARS</a></li>
+                <li><a href="#recommend">RECOMMENDATIONS</a></li>
+                <li><a href="#compare-cars">COMPARE CAR</a></li>
+            </ul>
+        </nav>
+        <div class="profile-icon" onclick="toggleMenu()">
+            <img src="/static/images/profileicon.png" alt="Profile Icon">
+        </div> 
+        
+        <div class="user-menu" id="userMenu">
+            <div class="menu-header">
+                <div class="user-name">John Doe</div>
+                <div class="user-email">johndoe@example.com</div>
+            </div>
+            <div class="menu-item" onclick="window.location.href='account-details.html'">Account</div>
+            <div class="menu-item" onclick="window.location.href='test-drives.html'">Saved Favorite</div>
+            <div class="menu-item" onclick="logout()">Log Out</div>
+        </div>
+    </div>
+
+    {% block content %}
+    <div class="search-container">
+        <form method="get" action="{% url 'search_cars' %}">
+            <input type="text" id="search-input" name="query" placeholder="Search for car models..." value="{{ applied_filters.query|default:'' }}">
+            <button type="submit">Search</button>
+            
+            <!-- Hidden fields to preserve filter values -->
+            {% if applied_filters.body_type %}<input type="hidden" name="body_type" value="{{ applied_filters.body_type }}">{% endif %}
+            {% if applied_filters.transmission %}<input type="hidden" name="transmission" value="{{ applied_filters.transmission }}">{% endif %}
+            {% if applied_filters.sort %}<input type="hidden" name="sort" value="{{ applied_filters.sort }}">{% endif %}
+            {% if applied_filters.price_range %}<input type="hidden" name="price_range" value="{{ applied_filters.price_range }}">{% endif %}
+        </form>
+    </div>
+
+    <div class="filter-container">
+        <div class="filter-options main-filters">
+            <button class="filter-btn" onclick="showAllCars(this)">All</button>
+            <button class="filter-btn" onclick="showBodyTypeFilters(this)">Body Type</button>
+            <button class="filter-btn" onclick="showPriceFilters(this)">Price</button>
+            <button class="filter-btn" onclick="showTransmissionFilters(this)">Transmission</button>
+        </div>
+    
+        <div id="bodyTypeFilters" class="filter-options sub-filters" style="display: none;">
+            <form method="get" action="{% url 'search_cars' %}" id="bodyTypeForm">
+                {% if applied_filters.query %}<input type="hidden" name="query" value="{{ applied_filters.query }}">{% endif %}
+                {% if applied_filters.price_range %}<input type="hidden" name="price_range" value="{{ applied_filters.price_range }}">{% endif %}
+                {% if applied_filters.transmission %}<input type="hidden" name="transmission" value="{{ applied_filters.transmission }}">{% endif %}
+                {% if applied_filters.sort %}<input type="hidden" name="sort" value="{{ applied_filters.sort }}">{% endif %}
+                
+                <button class="sub-filter-btn" onclick="submitFilter('bodyTypeForm', 'body_type', 'all')">All</button>
+                {% for body_type in body_types %}
+                    <button class="sub-filter-btn {% if applied_filters.body_type == body_type %}active{% endif %}" 
+                            onclick="submitFilter('bodyTypeForm', 'body_type', '{{ body_type }}')">{{ body_type }}</button>
+                {% endfor %}
+            </form>
+        </div>
+    
+        <div id="priceFilters" class="filter-options sub-filters" style="display: none;">
+            <form method="get" action="{% url 'search_cars' %}" id="priceForm">
+                {% if applied_filters.query %}<input type="hidden" name="query" value="{{ applied_filters.query }}">{% endif %}
+                {% if applied_filters.body_type %}<input type="hidden" name="body_type" value="{{ applied_filters.body_type }}">{% endif %}
+                {% if applied_filters.transmission %}<input type="hidden" name="transmission" value="{{ applied_filters.transmission }}">{% endif %}
+                {% if applied_filters.sort %}<input type="hidden" name="sort" value="{{ applied_filters.sort }}">{% endif %}
+                
+                <button class="sub-filter-btn {% if not applied_filters.price_range or applied_filters.price_range == 'all' %}active{% endif %}" 
+                        onclick="submitFilter('priceForm', 'price_range', 'all')">All</button>
+                <button class="sub-filter-btn {% if applied_filters.price_range == '0-500000' %}active{% endif %}" 
+                        onclick="submitFilter('priceForm', 'price_range', '0-500000')">Below ₱500,000</button>
+                <button class="sub-filter-btn {% if applied_filters.price_range == '500000-1000000' %}active{% endif %}" 
+                        onclick="submitFilter('priceForm', 'price_range', '500000-1000000')">₱500,000 – ₱1,000,000</button>
+                <button class="sub-filter-btn {% if applied_filters.price_range == '1000000-1500000' %}active{% endif %}" 
+                        onclick="submitFilter('priceForm', 'price_range', '1000000-1500000')">₱1,000,000 – ₱1,500,000</button>
+                <button class="sub-filter-btn {% if applied_filters.price_range == '1500000-2000000' %}active{% endif %}" 
+                        onclick="submitFilter('priceForm', 'price_range', '1500000-2000000')">₱1,500,000 – ₱2,000,000</button>
+                <button class="sub-filter-btn {% if applied_filters.price_range == '2000000-999999999' %}active{% endif %}" 
+                        onclick="submitFilter('priceForm', 'price_range', '2000000-999999999')">Above ₱2,000,000</button>
+            </form>
+        </div>
+    
+        <div id="transmissionFilters" class="filter-options sub-filters" style="display: none;">
+            <form method="get" action="{% url 'search_cars' %}" id="transmissionForm">
+                {% if applied_filters.query %}<input type="hidden" name="query" value="{{ applied_filters.query }}">{% endif %}
+                {% if applied_filters.body_type %}<input type="hidden" name="body_type" value="{{ applied_filters.body_type }}">{% endif %}
+                {% if applied_filters.price_range %}<input type="hidden" name="price_range" value="{{ applied_filters.price_range }}">{% endif %}
+                {% if applied_filters.sort %}<input type="hidden" name="sort" value="{{ applied_filters.sort }}">{% endif %}
+                
+                <button class="sub-filter-btn {% if not applied_filters.transmission or applied_filters.transmission == 'all' %}active{% endif %}" 
+                        onclick="submitFilter('transmissionForm', 'transmission', 'all')">All</button>
+                {% for transmission in transmissions %}
+                    <button class="sub-filter-btn {% if applied_filters.transmission == transmission %}active{% endif %}" 
+                            onclick="submitFilter('transmissionForm', 'transmission', '{{ transmission }}')">{{ transmission }}</button>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+
+    <div class="results-info">
+        <h2>{{ car_count }} cars found</h2>
+        
+        {% if applied_filters %}
+        <div class="applied-filters">
+            {% if applied_filters.query %}
+            <span class="filter-tag">Search: {{ applied_filters.query }}</span>
+            {% endif %}
+            {% if applied_filters.body_type and applied_filters.body_type != 'all' %}
+            <span class="filter-tag">Body Type: {{ applied_filters.body_type }}</span>
+            {% endif %}
+            {% if applied_filters.transmission and applied_filters.transmission != 'all' %}
+            <span class="filter-tag">Transmission: {{ applied_filters.transmission }}</span>
+            {% endif %}
+            {% if applied_filters.price_range and applied_filters.price_range != 'all' %}
+                {% if applied_filters.price_range == '0-500000' %}
+                <span class="filter-tag">Price: Below ₱500,000</span>
+                {% elif applied_filters.price_range == '500000-1000000' %}
+                <span class="filter-tag">Price: ₱500,000 - ₱1,000,000</span>
+                {% elif applied_filters.price_range == '1000000-1500000' %}
+                <span class="filter-tag">Price: ₱1,000,000 - ₱1,500,000</span>
+                {% elif applied_filters.price_range == '1500000-2000000' %}
+                <span class="filter-tag">Price: ₱1,500,000 - ₱2,000,000</span>
+                {% elif applied_filters.price_range == '2000000-999999999' %}
+                <span class="filter-tag">Price: Above ₱2,000,000</span>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="car-list" id="car-list">
+        {% if cars %}
+            {% for car in cars %}
+                <div class="car-card">
+                    {% if car.image %}
+                        <img src="{{ car.image.url }}" alt="{{ car.model }}">
+                    {% else %}
+                        <img src="/static/images/cars/default.jpg" alt="No Image">
+                    {% endif %}
+                    <p>{{ car.model }}</p>
+                    <button onclick="viewCar('{{ car.id }}')">View</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-results">
+                <p>No cars found matching your criteria. Try adjusting your filters.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Function to handle filter form submission
+        function submitFilter(formId, paramName, value) {
+            event.preventDefault();
+            const form = document.getElementById(formId);
+            let input = form.querySelector(`input[name="${paramName}"]`);
+            if (!input) {
+                input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = paramName;
+                form.appendChild(input);
+            }
+            input.value = value;
+            form.submit();
+        }
+        
+        // Functions to show/hide filter sections
+        function showAllCars(button) {
+            window.location.href = "{% url 'search_cars' %}";
+        }
+        
+        function showBodyTypeFilters(button) {
+            document.getElementById('bodyTypeFilters').style.display = 'block';
+            document.getElementById('priceFilters').style.display = 'none';
+            document.getElementById('transmissionFilters').style.display = 'none';
+            activateButton(button);
+        }
+        
+        function showPriceFilters(button) {
+            document.getElementById('bodyTypeFilters').style.display = 'none';
+            document.getElementById('priceFilters').style.display = 'block';
+            document.getElementById('transmissionFilters').style.display = 'none';
+            activateButton(button);
+        }
+        
+        function showTransmissionFilters(button) {
+            document.getElementById('bodyTypeFilters').style.display = 'none';
+            document.getElementById('priceFilters').style.display = 'none';
+            document.getElementById('transmissionFilters').style.display = 'block';
+            activateButton(button);
+        }
+        
+        function activateButton(button) {
+            // Remove 'active' class from all filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Add 'active' class to clicked button
+            button.classList.add('active');
+        }
+        
+        function toggleMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function viewCar(carId) {
+            window.location.href = `/cars/${carId}/`;
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>
