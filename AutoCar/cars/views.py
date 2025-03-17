@@ -167,7 +167,45 @@ def clear_cars(request):
             'car_count': car_count
         })
         
-# ...existing code...
+# Add this function to your views.py
+
+def associate_car_images(request):
+    """Associate available images with car models in the database"""
+    # Get all cars
+    cars = Car.objects.all()
+    updated_count = 0
+    
+    # Base path for the static images
+    static_dir = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
+        'static', 'images', 'cars'
+    )
+    
+    # Get list of available images
+    image_files = [f for f in os.listdir(static_dir) if f.endswith('.jpg') or f.endswith('.png')]
+    image_names = {os.path.splitext(file)[0].lower(): file for file in image_files}
+    
+    # Match cars with images
+    for car in cars:
+        # Try exact match first
+        model_key = car.model.lower()
+        if model_key in image_names:
+            # Found exact match
+            car.image_path = f"images/cars/{image_names[model_key]}"
+            car.save()
+            updated_count += 1
+        else:
+            # Try partial match
+            for img_name in image_names:
+                if img_name in model_key or model_key in img_name:
+                    car.image_path = f"images/cars/{image_names[img_name]}"
+                    car.save()
+                    updated_count += 1
+                    break
+    
+    return render(request, 'cars/message.html', {
+        'message': f'Successfully associated {updated_count} cars with images.'
+    })
 
 def search_cars(request):
     """

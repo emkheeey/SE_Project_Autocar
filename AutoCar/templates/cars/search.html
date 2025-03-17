@@ -146,18 +146,18 @@
         {% if cars %}
             {% for car in cars %}
                 <div class="car-card">
-                    {% if car.image %}
-                        <img src="{{ car.image.url }}" alt="{{ car.model }}">
-                    {% else %}
-                        <img src="/static/images/cars/default.jpg" alt="No Image">
-                    {% endif %}
+                    <div class="img-container">
+                        <img src="{% static 'images/cars/'|add:car.model|lower|add:'.jpg' %}"
+                             onerror="handleImageError(this, '{{ car.model }}')"
+                             alt="{{ car.model }}">
+                    </div>
                     <p>{{ car.model }}</p>
                     <button onclick="viewCar('{{ car.id }}')">View</button>
                 </div>
             {% endfor %}
         {% else %}
             <div class="no-results">
-                <p>No cars found matching your criteria. Try adjusting your filters.</p>
+                <p>No cars found matching your criteria.</p>
             </div>
         {% endif %}
     </div>
@@ -220,6 +220,28 @@
         
         function viewCar(carId) {
             window.location.href = `/cars/${carId}/`;
+        }
+
+        function handleImageError(img, carModel) {
+            // Track how many attempts we've made
+            if (!img.dataset.attempts) {
+                img.dataset.attempts = 1;
+            } else {
+                img.dataset.attempts = parseInt(img.dataset.attempts) + 1;
+            }
+            
+            if (img.dataset.attempts == 1) {
+                // First attempt failed, try with dashes instead of spaces
+                img.src = "{% static 'images/cars/' %}" + carModel.toLowerCase().replace(/\s+/g, '-') + '.jpg';
+            } else if (img.dataset.attempts == 2) {
+                // Second attempt failed, try with underscores
+                img.src = "{% static 'images/cars/' %}" + carModel.toLowerCase().replace(/\s+/g, '_') + '.jpg';
+            } else {
+                // All attempts failed, use default
+                img.src = "{% static 'images/cars/default.jpg' %}";
+                // Stop trying further replacements
+                img.onerror = null;
+            }
         }
     </script>
     {% endblock %}

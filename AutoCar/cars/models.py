@@ -26,8 +26,9 @@ class Car(models.Model):
     safety_features = models.TextField(null=True, blank=True)
     technology_features = models.TextField(null=True, blank=True)
     
+    image_path = models.CharField(max_length=255, null=True, blank=True)
     # Media
-    image_url = models.URLField(null=True, blank=True)
+    image = models.ImageField(upload_to='cars/', null=True, blank=True)
     
     def __str__(self):
         return f"{self.year} {self.make} {self.model}"
