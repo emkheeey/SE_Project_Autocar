@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse</title>
+    <link rel="stylesheet" href="browse.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><img src="images/logo.png"></div>  
+        <nav>
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#browse">BROWSE CARS</a></li>
+                <li><a href="#recommend">RECOMMENDATIONS</a></li>
+                <li><a href="#compare-cars">COMPARE CAR</a></li>
+            </ul>
+        </nav>
+        <div class="profile-icon" onclick="toggleMenu()">
+            <img src="images/profileicon.png" alt="Profile Icon">
+        </div> 
+        
+        <div class="user-menu" id="userMenu">
+            <div class="menu-header">
+                <div class="user-name">John Doe</div>
+                <div class="user-email">johndoe@example.com</div>
+            </div>
+            <div class="menu-item" onclick="window.location.href='account-details.html'">Account</div>
+            <div class="menu-item" onclick="window.location.href='test-drives.html'">Saved Favorite</div>
+            <div class="menu-item" onclick="logout()">Log Out</div>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search for car models...">
+        <button onclick="searchCars()">Search</button>
+    </div>
+
+    <div class="filter-container">
+        <div class="filter-options main-filters">
+            <button class="filter-btn" onclick="showAllCars(this)">All</button>
+            <button class="filter-btn" onclick="showBodyTypeFilters(this)">Body Type</button>
+            <button class="filter-btn" onclick="showPriceFilters(this)">Price</button>
+            <button class="filter-btn" onclick="showTransmissionFilters(this)">Transmission</button>
+        </div>
+    
+        <div id="bodyTypeFilters" class="filter-options sub-filters" style="display: none;">
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Sedan')">Sedan</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'SUV')">SUV</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Truck')">Truck</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'MPV')">MPV</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Van')">Van</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Station Wagon')">Station Wagon</button>
+        </div>
+    
+        <div id="priceFilters" class="filter-options sub-filters" style="display: none;">
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '500000')">Below ₱500,000</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1000000')">₱500,000 – ₱1,000,000</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1500000')">₱1,000,000 – ₱1,500,000</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '2000000')">₱1,500,000 – ₱2,000,000</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '3000000')">Above ₱2,000,000</button>
+        </div>
+    
+        <div id="transmissionFilters" class="filter-options sub-filters" style="display: none;">
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Automatic')">Automatic</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Manual')">Manual</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Electric')">Electric</button>
+            <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Hybrid')">Hybrid</button>
+        </div>
+    </div>
+
+    <div class="car-list" id="car-list">
+        <div class="car-card">
+            <img src="images/cars/camry.jpg" alt="Car Model">
+            <p>Camry</p>
+            <button onclick="viewCar('camry')">View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/hillux.jpg" alt="Car Model">
+            <p>Hillux</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/innova.jpg" alt="Car Model">
+            <p>Innova</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/vios.jpg" alt="Car Model">
+            <p>vios</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/raize.jpg" alt="Car Model">
+            <p>raize</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/noah.jpg" alt="Car Model">
+            <p>noah</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/crown.jpg" alt="Car Model">
+            <p>Crown</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/fortuner.jpg" alt="Car Model">
+            <p>fortuner</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/corolla.jpg" alt="Car Model">
+            <p>corola</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/GR86.jpg" alt="Car Model">
+            <p>GR86</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/atlis.jpg" alt="Car Model">
+            <p>atlis</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/avalon.jpg" alt="Car Model">
+            <p>avalon</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/RAV4.jpg" alt="Car Model">
+            <p>RAV4</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/rush.jpg" alt="Car Model">
+            <p>RUSH</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/supra.jpg" alt="Car Model">
+            <p>SUPRA</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/sequoia.jpg" alt="Car Model">
+            <p>SEQUIOA</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/tacoma.jpg" alt="Car Model">
+            <p>TACOMA</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/yaris.jpg" alt="Car Model">
+            <p>YARIS</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/tundra.jpg" alt="Car Model">
+            <p>TUNDRA</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/prius.jpg" alt="Car Model">
+            <p>PRIUS</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/highlander.jpg" alt="Car Model">
+            <p>HIGHLANDER</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/century.jpg" alt="Car Model">
+            <p>CENTURY</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/landcruiser.jpg" alt="Car Model">
+            <p>LAND CRUISER</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/alphard.jpg" alt="Car Model">
+            <p>alphard</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/roomy.jpg" alt="Car Model">
+            <p>roomye</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/pxis.jpg" alt="Car Model">
+            <p>pixis</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/aqua.jpg" alt="Car Model">
+            <p>aqua</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/copengrsport.jpg" alt="Car Model">
+            <p>copen gr sport</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/mirai.jpg" alt="Car Model">
+            <p>mirai</p>
+            <button>View</button>
+        </div>
+        <div class="car-card">
+            <img src="images/cars/hiace.jpg" alt="Car Model">
+            <p>hiace</p>
+            <button>View</button>
+        </div>
+    </div>
+
+    <script src="browse.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+/* General Styles */
+body, html {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image: url(images/bgplain.jpg);
+    background-size: cover;
+    /* Enable scrolling */
+    overflow-y: auto;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    height: 40px;
+    top: 0;
+    z-index: 1000;
+    background-color: #007BFF;
+    background-image: url(images/navigation1.jpg);
+    color: #fff;
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+    color: rgb(243, 13, 13);
+}
+
+.profile-icon {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: visible;
+    margin: 50px;
+}
+
+.profile-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-menu {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 0px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    z-index: 1000;
+}
+
+.menu-header {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 8px 8px 0 0;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.user-email {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.menu-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.95em;
+    color: #444;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Compare Container */
+.compare-container {
+    padding: 100px 50px 50px;
+    text-align: center;
+}
+
+.compare-container h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #000000;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+}
+
+.compare-cars {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.car-selector {
+    width: 30%;
+}
+
+.car-selector h2 {
+    font-size: 24px;
+    color: #b50d0d;
+    margin-bottom: 10px;
+}
+
+.car-selector select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.car-image {
+    margin-top: 10px;
+    height: 150px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.car-image img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+}
+
+.cancel-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 1em;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.cancel-btn:hover {
+    background-color: #cc0000;
+}
+
+.compare-container button {
+    padding: 12px 30px;
+    font-size: 1.2em;
+    background-color: rgb(248, 45, 45);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.compare-container button:hover {
+    background-color: #5a050d;
+    transform: scale(1.05);
+}
+
+.comparison-results {
+    margin-top: 30px;
+    padding: 20px;
+    background: url(images/loginbg.png);
+    background-position: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.comparison-results h3 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.comparison-results table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-results th, .comparison-results td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.comparison-results th {
+    background-color: #e2bcbc;
+    font-weight: bold;
+}

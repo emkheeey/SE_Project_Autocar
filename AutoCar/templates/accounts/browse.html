@@ -1,0 +1,92 @@
+<!-- AutoCar/templates/accounts/browse.html -->
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse</title>
+    <link rel="stylesheet" href="{% static 'css/browse.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static 'images/autocar-logo.png' %}" alt="Logo">
+        </div>  
+        <nav>
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#browse">BROWSE CARS</a></li>
+                <li><a href="#recommend">RECOMMENDATIONS</a></li>
+                <li><a href="#compare-cars">COMPARE CAR</a></li>
+            </ul>
+        </nav>
+        <div class="profile-icon" onclick="toggleMenu()">
+            <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon">
+        </div> 
+        
+        <div class="user-menu" id="userMenu">
+            <div class="menu-header">
+                <div class="user-name">John Doe</div>
+                <div class="user-email">johndoe@example.com</div>
+            </div>
+            <div class="menu-item" onclick="window.location.href='account-details.html'">Account</div>
+            <div class="menu-item" onclick="window.location.href='{% url 'home' %}'">Saved Favorite</div>
+            <div class="menu-item" onclick="logout()">Log Out</div>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search for car models...">
+        <button class="search-button" onclick="performSearch(document.getElementById('search-input').value.toLowerCase().trim())">Search</button>
+    </div>
+    </div>
+    <div class="filter-container">
+        <div class="filter-options main-filters">
+            <button class="filter-btn" onclick="showAllCars(this)">All</button>
+        <button class="filter-btn" onclick="showBodyTypeFilters(this)">Body Type</button>
+        <button class="filter-btn" onclick="showPriceFilters(this)">Price</button>
+        <button class="filter-btn" onclick="showTransmissionFilters(this)">Transmission</button>
+    </div>
+
+    <div id="bodyTypeFilters" class="filter-options sub-filters" style="display: none;">
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Sedan')">Sedan</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'SUV')">SUV</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Truck')">Truck</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'MPV')">MPV</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Van')">Van</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Station Wagon')">Station Wagon</button>
+    </div>
+
+    <div id="priceFilters" class="filter-options sub-filters" style="display: none;">
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '500000')">Below ₱500,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1000000')">₱500,000 – ₱1,000,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1500000')">₱1,000,000 – ₱1,500,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '2000000')">₱1,500,000 – ₱2,000,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '3000000')">Above ₱2,000,000</button>
+    </div>
+
+    <div id="transmissionFilters" class="filter-options sub-filters" style="display: none;">
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Automatic')">Automatic</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Manual')">Manual</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Electric')">Electric</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Hybrid')">Hybrid</button>
+    </div>
+</div>
+    <div class="car-list" id="car-list">
+        {% for car in cars %}
+       <div class="car-card" 
+            data-type="{{ car.type|lower }}" 
+            data-price="{{ car.price }}"
+            data-transmission="{{ car.transmission|lower }}">
+            <img src="{% static 'images/cars/'|add:car.image %}" alt="{{ car.name }}">
+            <p>{{ car.name }}</p>
+            <button onclick="viewCar('{{ car.id }}')">View</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="{% static 'js/browse.js' %}"></script>
+</body>
+</html>

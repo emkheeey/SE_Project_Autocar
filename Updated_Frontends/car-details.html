@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details</title>
+    <link rel="stylesheet" href="car-details.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="browse.html" class="back-button">❮</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="car-details">
+            <!-- Car Image Section -->
+            <div class="image-slider">
+                <button id="prev-btn">❮</button>
+                <div class="car-images">
+                    <img id="car-image" src="camry1.jpg" alt="Car Image">
+                </div>
+                <button id="next-btn">❯</button>
+            </div>
+
+            <!-- Car Basic Information -->
+            <h1 class="car-model-name">CAR MODEL NAME</h1>
+            <div class="car-basic-info">
+                <div class="price-favorite">
+                    <p class="car-price">₱2,677,000</p>
+                    <button id="favorite-btn">Save Favorite</button>
+                </div>
+            </div>
+            
+
+            <!-- Model Overview Section -->
+            <div class="model-overview">
+                <h2>MODEL OVERVIEW</h2>
+                <p class="description">
+                    This is a placeholder for the car's detailed description. It includes key features, design elements, and technology.
+                </p>
+                <table>
+                    <tr>
+                        <td>Body Type</td>
+                        <td>Sedan</td>
+                    </tr>
+                    <tr>
+                        <td>Transmission</td>
+                        <td>CVT (Continuously Variable Transmission)</td>
+                    </tr>
+                    <tr>
+                        <td>Colors Available</td>
+                        <td>
+                            <span class="color-box red"></span>
+                            <span class="color-box blue"></span>
+                            <span class="color-box yellow"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Specification Section -->
+            <div class="specification">
+                <h2>SPECIFICATION</h2>
+                <div class="spec-grid">
+                    <div class="spec-block">
+                        <h3>DIMENSIONS</h3>
+                        <p>Height: <span>---</span></p>
+                        <p>Wheelbase: <span>---</span></p>
+                        <p>Seating Capacity: <span>---</span></p>
+                    </div>
+                    <div class="spec-block">
+                        <h3>ENGINE</h3>
+                        <p>Number of Cylinders: <span>---</span></p>
+                        <p>Max Output: <span>---</span></p>
+                        <p>Fuel Type: <span>---</span></p>
+                    </div>
+                    <div class="spec-block">
+                        <h3>ADDITIONAL DETAILS</h3>
+                        <p>Torque: <span>---</span></p>
+                        <p>Horsepower: <span>---</span></p>
+                        <p>Fuel Economy: <span>---</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="car-details.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,157 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Best Car</title>
+  <link rel="stylesheet" href="find.css">
+</head>
+<body>
+  <header>
+    <div class="logo"><img src="images/logo.png"></div>
+    <nav>
+      <a href="#home">HOME</a>
+      <a href="#browse">BROWSE CARS</a>
+      <a href="#recommend">RECOMMENDATIONS</a>
+      <a href="#compare">COMPARE CAR</a>
+    </nav>
+    <div class="profile-icon" onclick="toggleMenu()">
+      <img src="images/profileicon.png" alt="Profile Icon">
+    </div>
+    <div class="user-menu" id="userMenu">
+      <div class="menu-header">
+          <div class="user-name">John Doe</div>
+          <div class="user-email">johndoe@example.com</div>
+      </div>
+      <div class="menu-item" onclick="window.location.href='account-details.html'">Account</div>
+      <div class="menu-item" onclick="window.location.href='test-drives.html'">Test Drives</div>
+      <div class="menu-item" onclick="logout()">Log Out</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="left-column">
+      <h1>Find Your Perfect Car</h1>
+      <form id="carQuizForm">
+        <label for="age">How old are you?</label>
+        <input type="number" id="age" required placeholder="Enter your age">
+
+        <label for="gender">What is your gender?</label>
+        <select id="gender" required>
+          <option value="" disabled selected>Select your gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="n/a">Prefer not to say</option>
+        </select>
+        
+        <label for="location">Where are you located?</label>
+        <input type="text" id="location" required placeholder="Enter your location">
+
+        <label for="occupation">Occupation?</label>
+        <input type="text" id="occupation" required placeholder="Enter your occupation">
+
+        <label for="income">Annual Income</label>
+        <select id="income" required>
+          <option value="" disabled selected>Select your annual income</option>
+          <option value="below">Below ₱800,000</option>
+          <option value="medium">₱800,000 – ₱1,200,000</option>
+          <option value="average">₱1,200,000 – ₱2,000,000</option>
+          <option value="above">Above ₱2,000,000</option>
+          <option value="n/a">No preference</option>
+        </select>
+ 
+        <label for="drivingExperience">Years of Driving Experience?</label>
+        <input type="number" id="drivingExperience" required placeholder="Enter years of driving experience">
+
+        <label for="ownCar">Owns a Car?</label>
+        <label><input type="radio" name="ownCar" value="yes"> Yes</label>
+        <label><input type="radio" name="ownCar" value="none"> No</label>
+
+
+        <label for="currentCar">If Yes, What is your current car/s?</label>
+        <label for="currentCar">If No, skip</label>
+        <input type="text" id="currentCar" required placeholder="Enter your current car">
+
+        <label for="drivetrain">Primary use for?</label>
+        <select id="drivetrain" required>
+          <option value="" disabled selected>Select purpose</option>
+          <option value="daily">Daily City Driving</option>
+          <option value="longDrive">Long Drives & Road Trips</option>
+          <option value="family">Family Use</option>
+          <option value="business">Business/Work</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label for="carType">Preferred car type?</label>
+        <select id="carType" required>
+          <option value="" disabled selected>Select car type</option>
+          <option value="sedan">Sedan</option>
+          <option value="suv">SUV</option>
+          <option value="pick-up">Pickup</option>
+          <option value="hatchback">Hatchback</option>
+          <option value="van">Van</option>
+          <option value="truck">Truck</option>
+          <option value="convertible">Convertible</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label for="budget">Budget Range?</label>
+        <select id="budget" required>
+          <option value="" disabled selected>Select budget range</option>
+          <option value="below">Below ₱800,000</option>
+          <option value="medium">₱800,000 – ₱1,200,000</option>
+          <option value="average">₱1,200,000 – ₱2,000,000</option>
+          <option value="above">Above ₱2,000,000</option>
+          <option value="n/a">No preference</option>
+        </select>
+        
+        <label for="passengerCapacity">Minimum passenger capacity?</label>
+        <select id="passengerCapacity" required>
+          <option value="" disabled selected>Select minimum capacity</option>
+            <option value="solo">1 – 2 (For solo or couple use)</option>
+            <option value="smallFamily">3 – 5 (Small family or group)</option>
+            <option value="bigFamily">6 – 8 (Larger families, group travel)</option>
+            <option value="n/a">No preference</option>
+        </select>
+          
+        <label for="fuelType">Fuel preference?</label>
+        <select id="fuelType" required>
+          <option value="" disabled selected>Select fuel type</option>
+          <option value="gasoline">Gasoline</option>
+          <option value="diesel">Diesel</option>
+          <option value="electric">Electric</option>
+          <option value="hybrid">Hybrid</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label for="transmission">Transmission type?</label>
+        <select id="transmission" required>
+          <option value="" disabled selected>Select transmission type</option>
+          <option value="automatic">Automatic</option>
+          <option value="manual">Manual</option>
+          <option value="n/a">No preference</option>
+        </select>
+
+        <label>Key features?</label>
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="keyFeatures" value="fuel"> Fuel Efficiency</label>
+            <label><input type="checkbox" name="keyFeatures" value="safety"> Safety Features</label>
+            <label><input type="checkbox" name="keyFeatures" value="cargo"> Cargo Space</label>
+            <label><input type="checkbox" name="keyFeatures" value="comfort"> Comfort</label>
+            <label><input type="checkbox" name="keyFeatures" value="advanced"> Advanced Technology</label>
+            <label><input type="checkbox" name="keyFeatures" value="n/a"> No preference</label>
+        </div>
+
+        <button type="submit">Find My Car</button>
+      </form>
+    </div>
+
+    <div class="right-column">
+      <h2>Recommended Cars</h2>
+      <div id="carResults"></div>
+    </div>
+  </div>
+
+  <script src="find.js"></script>
+</body>
+</html>
