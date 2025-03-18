@@ -128,7 +128,10 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/accounts/login/'  # Redirect to the login page after login
+LOGIN_REDIRECT_URL = '/accounts/home/'
+LOGIN_URL = '/accounts/login/'
+# Add this line to your settings
+LOGOUT_REDIRECT_URL = '/'  # Replace with your landing page URL
 
 # Add to your settings.py
 

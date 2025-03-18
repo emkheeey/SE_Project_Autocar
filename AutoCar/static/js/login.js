@@ -50,3 +50,8 @@ document.querySelector("a[href='#about']").addEventListener("click", function (e
 event.preventDefault(); // Prevent default anchor behavior
 window.location.href = "about.html"; // Change to your actual landing page URL
 });
+
+function logout() {
+    // Send request to Django's logout URL
+    window.location.href = "/accounts/logout/";  // Use the correct URL pattern from your urls.py
+}
