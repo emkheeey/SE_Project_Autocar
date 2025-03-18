@@ -11,6 +11,7 @@ urlpatterns = [
     path('clear/', views.clear_cars, name='clear_cars'),  # Add this line
     path('search/', views.search_cars, name='search_cars'),
     path('associate-images/', views.associate_car_images, name='associate_car_images'),
+    path('<int:car_id>/', views.car_detail, name='car_detail'), 
 ]
 
 if settings.DEBUG:
