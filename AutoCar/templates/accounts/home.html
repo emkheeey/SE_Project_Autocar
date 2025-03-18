@@ -56,8 +56,10 @@
 
     <div class="welcome-banner">FIND YOUR CAR NOW!</div>
 
-    <button class="browsebtn">BROWSE CARS</button>
-    <button class="findbtn">FIND MY BEST CAR</button>
+    <div style="text-align: center; width: 100%;">
+        <a href="{% url 'search_cars' %}" class="browsebtn">BROWSE CARS</a>
+        <a href="{% url 'compare_cars' %}" class="findbtn">COMPARE CARS</a>
+    </div>
 
     <script src="{% static 'js/home.js' %}"></script>
 </body>

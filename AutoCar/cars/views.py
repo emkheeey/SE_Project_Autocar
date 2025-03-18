@@ -20,7 +20,35 @@ class CarListView(ListView):
         return context
 
 def compare_cars(request):
-    car_ids = request.GET.getlist('car_id')
+    # Check if car IDs are provided in the query parameters (from dropdown selection)
+    car1_id = request.GET.get('car1')
+    car2_id = request.GET.get('car2')
+    car3_id = request.GET.get('car3')
+    
+    # Combine all IDs
+    car_ids = []
+    if car1_id:
+        car_ids.append(car1_id)
+    if car2_id:
+        car_ids.append(car2_id)
+    if car3_id:
+        car_ids.append(car3_id)
+    
+    # If no IDs from query parameters, check for car_id list (from car_list page)
+    if not car_ids:
+        car_ids = request.GET.getlist('car_id')
+    
+    # Get all cars for selection dropdown
+    available_cars = Car.objects.all().order_by('make', 'model')
+    
+    # If no cars to compare yet, just show selection interface
+    if not car_ids:
+        return render(request, 'cars/compare.html', {
+            'available_cars': available_cars,
+            'car_count': 0
+        })
+    
+    # Get the selected cars for comparison
     cars = Car.objects.filter(id__in=car_ids)
     
     # Define all the spec categories and their importance (weight for scoring)
@@ -125,6 +153,7 @@ def compare_cars(request):
     
     context = {
         'cars': cars,
+        'available_cars': available_cars,  # Add this to make cars available in dropdown
         'spec_categories': spec_categories,
         'car_scores': car_scores,
         'car_count': len(cars),

@@ -14,13 +14,6 @@ document.querySelector("a[href='#browse']").addEventListener("click", function (
 });
 
 
-
-
-
-
-
-
-// Function to toggle the user menu
 function toggleMenu() {
     var menu = document.getElementById("userMenu");
     if (menu.style.display === "block") {

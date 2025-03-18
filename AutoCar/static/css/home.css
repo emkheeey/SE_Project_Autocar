@@ -124,7 +124,9 @@ header {
 }
 
 .browsebtn {
-    display: block;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none !important;  /* Added !important to override browser defaults */
     width: 280px;
     padding: 15px;
     margin: 10px auto;
