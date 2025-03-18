@@ -1,0 +1,208 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ car.year }} {{ car.make }} {{ car.model }} - Details</title>
+    <link rel="stylesheet" href="{% static 'css/car_detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="javascript:history.back()" class="back-button">❮</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="car-details">
+        <!-- Car Image Section -->
+        <div class="car-image-container">
+            {% if car.image %}
+                <img class="car-image" src="{{ car.image.url }}" alt="{{ car }}">
+            {% elif car.image_path %}
+                <img class="car-image" src="{% static car.image_path %}" alt="{{ car }}">
+            {% else %}
+                <img class="car-image" src="{% static 'images/cars/'|add:car.model|lower|add:'.jpg' %}"
+                    onerror="handleImageError(this, '{{ car.model }}')"
+                    alt="{{ car.model }}">
+            {% endif %}
+        </div>
+
+            <!-- Car Basic Information -->
+            <h1 class="car-model-name">{{ car.year }} {{ car.make }} {{ car.model }}</h1>
+            <div class="car-basic-info">
+                <div class="price-favorite">
+                    <p class="car-price">₱{{ car.price|floatformat:2|intcomma }}</p>
+                    <button id="favorite-btn" onclick="saveToFavorites({{ car.id }})">Save Favorite</button>
+                </div>
+            </div>
+
+            <!-- Model Overview Section -->
+            <div class="model-overview">
+                <h2>MODEL OVERVIEW</h2>
+                <p class="description">
+                    The {{ car.year }} {{ car.make }} {{ car.model }} is an exceptional choice for drivers seeking reliability, comfort, and performance in a {{ car.body_type|lower }} vehicle.
+                </p>
+                <table>
+                    <tr>
+                        <td>Body Type</td>
+                        <td>{{ car.body_type }}</td>
+                    </tr>
+                    <tr>
+                        <td>Transmission</td>
+                        <td>{{ car.transmission }}</td>
+                    </tr>
+                    <tr>
+                        <td>Engine</td>
+                        <td>{{ car.engine }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Specification Section -->
+            <div class="specification">
+                <h2>SPECIFICATION</h2>
+                <div class="spec-grid">
+                    <div class="spec-block">
+                        <h3>DIMENSIONS</h3>
+                        <p>Body Type: <span>{{ car.body_type }}</span></p>
+                        <p>Seating Capacity: <span>{{ car.seats }}</span></p>
+                        <p>Wheel Size: <span>{{ car.wheel_size }}</span></p>
+                    </div>
+                    <div class="spec-block">
+                        <h3>ENGINE</h3>
+                        <p>Engine: <span>{{ car.engine }}</span></p>
+                        <p>Horsepower: <span>{{ car.horsepower }}</span></p>
+                        <p>Fuel Type: <span>{{ car.fuel_type }}</span></p>
+                    </div>
+                    <div class="spec-block">
+                        <h3>ADDITIONAL DETAILS</h3>
+                        <p>Drivetrain: <span>{{ car.drivetrain }}</span></p>
+                        <p>Fuel Economy (City): <span>{% if car.fuel_economy_city %}{{ car.fuel_economy_city }} km/L{% else %}---{% endif %}</span></p>
+                        <p>Fuel Economy (Highway): <span>{% if car.fuel_economy_highway %}{{ car.fuel_economy_highway }} km/L{% else %}---{% endif %}</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="model-overview">
+                <h2>FEATURES</h2>
+                <div class="features-container">
+                    {% if car.safety_features %}
+                    <div class="feature-group">
+                        <h3>Safety Features</h3>
+                        <ul class="feature-list">
+                            {% for feature in car.safety_features.split|slice:":10" %}
+                                {% if feature %}
+                                <li>{{ feature|capfirst }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    {% if car.technology_features %}
+                    <div class="feature-group">
+                        <h3>Technology Features</h3>
+                        <ul class="feature-list">
+                            {% for feature in car.technology_features.split|slice:":10" %}
+                                {% if feature %}
+                                <li>{{ feature|capfirst }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    {% if car.interior_features %}
+                    <div class="feature-group">
+                        <h3>Interior Features</h3>
+                        <ul class="feature-list">
+                            {% for feature in car.interior_features.split|slice:":10" %}
+                                {% if feature %}
+                                <li>{{ feature|capfirst }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>  
+        </section>
+    </main>
+        <script>
+            function handleImageError(img, carModel) {
+                // Track how many attempts we've made
+                if (!img.dataset.attempts) {
+                    img.dataset.attempts = 1;
+                } else {
+                    img.dataset.attempts = parseInt(img.dataset.attempts) + 1;
+                }
+                
+                if (img.dataset.attempts == 1) {
+                    // First attempt failed, try with dashes instead of spaces
+                    img.src = "{% static 'images/cars/' %}" + carModel.toLowerCase().replace(/\s+/g, '-') + '.jpg';
+                } else if (img.dataset.attempts == 2) {
+                    // Second attempt failed, try uppercase for model codes (RAV4, GR86)
+                    if (/\d/.test(carModel)) {
+                        let parts = carModel.split(' ');
+                        for (let i = 0; i < parts.length; i++) {
+                            // Check if part might be a model code (contains numbers)
+                            if (/\d/.test(parts[i])) {
+                                parts[i] = parts[i].toUpperCase();
+                            }
+                        }
+                        img.src = "{% static 'images/cars/' %}" + parts.join('-').toLowerCase().replace(/\s+/g, '-') + '.jpg';
+                    } else {
+                        // Try GR models
+                        if (carModel.startsWith('GR ')) {
+                            img.src = "{% static 'images/cars/gr-' %}" + carModel.substring(3).toLowerCase().replace(/\s+/g, '-') + '.jpg';
+                        } else {
+                            img.src = "{% static 'images/cars/' %}" + carModel.toLowerCase().replace(/\s+/g, '_') + '.jpg';
+                        }
+                    }
+                } else if (img.dataset.attempts == 3) {
+                    // Try special cases
+                    if (carModel.includes('Land Cruiser')) {
+                        img.src = "{% static 'images/cars/landcruiser' %}" + 
+                                (carModel.includes('Prado') ? '-prado' : '') + '.jpg';
+                    } else if (carModel.includes('Hiace')) {
+                        img.src = "{% static 'images/cars/hiace' %}" + 
+                                (carModel.includes('Super Grande') ? '-super-grande' : '') + '.jpg';
+                    } else if (carModel.includes('Corolla')) {
+                        if (carModel.includes('Cross')) {
+                            img.src = "{% static 'images/cars/corolla-cross.jpg' %}";
+                        } else if (carModel.includes('Altis')) {
+                            img.src = "{% static 'images/cars/corolla-altis.jpg' %}";
+                        }
+                    } else if (carModel.includes('Lite Ace')) {
+                        img.src = "{% static 'images/cars/lite-ace.jpg' %}";
+                    } else if (carModel === 'Yaris Cross') {
+                        img.src = "{% static 'images/cars/yaris-cross.jpg' %}";
+                    } else {
+                        // Try the model name only (without year or make)
+                        const modelOnly = carModel.split(' ').pop().toLowerCase();
+                        img.src = "{% static 'images/cars/' %}" + modelOnly + '.jpg';
+                    }
+                } else {
+                    // All attempts failed, use default
+                    img.src = "{% static 'images/cars/default.jpg' %}";
+                    // Stop trying further replacements
+                    img.onerror = null;
+                }
+            }
+
+            // Keep your existing saveToFavorites function
+            function saveToFavorites(carId) {
+                alert('Car saved to favorites!');
+                const saveButton = document.getElementById('favorite-btn');
+                saveButton.innerHTML = 'Saved';
+                saveButton.classList.add('saved');
+            }
+        </script>
+</body>
+</html> 

@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from .models import Car
 from django.db import models
+from decimal import Decimal
 import json
 import os
 from .models import Car
@@ -389,3 +390,64 @@ def search_cars(request):
     }
     
     return render(request, 'cars/search.html', context)
+
+def car_detail(request, car_id):
+    """
+    View for displaying detailed information about a specific car.
+    """
+    car = get_object_or_404(Car, id=car_id)
+    
+    # Group car specifications into categories for better organization
+    specs = {
+        'basic_info': {
+            'title': 'Basic Information',
+            'items': [
+                {'name': 'Make', 'value': car.make},
+                {'name': 'Model', 'value': car.model},
+                {'name': 'Year', 'value': car.year},
+                {'name': 'Price', 'value': car.price, 'format': 'currency'},
+            ]
+        },
+        'performance': {
+            'title': 'Performance & Technical Specs',
+            'items': [
+                {'name': 'Engine', 'value': car.engine},
+                {'name': 'Horsepower', 'value': car.horsepower},
+                {'name': 'Transmission', 'value': car.transmission},
+                {'name': 'Drivetrain', 'value': car.drivetrain},
+                {'name': 'Fuel Economy (City)', 'value': car.fuel_economy_city, 'unit': 'km/L'},
+                {'name': 'Fuel Economy (Highway)', 'value': car.fuel_economy_highway, 'unit': 'km/L'},
+            ]
+        },
+        'dimensions': {
+            'title': 'Dimensions & Capacity',
+            'items': [
+                {'name': 'Body Type', 'value': car.body_type},
+                {'name': 'Seating Capacity', 'value': car.seats},
+                {'name': 'Fuel Type', 'value': car.fuel_type},
+                {'name': 'Wheel Size', 'value': car.wheel_size},
+            ]
+        },
+        'features': {
+            'title': 'Features',
+            'items': [
+                {'name': 'Safety Features', 'value': car.safety_features, 'format': 'list'},
+                {'name': 'Technology Features', 'value': car.technology_features, 'format': 'list'},
+                {'name': 'Interior Features', 'value': car.interior_features, 'format': 'list'},
+                {'name': 'Warranty', 'value': car.warranty},
+            ]
+        }
+    }
+    
+    # Find related cars (same body type or similar price range)
+    related_cars = Car.objects.filter(
+        models.Q(body_type=car.body_type) | 
+        models.Q(price__range=(car.price * Decimal('0.8'), car.price * Decimal('1.2')))
+    )
+    context = {
+        'car': car,
+        'specs': specs,
+        'related_cars': related_cars,
+    }
+    
+    return render(request, 'cars/car_detail.html', context)
