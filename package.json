@@ -1,0 +1,7 @@
+{
+    "name": "autocar",
+    "version": "1.0.0",
+    "scripts": {
+        "build": "pip install -r AutoCar/requirements.txt && python AutoCar/manage.py collectstatic --noinput"
+    }
+}

@@ -1,19 +1,13 @@
 {
   "version": 2,
+  "framework": null,
   "builds": [
     {
-      "src": "AutoCar/Autocar/vercel.py",
+      "src": "AutoCar/AutoCar/wsgi.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
         "runtime": "python3.9"
-      }
-    },
-    {
-      "src": "build_files.sh",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "staticfiles_build"
       }
     }
   ],
@@ -24,7 +18,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "AutoCar/Autocar/vercel.py"
+      "dest": "AutoCar/AutoCar/wsgi.py"
     }
   ]
 }
