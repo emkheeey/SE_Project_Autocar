@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import supabase
+from typing import Any, Optional
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0$z8x(!1b6y_5q+(1k)q-uy_y7ec&*7yu-b%mzzj#)w=77&+zf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*.vercel.app', 'your-domain.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app', 'your-domain.com']
+
+# Add Supabase configuration (below existing imports)
+SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://vbuqisvpvgqpkxstezik.supabase.co')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZidXFpc3ZwdmdxcGt4c3RlemlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2OTc4OTMsImV4cCI6MjA2MDI3Mzg5M30.9KVom9DQy1ZpKMCmlleeKwDImvn-zGBpaSEn3ZgRisk')
+supabase: Any = supabase.create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL and SUPABASE_KEY else None
+
 
 # Application definition
 
@@ -75,13 +84,28 @@ WSGI_APPLICATION = 'AutoCar.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}'''
 
+# Update database configuration (replace the existing DATABASES section)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Use PostgreSQL in production
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 
 
 # Password validation
