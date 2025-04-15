@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import login, authenticate
-from ..supabase_utils import fetch_data, insert_data, update_data, delete_data
+from AutoCar.utils.supabase_utils import fetch_data, insert_data, update_data, delete_data
 
 def signup(request):
     if request.method == 'POST':
@@ -34,8 +34,13 @@ def signup(request):
 @login_required
 def profile(request):
     # Get user profile from Supabase
-    supabase_profile = fetch_data('profiles', lambda q: q.eq('user_id', str(request.user.id)))
-    profile_data = supabase_profile.data[0] if supabase_profile and supabase_profile.data else {}
+    profile_data = {}
+    try:
+        supabase_profile = fetch_data('profiles', lambda q: q.eq('user_id', str(request.user.id)))
+        profile_data = supabase_profile.data[0] if supabase_profile and supabase_profile.data else {}
+    except Exception as e:
+        # Log the error
+        print(f"Error fetching profile: {e}")
     
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -69,8 +74,13 @@ def profile(request):
 
 def home(request):
     # Fetch featured cars from Supabase to display on homepage
-    featured_cars = fetch_data('cars', lambda q: q.eq('featured', True).limit(3))
-    cars = featured_cars.data if featured_cars and featured_cars.data else []
+    try:
+        featured_cars = fetch_data('cars', lambda q: q.eq('featured', True).limit(3))
+        cars = featured_cars.data if featured_cars and featured_cars.data else []
+    except Exception as e:
+        # Log the error
+        print(f"Error fetching featured cars: {e}")
+        cars = []
     
     return render(request, 'accounts/home.html', {'featured_cars': cars})
 
@@ -81,29 +91,44 @@ def cars(request):
         action = request.POST.get('action')
         
         if action == 'add':
-            # Add a new car
-            new_car = {
-                'make': request.POST.get('make'),
-                'model': request.POST.get('model'),
-                'year': int(request.POST.get('year')),
-                'price': float(request.POST.get('price')) if request.POST.get('price') else None,
-                'image_url': request.POST.get('image_url'),
-                'featured': request.POST.get('featured') == 'on',
-                'user_id': str(request.user.id)  # Associate the car with the current user
-            }
-            insert_data('cars', new_car)
-            messages.success(request, 'Car added successfully!')
+            try:
+                # Add a new car
+                new_car = {
+                    'make': request.POST.get('make'),
+                    'model': request.POST.get('model'),
+                    'year': int(request.POST.get('year')),
+                    'price': float(request.POST.get('price')) if request.POST.get('price') else None,
+                    'image_url': request.POST.get('image_url'),
+                    'featured': request.POST.get('featured') == 'on',
+                    'user_id': str(request.user.id)  # Associate the car with the current user
+                }
+                insert_data('cars', new_car)
+                messages.success(request, 'Car added successfully!')
+            except Exception as e:
+                # Log the error
+                print(f"Error adding car: {e}")
+                messages.error(request, 'Error adding car. Please try again.')
             
         elif action == 'delete':
-            # Delete a car
-            car_id = request.POST.get('car_id')
-            if car_id:
-                # Only delete if the car belongs to the user
-                delete_data('cars', 'id', int(car_id))
-                messages.success(request, 'Car deleted successfully!')
+            try:
+                # Delete a car
+                car_id = request.POST.get('car_id')
+                if car_id:
+                    # Only delete if the car belongs to the user
+                    delete_data('cars', 'id', int(car_id))
+                    messages.success(request, 'Car deleted successfully!')
+            except Exception as e:
+                # Log the error
+                print(f"Error deleting car: {e}")
+                messages.error(request, 'Error deleting car. Please try again.')
                 
     # Fetch all cars from Supabase
-    all_cars = fetch_data('cars')
-    cars = all_cars.data if all_cars and all_cars.data else []
+    cars = []
+    try:
+        all_cars = fetch_data('cars')
+        cars = all_cars.data if all_cars and all_cars.data else []
+    except Exception as e:
+        # Log the error
+        print(f"Error fetching cars: {e}")
     
     return render(request, 'accounts/cars.html', {'cars': cars})

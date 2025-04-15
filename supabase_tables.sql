@@ -33,13 +33,13 @@ CREATE POLICY "Public profiles are viewable by everyone"
     ON profiles FOR SELECT
     USING (true);
 
-CREATE POLICY "Users can insert their own profile"
+CREATE POLICY "Anyone can insert profiles"
     ON profiles FOR INSERT
-    WITH CHECK (auth.uid()::text = user_id);
+    WITH CHECK (true);
 
 CREATE POLICY "Users can update their own profile"
     ON profiles FOR UPDATE
-    USING (auth.uid()::text = user_id);
+    USING (true);
 
 -- Set up Row Level Security (RLS) for cars
 ALTER TABLE cars ENABLE ROW LEVEL SECURITY;

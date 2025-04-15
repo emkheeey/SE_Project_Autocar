@@ -1,4 +1,3 @@
-# Add these imports at the top
 from django.conf import settings
 import supabase
 
@@ -56,4 +55,4 @@ def delete_data(table_name, match_column, match_value):
     if not client:
         return None
     
-    return client.table(table_name).delete().eq(match_column, match_value).execute()
+    return client.table(table_name).delete().eq(match_column, match_value).execute() 

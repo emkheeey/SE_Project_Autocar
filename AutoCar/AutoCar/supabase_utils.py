@@ -6,13 +6,7 @@ def get_supabase_client():
     """
     Returns the Supabase client instance or None if not configured
     """
-    supabase_url = getattr(settings, 'SUPABASE_URL', None)
-    supabase_key = getattr(settings, 'SUPABASE_KEY', None)
-    
-    if not supabase_url or not supabase_key:
-        return None
-        
-    return supabase.create_client(supabase_url, supabase_key)
+    return settings.supabase
 
 def fetch_data(table_name, query=None):
     """
