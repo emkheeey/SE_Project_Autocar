@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | AutoCar{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="jumbotron text-center p-5 my-4 bg-light rounded">
+                <h1 class="display-4">Welcome to AutoCar</h1>
+                <p class="lead">Your complete car management solution</p>
+                <hr class="my-4">
+                
+                {% if user.is_authenticated %}
+                    <div class="alert alert-success">
+                        <h4>Hello, {{ user.username }}!</h4>
+                        <p>You're logged in and ready to manage your account.</p>
+                    </div>
+                    <a href="{% url 'profile' %}" class="btn btn-primary btn-lg">View My Profile</a>
+                {% else %}
+                    <p>Please sign up or log in to access all features.</p>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="{% url 'signup' %}" class="btn btn-primary btn-lg me-2">Sign Up</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
