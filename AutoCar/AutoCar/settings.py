@@ -12,29 +12,47 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from supabase import create_client
-from typing import Any, Optional
-import dj_database_url
+import sys
+import traceback
+
+try:
+    from supabase import create_client
+    print("Successfully imported supabase")
+except Exception as e:
+    print(f"Error importing supabase: {e}")
+
+try:
+    from typing import Any
+    import dj_database_url
+    print("Successfully imported dj_database_url")
+except Exception as e:
+    print(f"Error importing dj_database_url: {e}")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+print(f"BASE_DIR: {BASE_DIR}")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0$z8x(!1b6y_5q+(1k)q-uy_y7ec&*7yu-b%mzzj#)w=77&+zf'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-0$z8x(!1b6y_5q+(1k)q-uy_y7ec&*7yu-b%mzzj#)w=77&+zf')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+print(f"DEBUG mode: {DEBUG}")
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app', 'your-domain.com']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app').split(',')
+print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 
-# Add Supabase configuration (below existing imports)
+# Add Supabase configuration 
 SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://vbuqisvpvgqpkxstezik.supabase.co')
+# Don't print the entire key for security reasons
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZidXFpc3ZwdmdxcGt4c3RlemlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2OTc4OTMsImV4cCI6MjA2MDI3Mzg5M30.9KVom9DQy1ZpKMCmlleeKwDImvn-zGBpaSEn3ZgRisk')
 # We'll instantiate the client when needed, not at module level
+print(f"SUPABASE_URL is set: {'Yes' if SUPABASE_URL else 'No'}")
+print(f"SUPABASE_KEY is set: {'Yes' if SUPABASE_KEY else 'No'}")
 
 
 # Application definition
@@ -93,16 +111,32 @@ DATABASES = {
     }
 }
 
+# Print database URL (without password for security)
+db_url = os.environ.get('DATABASE_URL', '')
+if db_url:
+    # Mask the password for logging
+    masked_url = db_url
+    if '@' in db_url:
+        prefix, suffix = db_url.split('@', 1)
+        if ':' in prefix:
+            user_part, pass_part = prefix.rsplit(':', 1)
+            masked_url = f"{user_part}:****@{suffix}"
+    print(f"DATABASE_URL is set (masked): {masked_url}")
+else:
+    print("DATABASE_URL is not set, using SQLite")
+
 # Use PostgreSQL in production if DATABASE_URL is set correctly
 if 'DATABASE_URL' in os.environ:
     try:
-        DATABASES['default'] = dj_database_url.config(
+        db_config = dj_database_url.config(
             conn_max_age=600,
             conn_health_checks=True,
         )
-        print(f"Using database configuration from DATABASE_URL")
+        DATABASES['default'] = db_config
+        print(f"Using database configuration from DATABASE_URL: {db_config.get('ENGINE')}")
     except Exception as e:
         print(f"Error configuring database from DATABASE_URL: {e}")
+        print(traceback.format_exc())
         print("Using default SQLite database instead")
 
 

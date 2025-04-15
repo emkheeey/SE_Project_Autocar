@@ -31,7 +31,13 @@
             <div class="my-5">
                 <h2 class="text-center mb-4">Featured Cars</h2>
                 
-                {% if featured_cars %}
+                {% if error_message %}
+                <div class="alert alert-warning">
+                    <h4>Error Loading Cars</h4>
+                    <p>There was an error loading the featured cars: {{ error_message }}</p>
+                    <p>Please check your Supabase configuration or try again later.</p>
+                </div>
+                {% elif featured_cars %}
                 <div class="row">
                     {% for car in featured_cars %}
                     <div class="col-md-4 mb-4">

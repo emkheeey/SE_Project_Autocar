@@ -74,15 +74,23 @@ def profile(request):
 
 def home(request):
     # Fetch featured cars from Supabase to display on homepage
+    cars = []  # Default empty list
+    error_message = None
+    
     try:
         featured_cars = fetch_data('cars', lambda q: q.eq('featured', True).limit(3))
         cars = featured_cars.data if featured_cars and featured_cars.data else []
     except Exception as e:
-        # Log the error
+        # Handle error more gracefully
+        error_message = str(e)
         print(f"Error fetching featured cars: {e}")
-        cars = []
     
-    return render(request, 'accounts/home.html', {'featured_cars': cars})
+    context = {
+        'featured_cars': cars,
+        'error_message': error_message
+    }
+    
+    return render(request, 'accounts/home.html', context)
 
 @login_required
 def cars(request):

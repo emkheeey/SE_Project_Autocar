@@ -56,7 +56,14 @@
             {% endfor %}
         {% endif %}
         
-        {% block content %}{% endblock %}
+        {% block content %}
+            <!-- Fallback content if no block content is provided -->
+            <div class="alert alert-info">
+                <h4>AutoCar is Running</h4>
+                <p>This is default content from the base template.</p>
+                <p>The application is working, but no specific content was provided.</p>
+            </div>
+        {% endblock %}
     </div>
     
     <!-- Bootstrap JS -->
