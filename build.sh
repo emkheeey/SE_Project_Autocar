@@ -19,12 +19,15 @@ pip3 install -r requirements.txt
 echo "Installed packages:"
 pip3 list
 
-# Collect static files if running inside the AutoCar directory
+# Run migrations to create database tables
+echo "Running database migrations..."
 if [ -d "AutoCar" ]; then
   cd AutoCar
+  python3 manage.py migrate
   python3 manage.py collectstatic --noinput
 else
   # If running from root of AutoCar (Vercel's path0)
+  python3 manage.py migrate
   python3 manage.py collectstatic --noinput
 fi
 
