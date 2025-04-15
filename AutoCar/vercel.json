@@ -1,12 +1,21 @@
 {
     "builds": [
         {
+            "src": "build.sh",
+            "use": "@vercel/static-build",
+            "config": { "distDir": "staticfiles" }
+        },
+        {
             "src": "AutoCar/wsgi.py",
             "use": "@vercel/python",
-            "config": {"maxLambdaSize": "50mb", "runtime": "python3.11"}
+            "config": { "runtime": "python3.11" }
         }
     ],
     "routes": [
+        {
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+        },
         {
             "src": "/(.*)",
             "dest": "AutoCar/wsgi.py"
