@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | AutoCar</title>
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Back Button -->
+    <header>
+        <button class="back-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1>My Profile</h1>
+    </header>
+
+    <!-- Profile Section -->
+    <main>
+        <div class="profile-section">
+            <div class="profile-pic">
+                <img src="images/default-profile.png" alt="Profile Picture" id="profileImage">
+                <button class="edit-pic-btn" onclick="document.getElementById('profileUpload').click()">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <input type="file" id="profileUpload" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-item">
+                    <label>Full Name</label>
+                    <div class="editable" id="userName">John Doe</div>
+                    <button class="edit-btn" onclick="editField('userName')"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+
+                <div class="detail-item">
+                    <label>Email</label>
+                    <div class="non-editable" id="userEmail">johndoe@example.com</div>
+                </div>
+
+                <div class="detail-item">
+                    <label>Password</label>
+                    <div class="editable" id="userPassword">••••••••</div>
+                    <button class="edit-btn" onclick="editField('userPassword')"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Favorites Section -->
+        <section class="saved-favorites">
+            <h2><i class="fas fa-heart"></i> Saved Favorites</h2>
+            <div class="favorites-grid" id="favoritesGrid">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+
+        <!-- Logout Button -->
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+        </button>
+    </main>
+
+    <script src="profile.js"></script>
+</body>
+</html>

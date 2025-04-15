@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Favorites | AutoCar</title>
+    <link rel="stylesheet" href="favorite.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Back Button -->
+    <header>
+        <button class="back-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1>Saved Favorites</h1>
+        
+        <!-- Compare Button (Visible when 2+ favorites exist) -->
+        <button class="compare-btn hidden" id="compareBtn" onclick="openCompareModal()">
+            <i class="fas fa-exchange-alt"></i> Compare
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Empty State -->
+        <div class="empty-state hidden" id="emptyState">
+            <i class="far fa-heart"></i>
+            <h2>No Saved Cars Yet</h2>
+            <p>Save your favorite cars to compare them later</p>
+            <button onclick="window.location.href='browse.html'">Browse Cars</button>
+        </div>
+
+        <!-- Favorites Grid -->
+        <div class="favorites-grid" id="favoritesGrid">
+            <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Compare Modal -->
+        <div class="modal-overlay hidden" id="compareModal">
+            <div class="modal">
+                <h2>Compare Cars</h2>
+                <p>Select 2 or 3 cars to compare:</p>
+                
+                <div class="compare-checkboxes" id="compareCheckboxes">
+                    <!-- Dynamically populated -->
+                </div>
+                
+                <div class="modal-buttons">
+                    <button onclick="closeCompareModal()">Cancel</button>
+                    <button onclick="proceedToCompare()">Compare Now</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="favorite.js"></script>
+</body>
+</html>
