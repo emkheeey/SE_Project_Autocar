@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import os
 import sys
 import traceback
@@ -112,10 +112,48 @@ def health_check(request):
     """
     return HttpResponse("OK", content_type="text/plain")
 
+def debug_view(request):
+    """
+    Debug view that returns simple JSON response with key information
+    """
+    try:
+        # Test database connection
+        db_status = "Unknown"
+        try:
+            from django.db import connections
+            conn = connections['default']
+            conn.ensure_connection()
+            db_status = "Connected"
+        except Exception as e:
+            db_status = f"Error: {str(e)}"
+        
+        # Test template loading
+        template_status = "Unknown"
+        try:
+            from django.template.loader import get_template
+            get_template('accounts/base.html')  # Try to load a basic template
+            template_status = "Templates loading correctly"
+        except Exception as e:
+            template_status = f"Template error: {str(e)}"
+            
+        # Return simple JSON response
+        data = {
+            "status": "running",
+            "database": db_status,
+            "templates": template_status,
+            "static_root": settings.STATIC_ROOT,
+            "debug_mode": settings.DEBUG,
+            "installed_apps": settings.INSTALLED_APPS,
+        }
+        return JsonResponse(data)
+    except Exception as e:
+        return HttpResponse(f"Debug error: {str(e)}", content_type="text/plain")
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),  # Include the accounts app URLs
     path('test/', test_view, name='test_view'),  # Add a test view
     path('error-check/', error_view, name='error_view'),  # Always succeeds
     path('health/', health_check, name='health_check'),  # Simple health check
+    path('debug/', debug_view, name='debug_view'),  # Add debug diagnostics
 ]

@@ -3,10 +3,30 @@ set -e
 
 echo "Starting build process..."
 
-# Install dependencies with upgrade to ensure we get the latest package versions
-echo "Upgrading pip and installing dependencies..."
-pip3 install --upgrade pip
-pip3 install -r AutoCar/requirements.txt
+# Print Python version for debugging
+python3 --version
+
+# Print directory contents for debugging
+echo "Current directory: $(pwd)"
+echo "Directory contents:"
+ls -la
+
+# Install dependencies
+echo "Installing dependencies..."
+pip3 install -r requirements.txt
+
+# Print installed packages for debugging
+echo "Installed packages:"
+pip3 list
+
+# Collect static files if running inside the AutoCar directory
+if [ -d "AutoCar" ]; then
+  cd AutoCar
+  python3 manage.py collectstatic --noinput
+else
+  # If running from root of AutoCar (Vercel's path0)
+  python3 manage.py collectstatic --noinput
+fi
 
 # Verify Django is installed
 echo "Verifying Django installation..."
@@ -15,10 +35,5 @@ python3 -c "import django; print(f'Django version: {django.__version__}')"
 # Create required directories
 echo "Ensuring staticfiles directory exists..."
 mkdir -p AutoCar/staticfiles
-
-# Collect static files
-echo "Collecting static files..."
-cd AutoCar
-python3 manage.py collectstatic --noinput --verbosity 1
 
 echo "Build process completed successfully!" 

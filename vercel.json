@@ -8,7 +8,18 @@
         {
             "src": "AutoCar/AutoCar/wsgi.py",
             "use": "@vercel/python",
-            "config": { "runtime": "python3.11" }
+            "config": { 
+                "runtime": "python3.11",
+                "maxLambdaSize": "15mb",
+                "installCommand": "pip install -r requirements.txt" 
+            }
+        },
+        {
+            "src": "fallback_handler.py",
+            "use": "@vercel/python",
+            "config": {
+                "runtime": "python3.11"
+            }
         }
     ],
     "routes": [
@@ -17,8 +28,26 @@
             "dest": "/static/$1"
         },
         {
+            "src": "/health",
+            "dest": "AutoCar/AutoCar/wsgi.py"
+        },
+        {
+            "src": "/check",
+            "dest": "AutoCar/check_imports.py" 
+        },
+        {
+            "src": "/fallback",
+            "dest": "fallback_handler.py"
+        },
+        {
             "src": "/(.*)",
             "dest": "AutoCar/AutoCar/wsgi.py"
         }
-    ]
+    ],
+    "env": {
+        "PYTHONPATH": "/var/task",
+        "DEBUG": "False",
+        "DJANGO_SETTINGS_MODULE": "AutoCar.settings",
+        "ALLOWED_HOSTS": "localhost,127.0.0.1,.vercel.app"
+    }
 }

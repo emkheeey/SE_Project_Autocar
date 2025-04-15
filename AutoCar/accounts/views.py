@@ -225,3 +225,13 @@ def cars(request):
         print(f"Error fetching cars: {e}")
     
     return render(request, 'accounts/cars.html', {'cars': cars})
+
+def minimal_view(request):
+    """
+    A minimal view that doesn't use any database or complex features
+    Just to test if basic template rendering works
+    """
+    try:
+        return render(request, 'minimal.html')
+    except Exception as e:
+        return HttpResponse(f"Error in minimal view: {str(e)}", content_type="text/plain")
