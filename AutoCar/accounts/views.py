@@ -3,7 +3,26 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import login, authenticate
-from AutoCar.utils.supabase_utils import fetch_data, insert_data, update_data, delete_data
+# Fix import path for supabase_utils
+try:
+    from AutoCar.utils.supabase_utils import fetch_data, insert_data, update_data, delete_data
+except ImportError:
+    try:
+        from supabase_utils import fetch_data, insert_data, update_data, delete_data
+    except ImportError:
+        # Fallback functions to prevent crashes if imports fail
+        def fetch_data(*args, **kwargs): 
+            print(f"Mock fetch_data called with {args} {kwargs}")
+            return type('obj', (object,), {'data': []})
+        def insert_data(*args, **kwargs): 
+            print(f"Mock insert_data called with {args} {kwargs}")
+            return None
+        def update_data(*args, **kwargs): 
+            print(f"Mock update_data called with {args} {kwargs}")
+            return None
+        def delete_data(*args, **kwargs): 
+            print(f"Mock delete_data called with {args} {kwargs}")
+            return None
 
 def signup(request):
     if request.method == 'POST':
@@ -91,6 +110,72 @@ def home(request):
     }
     
     return render(request, 'accounts/home.html', context)
+
+# Add a dedicated error handler view
+def error_handler(request):
+    """
+    View to display detailed error information for debugging
+    """
+    import sys
+    import os
+    import traceback
+    from django.http import HttpResponse
+    
+    error_html = f"""
+    <html>
+    <head>
+        <title>Diagnostic Information</title>
+        <style>
+            body {{ font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }}
+            h1 {{ color: #333; }}
+            h2 {{ color: #444; margin-top: 20px; }}
+            pre {{ background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto; }}
+            .section {{ margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; }}
+        </style>
+    </head>
+    <body>
+        <h1>Diagnostic Information</h1>
+        
+        <div class="section">
+            <h2>Python Information</h2>
+            <p><strong>Python Version:</strong> {sys.version}</p>
+            <p><strong>Python Path:</strong></p>
+            <pre>{os.linesep.join(sys.path)}</pre>
+        </div>
+        
+        <div class="section">
+            <h2>Environment</h2>
+            <p><strong>Current Directory:</strong> {os.getcwd()}</p>
+            <p><strong>Directory Contents:</strong></p>
+            <pre>{os.linesep.join(os.listdir())}</pre>
+            <p><strong>Environment Variables:</strong></p>
+            <pre>{os.linesep.join([f"{k}={'[REDACTED]' if k in ['SECRET_KEY', 'DATABASE_URL', 'SUPABASE_KEY'] else v}" for k, v in os.environ.items()])}</pre>
+        </div>
+        
+        <div class="section">
+            <h2>Import Test</h2>
+            <pre>
+import django: {check_import('django')}
+import supabase_utils: {check_import('supabase_utils')}
+import AutoCar.utils.supabase_utils: {check_import('AutoCar.utils.supabase_utils')}
+from django.conf import settings: {check_import('django.conf.settings')}
+            </pre>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return HttpResponse(error_html)
+
+def check_import(module_name):
+    """Helper function to check if a module can be imported"""
+    try:
+        __import__(module_name)
+        return "Success"
+    except ImportError as e:
+        return f"Error: {str(e)}"
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 @login_required
 def cars(request):

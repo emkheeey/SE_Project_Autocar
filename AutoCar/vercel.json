@@ -20,11 +20,22 @@
             "dest": "/static/$1"
         },
         {
+            "src": "/health",
+            "dest": "AutoCar/AutoCar/wsgi.py"
+        },
+        {
+            "src": "/check",
+            "dest": "AutoCar/check_imports.py" 
+        },
+        {
             "src": "/(.*)",
             "dest": "AutoCar/AutoCar/wsgi.py"
         }
     ],
     "env": {
-        "PYTHONPATH": "/var/task"
+        "PYTHONPATH": "/var/task",
+        "DEBUG": "False",
+        "DJANGO_SETTINGS_MODULE": "AutoCar.settings",
+        "ALLOWED_HOSTS": "localhost,127.0.0.1,.vercel.app"
     }
 }
