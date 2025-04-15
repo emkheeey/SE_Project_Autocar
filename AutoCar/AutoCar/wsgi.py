@@ -72,6 +72,9 @@ try:
 except Exception as e:
     print(f"Error initializing WSGI application: {e}")
     print(traceback.format_exc())
+    # Store the exception for later use
+    error_info = str(e)
+    error_traceback = traceback.format_exc()
     # Fallback to a simple error application
     def application(environ, start_response):
         path_info = environ.get('PATH_INFO', '')
@@ -90,8 +93,8 @@ except Exception as e:
         <head><title>Application Error</title></head>
         <body>
             <h1>Server Error: Application initialization failed</h1>
-            <p>{str(e)}</p>
-            <pre>{traceback.format_exc()}</pre>
+            <p>{error_info}</p>
+            <pre>{error_traceback}</pre>
             <h2>Diagnostics:</h2>
             <p>Python version: {sys.version}</p>
             <p>Current directory: {os.getcwd()}</p>

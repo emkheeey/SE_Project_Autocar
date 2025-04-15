@@ -106,9 +106,16 @@ def error_view(request):
     """
     return HttpResponse("Server is running. Basic functionality OK.")
 
+def health_check(request):
+    """
+    Extremely simple health check endpoint
+    """
+    return HttpResponse("OK", content_type="text/plain")
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),  # Include the accounts app URLs
     path('test/', test_view, name='test_view'),  # Add a test view
     path('error-check/', error_view, name='error_view'),  # Always succeeds
+    path('health/', health_check, name='health_check'),  # Simple health check
 ]
