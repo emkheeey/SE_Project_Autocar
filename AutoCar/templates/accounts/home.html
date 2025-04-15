@@ -26,6 +26,42 @@
                     </div>
                 {% endif %}
             </div>
+            
+            <!-- Featured Cars Section -->
+            <div class="my-5">
+                <h2 class="text-center mb-4">Featured Cars</h2>
+                
+                {% if featured_cars %}
+                <div class="row">
+                    {% for car in featured_cars %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            {% if car.image_url %}
+                            <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car.make }} {{ car.model }}">
+                            {% else %}
+                            <div class="bg-light text-center p-5">
+                                <i class="fas fa-car fa-3x text-secondary"></i>
+                            </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ car.make }} {{ car.model }}</h5>
+                                <p class="card-text">
+                                    <strong>Year:</strong> {{ car.year }}<br>
+                                    {% if car.price %}
+                                    <strong>Price:</strong> ${{ car.price }}<br>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info text-center">
+                    No featured cars available at the moment.
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

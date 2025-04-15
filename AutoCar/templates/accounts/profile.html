@@ -88,6 +88,30 @@
                     </div>
                 </form>
             </div>
+            
+            <!-- Supabase Profile Information -->
+            {% if supabase_data %}
+            <div class="card mt-4 mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Additional Profile Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>User ID:</strong> {{ supabase_data.user_id }}</p>
+                            <p><strong>Username:</strong> {{ supabase_data.username }}</p>
+                            <p><strong>Email:</strong> {{ supabase_data.email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Created:</strong> {{ supabase_data.created_at|date:"F j, Y" }}</p>
+                            {% if supabase_data.updated_at %}
+                            <p><strong>Last Updated:</strong> {{ supabase_data.updated_at|date:"F j, Y" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
