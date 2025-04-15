@@ -26,28 +26,53 @@ except ImportError:
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            # Create user in Django auth system
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            
-            # Store additional user data in Supabase
-            user_data = {
-                'user_id': str(user.id),
-                'username': username,
-                'email': form.cleaned_data.get('email'),
-                'created_at': user.date_joined.isoformat()
-            }
-            insert_data('profiles', user_data)
-            
-            messages.success(request, f'Account created for {username}!')
-            return redirect('home')
+        try:
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                # Create user in Django auth system
+                try:
+                    user = form.save()
+                    username = form.cleaned_data.get('username')
+                    raw_password = form.cleaned_data.get('password1')
+                    
+                    # Authentication attempt
+                    try:
+                        user = authenticate(username=username, password=raw_password)
+                        if user is not None:
+                            login(request, user)
+                        else:
+                            messages.error(request, "Authentication failed after user creation")
+                    except Exception as auth_error:
+                        messages.error(request, f"Authentication error: {str(auth_error)}")
+                    
+                    # Store additional user data in Supabase - make this optional
+                    try:
+                        user_data = {
+                            'user_id': str(user.id),
+                            'username': username,
+                            'email': form.cleaned_data.get('email'),
+                            'created_at': user.date_joined.isoformat()
+                        }
+                        insert_data('profiles', user_data)
+                    except Exception as supabase_error:
+                        # Don't fail if Supabase storage fails - just log the error
+                        messages.warning(request, f"Note: User profile sync to database failed, but your account was created.")
+                        print(f"Supabase error: {str(supabase_error)}")
+                    
+                    messages.success(request, f'Account created for {username}!')
+                    return redirect('home')
+                except Exception as user_save_error:
+                    messages.error(request, f"Error creating user: {str(user_save_error)}")
+            else:
+                # Form validation errors
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+        except Exception as outer_error:
+            messages.error(request, f"Unexpected error: {str(outer_error)}")
     else:
         form = SignUpForm()
+    
     return render(request, 'accounts/signup.html', {'form': form})
 
 @login_required
@@ -103,6 +128,34 @@ def home(request):
         # Handle error more gracefully
         error_message = str(e)
         print(f"Error fetching featured cars: {e}")
+        messages.warning(request, "Unable to fetch featured cars. Using demo data instead.")
+        # Provide demo data if database fetch fails
+        cars = [
+            {
+                'id': 1, 
+                'make': 'Toyota', 
+                'model': 'Camry', 
+                'year': 2023, 
+                'price': 25000.00,
+                'image_url': 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2'
+            },
+            {
+                'id': 2, 
+                'make': 'Honda', 
+                'model': 'Accord', 
+                'year': 2023, 
+                'price': 27000.00,
+                'image_url': 'https://images.unsplash.com/photo-1583121274602-3e2820c69888'
+            },
+            {
+                'id': 3, 
+                'make': 'Tesla', 
+                'model': 'Model 3', 
+                'year': 2023, 
+                'price': 42000.00,
+                'image_url': 'https://images.unsplash.com/photo-1560958089-b8a1929cea89'
+            }
+        ]
     
     context = {
         'featured_cars': cars,
