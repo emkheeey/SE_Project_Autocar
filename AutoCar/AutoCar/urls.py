@@ -34,7 +34,7 @@ def test_view(request):
         # Test Supabase connection
         supabase_info = "Not configured"
         try:
-            from AutoCar.utils.supabase_utils import get_supabase_client
+            from supabase_utils import get_supabase_client
             client = get_supabase_client()
             if client:
                 supabase_info = "Supabase client created successfully"
