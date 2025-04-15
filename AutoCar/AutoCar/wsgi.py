@@ -40,7 +40,7 @@ except Exception as e:
         status = '500 Internal Server Error'
         response_headers = [('Content-type', 'text/plain')]
         start_response(status, response_headers)
-        error_message = f"Server Error: {str(e)}\n\n{traceback.format_exc()}"
+        error_message = f"Server Error: Application initialization failed\n\n{traceback.format_exc()}"
         return [error_message.encode()]
 
 # Vercel uses the variable 'app'
