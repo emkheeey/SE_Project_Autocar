@@ -5,4 +5,5 @@ psycopg2-binary==2.9.10
 sqlparse==0.5.3
 tzdata==2025.1
 whitenoise==6.9.0
-supabase-py==2.15.0  # Python client for Supabase
+supabase==2.0.0  # Python client for Supabase
+python-dotenv==1.0.0

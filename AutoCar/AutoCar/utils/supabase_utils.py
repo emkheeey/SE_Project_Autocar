@@ -1,5 +1,5 @@
 from django.conf import settings
-import supabase
+from supabase import create_client, Client
 
 def get_supabase_client():
     """
@@ -11,7 +11,7 @@ def get_supabase_client():
     if not supabase_url or not supabase_key:
         return None
         
-    return supabase.create_client(supabase_url, supabase_key)
+    return create_client(supabase_url, supabase_key)
 
 def fetch_data(table_name, query=None):
     """

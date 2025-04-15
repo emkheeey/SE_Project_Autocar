@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-import supabase
+from supabase import create_client
 from typing import Any, Optional
 import dj_database_url
 
@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app', 'your-domain.com']
 # Add Supabase configuration (below existing imports)
 SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://vbuqisvpvgqpkxstezik.supabase.co')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZidXFpc3ZwdmdxcGt4c3RlemlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2OTc4OTMsImV4cCI6MjA2MDI3Mzg5M30.9KVom9DQy1ZpKMCmlleeKwDImvn-zGBpaSEn3ZgRisk')
-supabase: Any = supabase.create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL and SUPABASE_KEY else None
+# We'll instantiate the client when needed, not at module level
 
 
 # Application definition
