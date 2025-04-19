@@ -11,7 +11,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
     <header>
         <div class="logo">
             <img src="{% static 'images/logo.png' %}">
@@ -65,3 +65,5 @@
     <footer>
         <p>&copy; 2025 AutoCar System | Avila, Pelgone, Lorena, Rectra</p>
     </footer>
+</body>
+</html>
