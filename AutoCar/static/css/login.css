@@ -10,6 +10,13 @@ body.login-page {
     overflow: hidden;
 }
 
+/* Super specific selector to override any other styles */
+body.login-page footer,
+.login-page footer,
+body.login-page>footer {
+    display: none !important;
+}
+
 /* Container wrapper */
 .container-wrapper {
     width: 400px;
