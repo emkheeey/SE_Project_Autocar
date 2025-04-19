@@ -191,7 +191,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For collected static file
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'home'  # Redirect after login
-LOGOUT_REDIRECT_URL = 'home'  # Redirect after logout
+LOGOUT_REDIRECT_URL = 'base'  # Redirect after logout
 
 # Security settings
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

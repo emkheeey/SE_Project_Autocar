@@ -1,75 +1,67 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AutoCar{% endblock %}</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
-    <link href="{% static 'css/accounts.css' %}" rel="stylesheet">
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">AutoCar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'cars' %}">Manage Cars</a>
-                        </li>
-                        <li class="nav-item">
-                            <form method="post" action="{% url 'logout' %}" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn nav-link border-0 bg-transparent">Logout</button>
-                            </form>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
+    <header>
+        <div class="logo">
+            <img src="{% static 'images/logo.png' %}">
         </div>
-    </nav>
-    
-    <div class="container mt-4">
-        {% if messages %}
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'about' %}">ABOUT US</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}">PROFILE</a></li>
+                    <li><a href="{% url 'cars' %}">MANAGE CARS</a></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-btn">LOGOUT</button>
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Messages display -->
+    {% if messages %}
+        <div class="messages-container">
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="message {{ message.tags }}">
                     {{ message }}
                 </div>
             {% endfor %}
-        {% endif %}
-        
-        {% block content %}
-            <!-- Fallback content if no block content is provided -->
-            <div class="alert alert-info">
-                <h4>AutoCar is Running</h4>
-                <p>This is default content from the base template.</p>
-                <p>The application is working, but no specific content was provided.</p>
-            </div>
-        {% endblock %}
-    </div>
+        </div>
+    {% endif %}
+
+    <!-- Main content -->
+    {% block content %}
+    <section id="home">
+        <div class="text-container">
+            <h1>Find the Perfect Car for You</h1>
+            <p class="highlight">Drive Your Dream Car Today</p>
+            <p>Explore a wide range of car model. Whether for work or adventure, we have the right car for you.</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn">My Profile</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn">Login</a>
+            {% endif %}
+        </div>
+    </section>
+    {% endblock %}
+
     
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="{% static 'js/main.js' %}"></script>
-    {% block extra_js %}{% endblock %}
-</body>
-</html>
+    <footer>
+        <p>&copy; 2025 AutoCar System | Avila, Pelgone, Lorena, Rectra</p>
+    </footer>

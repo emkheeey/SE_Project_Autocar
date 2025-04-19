@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import login, authenticate
+
 # Fix import path for supabase_utils
 try:
     from AutoCar.utils.supabase_utils import fetch_data, insert_data, update_data, delete_data
@@ -163,7 +164,7 @@ def home(request):
         'error_message': error_message
     }
     
-    return render(request, 'accounts/home.html', context)
+    return render(request, 'base.html', context)
 
 # Add a dedicated error handler view
 def error_handler(request):
@@ -289,3 +290,6 @@ def minimal_view(request):
         return render(request, 'minimal.html')
     except Exception as e:
         return HttpResponse(f"Error in minimal view: {str(e)}", content_type="text/plain")
+    
+def about_view(request):
+    return render(request, 'accounts/about.html')
