@@ -164,7 +164,7 @@ def home(request):
         'error_message': error_message
     }
     
-    return render(request, 'base.html', context) #nag edit is me here
+    return render(request, 'base.html', context) #nag edi is me here
 
 # Add a dedicated error handler view
 def error_handler(request):

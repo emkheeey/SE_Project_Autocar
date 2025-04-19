@@ -61,9 +61,12 @@
     </section>
     {% endblock %}
 
-    
+    {% if not hide_footer%}
     <footer>
         <p>&copy; 2025 AutoCar System | Avila, Pelgone, Lorena, Rectra</p>
     </footer>
+    {% endif %}
+
+    <script src="{% static 'js/hide_login_buttons.js' %}"></script>
 </body>
 </html>
