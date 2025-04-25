@@ -3,72 +3,20 @@
 
 {% block title %}Home | AutoCar{% endblock %}
 
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="{% static 'css/home.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="jumbotron text-center p-5 my-4 bg-light rounded">
-                <h1 class="display-4">Welcome to AutoCar</h1>
-                <p class="lead">Your complete car management solution</p>
-                <hr class="my-4">
-                
-                {% if user.is_authenticated %}
-                    <div class="alert alert-success">
-                        <h4>Hello, {{ user.username }}!</h4>
-                        <p>You're logged in and ready to manage your account.</p>
-                    </div>
-                    <a href="{% url 'profile' %}" class="btn btn-primary btn-lg">View My Profile</a>
-                {% else %}
-                    <p>Please sign up or log in to access all features.</p>
-                    <div class="d-grid gap-2 d-md-block">
-                        <a href="{% url 'signup' %}" class="btn btn-primary btn-lg me-2">Sign Up</a>
-                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
-                    </div>
-                {% endif %}
-            </div>
-            
-            <!-- Featured Cars Section -->
-            <div class="my-5">
-                <h2 class="text-center mb-4">Featured Cars</h2>
-                
-                {% if error_message %}
-                <div class="alert alert-warning">
-                    <h4>Error Loading Cars</h4>
-                    <p>There was an error loading the featured cars: {{ error_message }}</p>
-                    <p>Please check your Supabase configuration or try again later.</p>
-                </div>
-                {% elif featured_cars %}
-                <div class="row">
-                    {% for car in featured_cars %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            {% if car.image_url %}
-                            <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car.make }} {{ car.model }}">
-                            {% else %}
-                            <div class="bg-light text-center p-5">
-                                <i class="fas fa-car fa-3x text-secondary"></i>
-                            </div>
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ car.make }} {{ car.model }}</h5>
-                                <p class="card-text">
-                                    <strong>Year:</strong> {{ car.year }}<br>
-                                    {% if car.price %}
-                                    <strong>Price:</strong> ${{ car.price }}<br>
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="alert alert-info text-center">
-                    No featured cars available at the moment.
-                </div>
-                {% endif %}
-            </div>
-        </div>
+    <div class="welcome-banner">FIND YOUR CAR NOW!</div>
+
+    <div class="button-container">
+        <button class="browsebtn" onclick="window.location.href='{% url 'cars' %}'">BROWSE CARS</button>
+        <button class="comparebtn">COMPARE CARS</button>
     </div>
-</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/home.js' %}"></script>
 {% endblock %}
