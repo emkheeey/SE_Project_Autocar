@@ -1,90 +1,105 @@
-/* Override body styles only for signup page */
-body.signup-page {
+/* Background styling */
+body {
     margin: 0;
     padding: 0;
-    background: url('../images/loginbg.png') no-repeat center center/cover;
+    background-image: url('../images/loginbg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    font-family: 'Poppins', Arial, sans-serif;
 }
 
-/* Super specific selector to override any other styles */
-body.signup-page footer,
-.signup-page footer,
-body.signup-page>footer {
+/* Hide footer on signup page */
+footer {
     display: none !important;
 }
 
-/* Container wrapper */
-.container-wrapper {
-    width: 400px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+/* Container for the signup form */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* White modal box */
+.auth-form {
+    background-color: white;
+    border-radius: 8px;
     padding: 30px;
+    width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Form title */
+.auth-form h2 {
+    margin-bottom: 25px;
     text-align: center;
-    margin-top: 80px;
-    /* Add space for header */
-}
-
-.form-container {
-    width: 100%;
-}
-
-.form-container h2 {
-    margin-bottom: 20px;
     color: #333;
+    font-size: 24px;
+    font-weight: 600;
 }
 
-.input-field {
-    width: 90%;
+/* Input fields */
+.form-control {
+    width: 100%;
     padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     box-sizing: border-box;
+    font-size: 14px;
 }
 
-.btn {
-    width: 90%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background: #d32f2f;
+/* Hide labels to match the design */
+.form-label {
+    display: none;
+}
+
+/* Placeholder styling */
+input::placeholder {
+    color: #999;
+}
+
+/* Submit button */
+.btn-primary {
+    width: 100%;
+    background-color: #d32f2f !important;
+    border: none !important;
     color: white;
+    padding: 12px;
     font-size: 16px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: 0.3s;
     margin-top: 10px;
 }
 
-.btn:hover {
-    background: #b71c1c;
+.btn-primary:hover {
+    background-color: #b71c1c !important;
 }
 
-.switch {
+/* Login link at bottom */
+.mt-4 {
     margin-top: 15px;
+    text-align: center;
     font-size: 14px;
 }
 
-.switch a {
+.mt-4 a {
     color: #d32f2f;
     text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
+    font-weight: 500;
 }
 
 /* Error messages */
-.error-message,
-.form-error {
+.alert-danger,
+.invalid-feedback {
     color: #d32f2f;
-    font-size: 14px;
-    text-align: left;
-    margin: 5px 0 10px 5%;
-}
-
-.input-error {
-    border-color: #d32f2f;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
 }

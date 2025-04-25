@@ -7,39 +7,64 @@
 <link href="{% static 'css/signup.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block body_class %}signup-page{% endblock %}
-
 {% block content %}
-<div class="container-wrapper">
-    <div class="form-container" id="signup-container">
+<div class="container">
+    <div class="auth-form">
         <h2>Sign Up</h2>
+        
         <form method="post" novalidate>
             {% csrf_token %}
             
             {% if form.non_field_errors %}
-                <div class="form-error">
+                <div class="alert alert-danger">
                     {% for error in form.non_field_errors %}
                         {{ error }}
                     {% endfor %}
                 </div>
             {% endif %}
             
-            <!-- First Name field (you might need to add this to your form) -->
-            <input type="text" name="first_name" 
-                   class="input-field" 
-                   placeholder="First Name" required>
+            <!-- Username field -->
+            <input type="text" name="username" id="id_username" 
+                   class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                   placeholder="Username" value="{{ form.username.value|default:'' }}" required>
+            {% if form.username.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
             
-            <!-- Last Name field (you might need to add this to your form) -->
-            <input type="text" name="last_name" 
-                   class="input-field" 
-                   placeholder="Last Name" required>
+            <!-- First Name field -->
+            <input type="text" name="first_name" id="id_first_name" 
+                   class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" 
+                   placeholder="First Name" value="{{ form.first_name.value|default:'' }}" required>
+            {% if form.first_name.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.first_name.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <!-- Last Name field -->
+            <input type="text" name="last_name" id="id_last_name" 
+                   class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" 
+                   placeholder="Last Name" value="{{ form.last_name.value|default:'' }}" required>
+            {% if form.last_name.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.last_name.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
             
             <!-- Email field -->
-            <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" 
-                   class="input-field {% if form.email.errors %}input-error{% endif %}" 
-                   placeholder="Email" required>
+            <input type="email" name="email" id="id_email" 
+                   class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                   placeholder="Email" value="{{ form.email.value|default:'' }}" required>
             {% if form.email.errors %}
-                <div class="error-message">
+                <div class="invalid-feedback">
                     {% for error in form.email.errors %}
                         {{ error }}
                     {% endfor %}
@@ -47,11 +72,11 @@
             {% endif %}
             
             <!-- Password field -->
-            <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" 
-                   class="input-field {% if form.password1.errors %}input-error{% endif %}" 
+            <input type="password" name="password1" id="id_password1" 
+                   class="form-control {% if form.password1.errors %}is-invalid{% endif %}" 
                    placeholder="Password" required>
             {% if form.password1.errors %}
-                <div class="error-message">
+                <div class="invalid-feedback">
                     {% for error in form.password1.errors %}
                         {{ error }}
                     {% endfor %}
@@ -59,20 +84,23 @@
             {% endif %}
             
             <!-- Confirm Password field -->
-            <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" 
-                   class="input-field {% if form.password2.errors %}input-error{% endif %}" 
+            <input type="password" name="password2" id="id_password2" 
+                   class="form-control {% if form.password2.errors %}is-invalid{% endif %}" 
                    placeholder="Confirm Password" required>
             {% if form.password2.errors %}
-                <div class="error-message">
+                <div class="invalid-feedback">
                     {% for error in form.password2.errors %}
                         {{ error }}
                     {% endfor %}
                 </div>
             {% endif %}
             
-            <button type="submit" class="btn">Sign Up</button>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
         </form>
-        <p class="switch">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+        
+        <div class="mt-4">
+            Already have an account? <a href="{% url 'login' %}">Log In</a>
+        </div>
     </div>
 </div>
 {% endblock %}

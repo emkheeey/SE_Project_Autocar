@@ -5,6 +5,19 @@
        padding: 0;
        background: linear-gradient(135deg, #f0f8ff, #e6f0ff);
        color: #333;
+       height: auto !important;
+       overflow: auto !important;
+       overflow-x: hidden !important;
+   }
+
+   body {
+       padding-bottom: 0;
+   }
+
+   /* Hide LOGIN and SIGN UP buttons */
+   nav ul li a[href*="login"],
+   nav ul li a[href*="signup"] {
+       display: none !important;
    }
 
    /* Header Styles */
@@ -217,29 +230,20 @@
    /* FAQ Section */
    .faq-item {
        margin-bottom: 20px;
-       background-color: white;
-       border-radius: 8px;
-       overflow: hidden;
-       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
    }
 
    .faq-item h3 {
-       padding: 15px 20px;
-       margin: 0;
        font-size: 1.2em;
        cursor: pointer;
        display: flex;
        justify-content: space-between;
        align-items: center;
-       background-color: #f8f8f8;
    }
 
    .faq-item p {
-       padding: 15px 20px;
-       margin: 0;
-       font-size: 1em;
-       border-top: 1px solid #eee;
        display: none;
+       font-size: 1em;
+       margin-top: 10px;
    }
 
    .faq-item.active p {
@@ -248,9 +252,11 @@
 
    /* Footer */
    footer {
-       background: linear-gradient(135deg, #030303, #8e0303);
        text-align: center;
        padding: 20px;
-       color: #f9f9f9;
+       color: white;
+       background: linear-gradient(135deg, #030303, #8e0303);
+       position: relative !important;
+       width: 100%;
        margin-top: 40px;
    }

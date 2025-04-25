@@ -35,7 +35,15 @@ def signup(request):
                 try:
                     user = form.save()
                     username = form.cleaned_data.get('username')
+                    first_name = form.cleaned_data.get('first_name')
+                    last_name = form.cleaned_data.get('last_name')
+                    email = form.cleaned_data.get('email')
                     raw_password = form.cleaned_data.get('password1')
+                                        
+                    # Set first_name and last_name on User model
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
                     
                     # Authentication attempt
                     try:
@@ -52,7 +60,9 @@ def signup(request):
                         user_data = {
                             'user_id': str(user.id),
                             'username': username,
-                            'email': form.cleaned_data.get('email'),
+                            'email': email,
+                            'first_name': first_name,
+                            'last_name': last_name,
                             'created_at': user.date_joined.isoformat()
                         }
                         insert_data('profiles', user_data)
