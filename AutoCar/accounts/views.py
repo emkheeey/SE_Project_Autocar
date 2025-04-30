@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import login, authenticate
+from django.contrib.auth import logout
 
 # Fix import path for supabase_utils
 try:
@@ -303,3 +304,29 @@ def minimal_view(request):
     
 def about_view(request):
     return render(request, 'accounts/about.html')
+
+def logout_view(request):
+    """Custom logout view that redirects to the base page."""
+    if request.method == 'POST':
+        # Log the user out
+        logout(request)
+        
+        # Add a success message (optional)
+        messages.success(request, "You have been successfully logged out.")
+        
+        # Redirect to the base page (root URL)
+        return redirect('base')
+    
+    # If not a POST request, redirect to home page
+    return redirect('base')
+
+def base_view(request):
+    """View that renders the base template directly."""
+    context = {}
+    
+    # You may want to include any context data that base.html needs
+    if not request.user.is_authenticated:
+        # Maybe add a message for logged out users
+        messages.info(request, "You have been logged out. Please login to continue.")
+    
+    return render(request, 'base.html', context)

@@ -204,3 +204,80 @@ h1 {
     flex-direction: column;
     align-items: center;
 }
+
+/* Dropdown menu without JavaScript */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: auto;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #fff;
+    min-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    overflow: hidden;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.menu-header {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 8px 8px 0 0;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.user-email {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.menu-item {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #444;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.95em;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    background: none;
+}
+
+.menu-item:hover {
+    background-color: #f1f1f1;
+}
+
+.logout-form {
+    margin: 0;
+    padding: 0;
+}
+
+.logout-button {
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border-radius: 0 0 8px 8px;
+}

@@ -5,6 +5,8 @@ import os
 import sys
 import traceback
 from django.conf import settings
+from django.contrib.auth.views import LogoutView
+from accounts import views  # Add this import
 
 def test_view(request):
     """
@@ -151,9 +153,13 @@ def debug_view(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),  # Include the accounts app URLs
+    #path('', include('accounts.urls')),  # Include the accounts app URLs
+    path('', views.base_view, name='base'),  # Add the base view at root URL
+    path('accounts/', include('accounts.urls')),  # Include accounts URLs with prefix
     path('test/', test_view, name='test_view'),  # Add a test view
     path('error-check/', error_view, name='error_view'),  # Always succeeds
     path('health/', health_check, name='health_check'),  # Simple health check
     path('debug/', debug_view, name='debug_view'),  # Add debug diagnostics
+
+
 ]
