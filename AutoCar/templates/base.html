@@ -29,7 +29,7 @@
                     <div class="user-email">{{ user.email }}</div>
                 </div>
                 <a href="{% url 'profile' %}" class="menu-item">Account</a>
-                <a href="{% url 'cars' %}" class="menu-item">Test Drives</a>
+                <a href="{% url 'cars' %}" class="menu-item">Favorites</a>
                 <form method="post" action="{% url 'logout' %}" class="logout-form">
                     {% csrf_token %}
                     <button type="submit" class="menu-item logout-button">Log Out</button>
@@ -38,8 +38,6 @@
         </div>
         {% else %}
         <div class="auth-links">
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'signup' %}">Sign Up</a>
         </div>
         {% endif %}
     </header>
