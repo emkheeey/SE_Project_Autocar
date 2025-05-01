@@ -1,119 +1,119 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Manage Cars | AutoCar{% endblock %}
+{% block title %}Browse Cars | AutoCar{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/browse.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <h1 class="mb-4">Car Management</h1>
-            
-            <!-- Add New Car Form -->
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Add New Car</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="add">
-                        
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="make" class="form-label">Make</label>
-                                <input type="text" class="form-control" id="make" name="make" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="model" class="form-label">Model</label>
-                                <input type="text" class="form-control" id="model" name="model" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="year" class="form-label">Year</label>
-                                <input type="number" class="form-control" id="year" name="year" min="1900" max="2030" required>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="price" class="form-label">Price</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control" id="price" name="price" step="0.01">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="image_url" class="form-label">Image URL</label>
-                                <input type="url" class="form-control" id="image_url" name="image_url">
-                            </div>
-                        </div>
-                        
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="featured" name="featured">
-                            <label class="form-check-label" for="featured">
-                                Feature this car on the homepage
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Add Car</button>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- Cars Table -->
-            <div class="card">
-                <div class="card-header bg-secondary text-white">
-                    <h4 class="mb-0">Your Cars</h4>
-                </div>
-                <div class="card-body">
-                    {% if cars %}
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Make</th>
-                                        <th>Model</th>
-                                        <th>Year</th>
-                                        <th>Price</th>
-                                        <th>Featured</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for car in cars %}
-                                    <tr>
-                                        <td>{{ car.make }}</td>
-                                        <td>{{ car.model }}</td>
-                                        <td>{{ car.year }}</td>
-                                        <td>{% if car.price %}${{ car.price }}{% else %}N/A{% endif %}</td>
-                                        <td>
-                                            {% if car.featured %}
-                                                <span class="badge bg-success">Yes</span>
-                                            {% else %}
-                                                <span class="badge bg-secondary">No</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <form method="post" class="d-inline">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="action" value="delete">
-                                                <input type="hidden" name="car_id" value="{{ car.id }}">
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            You haven't added any cars yet. Use the form above to add your first car.
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+<!-- Navigation Bar -->
+<div class="header">
+    <div class="logo">
+        <img src="{% static 'images/logo.png' %}" alt="AutoCar Logo">
+    </div>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'cars' %}" class="active">BROWSE CARS</a></li>
+            <li><a href="#">RECOMMENDATIONS</a></li>
+            <li><a href="#">COMPARE CAR</a></li>
+        </ul>
+    </nav>
+    <div class="profile-icon" id="profileIcon">
+        <img src="{% static 'images/profileicon.png' %}" alt="Profile">
     </div>
 </div>
-{% endblock %} 
+
+<!-- Add this right after the profile-icon div -->
+<div class="user-menu" id="userMenu">
+    <div class="user-name">{{ user.username }}</div>
+    <div class="user-email">{{ user.email }}</div>
+    <div class="menu-links">
+        <a href="#">Account</a>
+        <a href="#">Favorites</a>
+    </div>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Log Out</button>
+    </form>
+</div>
+
+<!-- Search Bar -->
+<div class="search-container">
+    <input type="text" id="search-input" placeholder="Search for car models...">
+    <button onclick="searchCars()">Search</button>
+</div>
+
+<!-- Filter Buttons -->
+<div class="filter-container">
+    <div class="filter-buttons">
+        <button class="filter-btn active" onclick="showAllCars(this)">All</button>
+        <button class="filter-btn" onclick="showBodyTypeFilters(this)">Body Type</button>
+        <button class="filter-btn" onclick="showPriceFilters(this)">Price</button>
+        <button class="filter-btn" onclick="showTransmissionFilters(this)">Transmission</button>
+    </div>
+</div>
+
+<!-- Car List -->
+<div class="car-grid">
+    <!-- Placeholder car cards - you can remove these when database is working -->
+    <div class="car-card">
+        <div class="car-image">
+            <img src="{% static 'images/cars/camry.jpg' %}" alt="Toyota Camry">
+        </div>
+        <div class="car-name">CAMRY</div>
+    </div>
+    
+    <div class="car-card">
+        <div class="car-image">
+            <img src="{% static 'images/cars/hillux.jpg' %}" alt="Toyota Hillux">
+        </div>
+        <div class="car-name">HILLUX</div>
+    </div>
+    
+    <div class="car-card">
+        <div class="car-image">
+            <img src="{% static 'images/cars/innova.jpg' %}" alt="Toyota Innova">
+        </div>
+        <div class="car-name">INNOVA</div>
+    </div>
+    
+    <div class="car-card">
+        <div class="car-image">
+            <img src="{% static 'images/cars/vios.jpg' %}" alt="Toyota Vios">
+        </div>
+        <div class="car-name">VIOS</div>
+    </div>
+    
+    <div class="car-card">
+        <div class="car-image">
+            <img src="{% static 'images/cars/fortuner.jpg' %}" alt="Toyota Fortuner">
+        </div>
+        <div class="car-name">FORTUNER</div>
+    </div>
+    
+    <!-- When database is working, replace with this dynamic version:
+    {% for car in cars %}
+    <div class="car-card">
+        <div class="car-image">
+            <img src="{{ car.image_url }}" alt="{{ car.model }}">
+        </div>
+        <div class="car-name">{{ car.model|upper }}</div>
+    </div>
+    {% endfor %}
+    -->
+</div>
+
+<!-- "No Cars" message - show only when needed -->
+{% if not cars %}
+<div class="no-cars-message" style="display: none;">
+    <p>No cars found. Please try different search criteria.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/browse.js' %}"></script>
+{% endblock %}

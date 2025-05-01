@@ -245,52 +245,30 @@ def check_import(module_name):
 
 @login_required
 def cars(request):
-    # Handle car form submission
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        
-        if action == 'add':
-            try:
-                # Add a new car
-                new_car = {
-                    'make': request.POST.get('make'),
-                    'model': request.POST.get('model'),
-                    'year': int(request.POST.get('year')),
-                    'price': float(request.POST.get('price')) if request.POST.get('price') else None,
-                    'image_url': request.POST.get('image_url'),
-                    'featured': request.POST.get('featured') == 'on',
-                    'user_id': str(request.user.id)  # Associate the car with the current user
-                }
-                insert_data('cars', new_car)
-                messages.success(request, 'Car added successfully!')
-            except Exception as e:
-                # Log the error
-                print(f"Error adding car: {e}")
-                messages.error(request, 'Error adding car. Please try again.')
-            
-        elif action == 'delete':
-            try:
-                # Delete a car
-                car_id = request.POST.get('car_id')
-                if car_id:
-                    # Only delete if the car belongs to the user
-                    delete_data('cars', 'id', int(car_id))
-                    messages.success(request, 'Car deleted successfully!')
-            except Exception as e:
-                # Log the error
-                print(f"Error deleting car: {e}")
-                messages.error(request, 'Error deleting car. Please try again.')
-                
-    # Fetch all cars from Supabase
-    cars = []
-    try:
-        all_cars = fetch_data('cars')
-        cars = all_cars.data if all_cars and all_cars.data else []
-    except Exception as e:
-        # Log the error
-        print(f"Error fetching cars: {e}")
+    """
+    View to browse all cars with filtering capabilities
+    """
+    # Fetch all cars from your database
+    # Make sure to include body_type and transmission fields
+    cars_data = fetch_cars_data()
     
-    return render(request, 'accounts/cars.html', {'cars': cars})
+    context = {
+        'cars': cars_data,
+    }
+    
+    return render(request, 'accounts/cars.html', context)
+
+def fetch_cars_data():
+    """
+    Fetch car data from Supabase including the additional fields for filtering
+    """
+    # Implement your Supabase fetching logic here
+    # Make sure to include body_type, transmission and price fields needed for filtering
+    
+    # Your existing fetch code...
+    # ...
+    
+    #return cars_list
 
 def minimal_view(request):
     """

@@ -20,3 +20,27 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+    
+class Car(models.Model):
+    make = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    year = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    image_url = models.URLField(blank=True, null=True)
+    featured = models.BooleanField(default=False)
+    
+    # New fields for filtering
+    body_type = models.CharField(max_length=50, choices=[
+        ('Sedan', 'Sedan'),
+        ('SUV', 'SUV'),
+        ('Truck', 'Truck'),
+        ('MPV', 'MPV'),
+        ('Van', 'Van'),
+        ('Station Wagon', 'Station Wagon'),
+    ])
+    transmission = models.CharField(max_length=50, choices=[
+        ('Automatic', 'Automatic'),
+        ('Manual', 'Manual'),
+        ('Electric', 'Electric'),
+        ('Hybrid', 'Hybrid'),
+    ])
