@@ -18,6 +18,15 @@
             <img src="{% static 'images/logo.png' %}">
         </div>
 
+        {% if not user.is_authenticated %}
+        <nav>
+            <ul>
+                <li><a href="{% url 'base' %}">HOME</a></li>
+                <li><a href="{% url 'about' %}">ABOUT US</a></li>
+            </ul>
+        </nav>
+        {% endif %}
+    
         {% if user.is_authenticated %}
         <div class="dropdown">
             <div class="profile-icon">
@@ -69,7 +78,7 @@
     </section>
     {% endblock %}
 
-    {% if not hide_footer%}
+    {% if not user.is_authenticated %}
     <footer>
         <p>&copy; 2025 AutoCar System | Avila, Pelgone, Lorena, Rectra</p>
     </footer>
