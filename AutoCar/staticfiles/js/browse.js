@@ -5,14 +5,31 @@ let activeFilters = {
     transmission: []
 };
 
-// Navigation handlers
+// Main initialization function - runs when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
     // Set up navigation links if they exist
+    setupNavigation();
+    
+    // Set up search functionality
+    setupSearch();
+    
+    // Set up filtering logic
+    setupFilters();
+    
+    // Set up modals
+    setupModals();
+    
+    // Handle profile menu
+    setupProfileMenu();
+});
+
+// Set up navigation links
+function setupNavigation() {
     const homeLink = document.querySelector("a[href='#home']");
     if (homeLink) {
         homeLink.addEventListener("click", function (event) {
             event.preventDefault();
-            window.location.href = "/";  // Update with your home URL
+            window.location.href = "/";
         });
     }
 
@@ -20,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (recommendLink) {
         recommendLink.addEventListener("click", function (event) {
             event.preventDefault();
-            window.location.href = "/recommendations/";  // Update with your recommendations URL
+            window.location.href = "/recommendations/";
         });
     }
 
@@ -28,29 +45,36 @@ document.addEventListener("DOMContentLoaded", function () {
     if (compareLink) {
         compareLink.addEventListener("click", function (event) {
             event.preventDefault();
-            window.location.href = "/compare/";  // Update with your compare URL
+            window.location.href = "/compare/";
         });
     }
+}
 
-    // Add input event to search for instant results
+// Set up search functionality
+function setupSearch() {
     const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+    
     if (searchInput) {
         searchInput.addEventListener('input', function () {
-            if (this.value.length > 2) {  // Only search if at least 3 characters
+            if (this.value.length > 2) {
                 searchCars();
+            } else if (this.value.length === 0) {
+                showAllCars();
             }
         });
     }
-});
+    
+    if (searchButton) {
+        searchButton.addEventListener('click', searchCars);
+    }
+}
 
 // Search cars function
 function searchCars() {
     const searchInput = document.getElementById("search-input").value.toLowerCase();
-
-    // Get all car cards
     const carCards = document.querySelectorAll(".car-card");
 
-    // Hide/show cards based on search term
     carCards.forEach(card => {
         const carName = card.querySelector('p').textContent.toLowerCase();
         if (carName.includes(searchInput)) {
@@ -61,206 +85,279 @@ function searchCars() {
     });
 }
 
-// Toggle sub-filter buttons
-function toggleSubFilter(btn, category, value) {
-    // Remove active class from all buttons in the same category
-    document.querySelectorAll(`.sub-filter-btn[data-category='${category}']`).forEach(
-        button => button.classList.remove("active")
-    );
-
-    // Toggle active class on clicked button
-    btn.classList.toggle("active");
-    btn.setAttribute("data-category", category);
-    btn.setAttribute("data-value", value);
-
-    // Apply filters
-    filterCars();
-}
-
-// Apply filters to car cards
-function filterCars() {
-    // Get all active filters
-    const activeBodyTypes = Array.from(document.querySelectorAll(".sub-filter-btn.active[data-category='bodyType']"))
-        .map(el => el.getAttribute("data-value"));
-
-    const activePrices = Array.from(document.querySelectorAll(".sub-filter-btn.active[data-category='price']"))
-        .map(el => el.getAttribute("data-value"));
-
-    const activeTransmissions = Array.from(document.querySelectorAll(".sub-filter-btn.active[data-category='transmission']"))
-        .map(el => el.getAttribute("data-value"));
-
-    // Get all car cards
-    const carCards = document.querySelectorAll(".car-card");
-
-    // Filter cards based on selected criteria
-    carCards.forEach(card => {
-        let shouldShow = true;
-
-        // Body type filtering
-        if (activeBodyTypes.length > 0) {
-            const bodyType = card.getAttribute("data-body-type");
-            if (!activeBodyTypes.includes(bodyType)) {
-                shouldShow = false;
-            }
-        }
-
-        // Price filtering
-        if (shouldShow && activePrices.length > 0) {
-            const price = parseInt(card.getAttribute("data-price"));
-            let priceMatch = false;
-
-            for (const priceValue of activePrices) {
-                if (priceValue === "500000" && price < 500000) {
-                    priceMatch = true;
-                } else if (priceValue === "1000000" && price >= 500000 && price < 1000000) {
-                    priceMatch = true;
-                } else if (priceValue === "1500000" && price >= 1000000 && price < 1500000) {
-                    priceMatch = true;
-                } else if (priceValue === "2000000" && price >= 1500000 && price < 2000000) {
-                    priceMatch = true;
-                } else if (priceValue === "3000000" && price > 2000000) {
-                    priceMatch = true;
-                }
-            }
-
-            if (!priceMatch) {
-                shouldShow = false;
-            }
-        }
-
-        // Transmission filtering
-        if (shouldShow && activeTransmissions.length > 0) {
-            const transmission = card.getAttribute("data-transmission");
-            if (!activeTransmissions.includes(transmission)) {
-                shouldShow = false;
-            }
-        }
-
-        // Show/hide car card
-        card.style.display = shouldShow ? "block" : "none";
+// Setup all filter related functionality
+function setupFilters() {
+    // Setup "All" button
+    const allButton = document.getElementById('btn-all');
+    if (allButton) {
+        allButton.addEventListener('click', function() {
+            showAllCars();
+            setActiveFilter(this);
+        });
+    }
+    
+    // Setup dropdown toggles
+    document.querySelectorAll('.filter-btn[data-dropdown]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            toggleDropdown(this.getAttribute('data-dropdown'));
+        });
+    });
+    
+    // Setup body type filters
+    document.querySelectorAll('.sub-filter-btn[data-body-type]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterByBodyType(this.getAttribute('data-body-type'));
+            setActiveFilter(btn.closest('.dropdown').querySelector('.filter-btn'));
+        });
+    });
+    
+    // Setup transmission filters
+    document.querySelectorAll('.sub-filter-btn[data-transmission]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterByTransmission(this.getAttribute('data-transmission'));
+            setActiveFilter(btn.closest('.dropdown').querySelector('.filter-btn'));
+        });
+    });
+    
+    // Setup price filters
+    document.querySelectorAll('.sub-filter-btn[data-price-min]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const min = parseInt(this.getAttribute('data-price-min'));
+            const max = parseInt(this.getAttribute('data-price-max'));
+            filterByPrice(min, max);
+            setActiveFilter(btn.closest('.dropdown').querySelector('.filter-btn'));
+        });
     });
 }
 
-// Show all cars
-function showAllCars(btn) {
-    resetFilterButtons();
-    btn.classList.add("active");
-    document.querySelectorAll(".sub-filters").forEach(filter => filter.style.display = "none");
-
-    // Show all car cards
-    document.querySelectorAll(".car-card").forEach(card => {
-        card.style.display = "block";
+// Set up modal functionality
+function setupModals() {
+    // Setup car details click handlers
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const carId = this.getAttribute('data-car-id');
+            const carModel = this.getAttribute('data-model');
+            showCarDetails(carId, carModel);
+        });
+        
+        // Prevent image buttons from triggering car details
+        const imageBtn = card.querySelector('.update-image-btn');
+        if (imageBtn) {
+            imageBtn.addEventListener('click', function(event) {
+                event.stopPropagation();
+                const carId = card.getAttribute('data-car-id');
+                const carModel = card.getAttribute('data-model');
+                openImageModal(carId, carModel);
+            });
+        }
     });
+    
+    // Setup close modal buttons
+    const closeImageModalBtn = document.getElementById('closeImageModal');
+    if (closeImageModalBtn) {
+        closeImageModalBtn.addEventListener('click', closeImageModal);
+    }
+    
+    const closeVariantsModalBtn = document.getElementById('closeVariantsModal');
+    if (closeVariantsModalBtn) {
+        closeVariantsModalBtn.addEventListener('click', closeModal);
+    }
+    
+    // Setup image form submission
+    const imageForm = document.getElementById('imageUrlForm');
+    if (imageForm) {
+        imageForm.addEventListener('submit', submitImageUrl);
+    }
 }
 
-// Show body type filters
-function showBodyTypeFilters(btn) {
-    resetFilterButtons();
-    btn.classList.add("active");
-    document.querySelector("#bodyTypeFilters").style.display = "flex";
-    document.querySelector("#priceFilters").style.display = "none";
-    document.querySelector("#transmissionFilters").style.display = "none";
-}
-
-// Show price filters
-function showPriceFilters(btn) {
-    resetFilterButtons();
-    btn.classList.add("active");
-    document.querySelector("#priceFilters").style.display = "flex";
-    document.querySelector("#bodyTypeFilters").style.display = "none";
-    document.querySelector("#transmissionFilters").style.display = "none";
-}
-
-// Show transmission filters
-function showTransmissionFilters(btn) {
-    resetFilterButtons();
-    btn.classList.add("active");
-    document.querySelector("#transmissionFilters").style.display = "flex";
-    document.querySelector("#bodyTypeFilters").style.display = "none";
-    document.querySelector("#priceFilters").style.display = "none";
-}
-
-// Reset filter buttons
-function resetFilterButtons() {
-    document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-    document.querySelectorAll(".sub-filter-btn").forEach(btn => btn.classList.remove("active"));
-}
-
-// Function to show car variants in modal
-function showCarDetails(carId, carModel) {
-    const modal = document.getElementById('variantsModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const variantsContainer = document.getElementById('variantsContainer');
-
-    // Set modal title
-    modalTitle.textContent = `${carModel} Variants`;
-
-    // Clear previous variants
-    variantsContainer.innerHTML = '<p>Loading variants...</p>';
-
-    // Show modal
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-
-    // Here we would fetch car variant data from the server
-    // For now, just show a placeholder message
-    setTimeout(() => {
-        variantsContainer.innerHTML = `
-            <p>Variant data for ${carModel} will be loaded from the database.</p>
-            <p>Car ID: ${carId}</p>
-        `;
-    }, 1000);
-}
-
-// Function to close modal
-function closeModal() {
-    const modal = document.getElementById('variantsModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
+// Set up profile menu functionality
+function setupProfileMenu() {
+    const profileIcon = document.getElementById('profileIcon');
+    if (profileIcon) {
+        profileIcon.addEventListener('click', toggleMenu);
+    }
+    
+    // Close menu when clicking outside
+    window.addEventListener('click', function(event) {
+        const menu = document.getElementById('userMenu');
+        const icon = document.getElementById('profileIcon');
+        
+        if (menu && icon && event.target !== icon && !icon.contains(event.target)) {
+            menu.style.display = 'none';
+        }
+        
+        // Close modals when clicking outside
+        const imageModal = document.getElementById('imageModal');
+        if (imageModal && event.target === imageModal) {
+            closeImageModal();
+        }
+        
+        const variantsModal = document.getElementById('variantsModal');
+        if (variantsModal && event.target === variantsModal) {
+            closeModal();
+        }
+    });
+    
+    // Close modals with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+            closeModal();
+        }
+    });
 }
 
 // Toggle user menu
 function toggleMenu() {
     const menu = document.getElementById("userMenu");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
-// Close the menu if clicked outside
-window.onclick = function (event) {
-    const menu = document.getElementById("userMenu");
-    const icon = document.querySelector(".profile-icon");
-    if (event.target !== icon && !icon.contains(event.target) && menu) {
-        menu.style.display = "none";
-    }
-
-    // Close modal when clicking outside content
-    const modal = document.getElementById('variantsModal');
-    if (event.target === modal) {
-        closeModal();
+    if (menu) {
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 }
 
-// Close modal with Escape key
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-        closeModal();
-    }
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', function () {
-    // Add click event to all car cards
+// Show all cars and reset filters
+function showAllCars() {
     document.querySelectorAll('.car-card').forEach(card => {
-        card.addEventListener('click', function () {
-            const carId = this.getAttribute('data-car-id');
-            const carModel = this.querySelector('p').textContent;
-            showCarDetails(carId, carModel);
-        });
+        card.style.display = 'block';
     });
+    
+    // Hide all dropdowns
+    document.querySelectorAll('.dropdown-content').forEach(el => {
+        el.style.display = 'none';
+    });
+}
 
-    // Initialize first filter button as active
-    const allButton = document.querySelector('.filter-btn');
-    if (allButton) {
-        allButton.classList.add('active');
+// Helper function to set active filter button
+function setActiveFilter(btn) {
+    if (!btn) return;
+    
+    document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+}
+
+// Filter functions
+function filterByBodyType(type) {
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.style.display = card.getAttribute('data-body-type') === type ? 'block' : 'none';
+    });
+    
+    // Hide dropdown after selection
+    document.getElementById('bodyTypeDropdown').style.display = 'none';
+}
+
+function filterByTransmission(trans) {
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.style.display = card.getAttribute('data-transmission') === trans ? 'block' : 'none';
+    });
+    
+    // Hide dropdown after selection
+    document.getElementById('transmissionDropdown').style.display = 'none';
+}
+
+function filterByPrice(min, max) {
+    document.querySelectorAll('.car-card').forEach(card => {
+        const price = parseFloat(card.getAttribute('data-price'));
+        card.style.display = (price >= min && price <= max) ? 'block' : 'none';
+    });
+    
+    // Hide dropdown after selection
+    document.getElementById('priceDropdown').style.display = 'none';
+}
+
+// Dropdown toggle function
+function toggleDropdown(dropdownId) {
+    // Hide all dropdowns first
+    document.querySelectorAll('.dropdown-content').forEach(el => {
+        el.style.display = 'none';
+    });
+    
+    // Toggle the selected dropdown
+    const dropdown = document.getElementById(dropdownId);
+    if (dropdown) {
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
     }
-});
+}
+
+// Image URL modal functions
+function openImageModal(carId, carModel) {
+    const modal = document.getElementById('imageModal');
+    const title = document.getElementById('imageModalTitle');
+    const idInput = document.getElementById('modalCarId');
+    const urlInput = document.getElementById('imageUrlInput');
+    
+    if (modal && title && idInput && urlInput) {
+        modal.style.display = 'block';
+        title.textContent = `Add/Update Image for ${carModel}`;
+        idInput.value = carId;
+        urlInput.value = '';
+    }
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Car variants modal functions
+function showCarDetails(id, model) {
+    // TODO: Implement modal or details view
+    alert("Show details for " + model + " (ID: " + id + ")");
+}
+
+function closeModal() {
+    const modal = document.getElementById('variantsModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Form submission for image URL
+async function submitImageUrl(event) {
+    event.preventDefault();
+    const carId = document.getElementById('modalCarId').value;
+    const imageUrl = document.getElementById('imageUrlInput').value;
+    
+    try {
+        const response = await fetch(`/accounts/update_car_image/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ car_id: carId, image_url: imageUrl })
+        });
+        
+        if (response.ok) {
+            // Update the image in the UI
+            const card = document.querySelector(`.car-card[data-car-id='${carId}'] img`);
+            if (card) card.src = imageUrl;
+            closeImageModal();
+            alert('Image updated successfully!');
+        } else {
+            alert('Failed to update image.');
+        }
+    } catch (err) {
+        alert('Error updating image.');
+    }
+}
+
+// Helper to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

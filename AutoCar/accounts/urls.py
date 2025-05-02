@@ -13,4 +13,5 @@ urlpatterns = [
     path('diagnostics/', views.error_handler, name='diagnostics'),
     path('minimal/', views.minimal_view, name='minimal'),
     path('about/', views.about_view, name='about'),
+    path('update_car_image/', views.update_car_image, name='update_car_image'),
 ]

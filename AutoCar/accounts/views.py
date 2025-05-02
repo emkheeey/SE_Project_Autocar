@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout
 import logging
 from AutoCar.utils.supabase_utils import fetch_data, insert_data, update_data, delete_data
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -246,13 +248,14 @@ def fetch_cars_data():
     """
     Fetch car data from Supabase including the additional fields for filtering
     """
-    # Implement your Supabase fetching logic here
-    # Make sure to include body_type, transmission and price fields needed for filtering
-    
-    # Your existing fetch code...
-    # ...
-    
-    #return cars_list
+    try:
+        result = fetch_data('cars')
+        if result and hasattr(result, 'data'):
+            return result.data
+        return []
+    except Exception as e:
+        logger.error(f"Error fetching cars: {e}")
+        return []
 
 def minimal_view(request):
     """
@@ -292,3 +295,20 @@ def base_view(request):
         messages.info(request, "You have been logged out. Please login to continue.")
     
     return render(request, 'base.html', context)
+
+@csrf_exempt
+def update_car_image(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            car_id = data.get('car_id')
+            image_url = data.get('image_url')
+            if not car_id or not image_url:
+                return JsonResponse({'error': 'Missing car_id or image_url'}, status=400)
+            # Update the car in Supabase
+            update_data('cars', {'image_url': image_url}, 'id', car_id)
+            return JsonResponse({'success': True})
+        except Exception as e:
+            logger.error(f"Error updating car image: {e}")
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

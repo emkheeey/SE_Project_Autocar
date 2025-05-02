@@ -15,11 +15,187 @@
     body {
         margin-top: 0 !important;
         padding-top: 0 !important;
+        overflow-y: auto !important; /* Fix scrolling */
     }
     
     /* Hide any content from base.html that might cause problems */
     #home, footer {
         display: none !important;
+    }
+    
+    /* Enhanced filter styling */
+    .filter-container {
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .filter-btn {
+        background-color: #f8f8f8;
+        border: 2px solid #e74c3c;
+        color: #e74c3c;
+        padding: 8px 16px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-width: 100px;
+        text-align: center;
+    }
+    
+    .filter-btn:hover {
+        background-color: #e74c3c;
+        color: white;
+    }
+    
+    .filter-btn.active {
+        background-color: #e74c3c;
+        color: white;
+    }
+    
+    .dropdown-content {
+        position: absolute;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 10px;
+        z-index: 1000;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        max-width: 80%;
+        margin-top: 5px;
+    }
+    
+    .sub-filter-btn {
+        background-color: white;
+        border: 1px solid #e74c3c;
+        color: #e74c3c;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .sub-filter-btn:hover {
+        background-color: #e74c3c;
+        color: white;
+    }
+    
+    /* Car grid improvements */
+    .car-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .car-card {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .car-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .car-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    
+    .car-card p {
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+        margin: 0;
+        color: #333;
+        font-size: 1.2em;
+    }
+    
+    .update-image-btn {
+        width: 100%;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .update-image-btn:hover {
+        background-color: #c0392b;
+    }
+    
+    /* Better search styling */
+    .search-container {
+        margin: 20px auto;
+        max-width: 600px;
+        display: flex;
+        overflow: visible;
+    }
+    
+    .search-container input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 2px solid #ddd;
+        border-radius: 25px 0 0 25px;
+        font-size: 1em;
+        outline: none;
+    }
+    
+    .search-container input:focus {
+        border-color: #e74c3c;
+    }
+    
+    .search-container button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 0 25px 25px 0;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    
+    .search-container button:hover {
+        background-color: #c0392b;
+    }
+    
+    /* Fix modal scrolling */
+    .modal, .variants-modal {
+        position: fixed;
+        z-index: 1050;
+    }
+    
+    /* Fix main page scrolling */
+    html, body {
+        height: 100%;
+        overflow-y: auto !important;
+    }
+    
+    /* Ensure content is scrollable */
+    .browse-page {
+        overflow-y: auto !important;
+        height: auto !important;
+        min-height: 100vh;
     }
 </style>
 {% endblock %}
@@ -37,7 +213,7 @@
             <li><a href="#compare-cars">COMPARE CAR</a></li>
         </ul>
     </nav>
-    <div class="profile-icon" onclick="toggleMenu()">
+    <div class="profile-icon" id="profileIcon">
         <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon">
     </div> 
     
@@ -57,39 +233,44 @@
 
 <div class="search-container">
     <input type="text" id="search-input" placeholder="Search for car models...">
-    <button onclick="searchCars()">Search</button>
+    <button id="search-button">Search</button>
 </div>
 
 <div class="filter-container">
     <div class="filter-options main-filters">
-        <button class="filter-btn active" onclick="showAllCars(this)">All</button>
-        <button class="filter-btn" onclick="showBodyTypeFilters(this)">Body Type</button>
-        <button class="filter-btn" onclick="showPriceFilters(this)">Price</button>
-        <button class="filter-btn" onclick="showTransmissionFilters(this)">Transmission</button>
-    </div>
-
-    <div id="bodyTypeFilters" class="filter-options sub-filters" style="display: none;">
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Sedan')">Sedan</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'SUV')">SUV</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Truck')">Truck</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'MPV')">MPV</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Van')">Van</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Station Wagon')">Station Wagon</button>
-    </div>
-
-    <div id="priceFilters" class="filter-options sub-filters" style="display: none;">
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '500000')">Below ₱500,000</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1000000')">₱500,000 – ₱1,000,000</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1500000')">₱1,000,000 – ₱1,500,000</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '2000000')">₱1,500,000 – ₱2,000,000</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '3000000')">Above ₱2,000,000</button>
-    </div>
-
-    <div id="transmissionFilters" class="filter-options sub-filters" style="display: none;">
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Automatic')">Automatic</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Manual')">Manual</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Electric')">Electric</button>
-        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Hybrid')">Hybrid</button>
+        <!-- Better labeled buttons with improved styling -->
+        <button type="button" class="filter-btn active" id="btn-all">All Cars</button>
+        <div class="dropdown">
+            <button type="button" class="filter-btn" data-dropdown="bodyTypeDropdown">Body Type</button>
+            <div id="bodyTypeDropdown" class="dropdown-content" style="display:none;">
+                <button type="button" class="sub-filter-btn" data-body-type="Sedan">Sedan</button>
+                <button type="button" class="sub-filter-btn" data-body-type="SUV">SUV</button>
+                <button type="button" class="sub-filter-btn" data-body-type="MPV">MPV</button>
+                <button type="button" class="sub-filter-btn" data-body-type="Minivan">Minivan</button>
+                <button type="button" class="sub-filter-btn" data-body-type="Hatchback">Hatchback</button>
+                <button type="button" class="sub-filter-btn" data-body-type="Pickup">Pickup</button>
+                <button type="button" class="sub-filter-btn" data-body-type="Van">Van</button>
+                <button type="button" class="sub-filter-btn" data-body-type="Coupe">Coupe</button>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button type="button" class="filter-btn" data-dropdown="priceDropdown">Price Range</button>
+            <div id="priceDropdown" class="dropdown-content" style="display:none;">
+                <button type="button" class="sub-filter-btn" data-price-min="0" data-price-max="1000000">0-1M</button>
+                <button type="button" class="sub-filter-btn" data-price-min="1000000" data-price-max="2000000">1M-2M</button>
+                <button type="button" class="sub-filter-btn" data-price-min="2000000" data-price-max="3000000">2M-3M</button>
+                <button type="button" class="sub-filter-btn" data-price-min="3000000" data-price-max="4000000">3M-4M</button>
+                <button type="button" class="sub-filter-btn" data-price-min="4000000" data-price-max="5000000">4M-5M</button>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button type="button" class="filter-btn" data-dropdown="transmissionDropdown">Transmission</button>
+            <div id="transmissionDropdown" class="dropdown-content" style="display:none;">
+                <button type="button" class="sub-filter-btn" data-transmission="CVT">CVT</button>
+                <button type="button" class="sub-filter-btn" data-transmission="Automatic">Automatic</button>
+                <button type="button" class="sub-filter-btn" data-transmission="Manual">Manual</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -101,9 +282,10 @@
              data-body-type="{{ car.body_type }}" 
              data-price="{{ car.price }}"
              data-transmission="{{ car.transmission }}"
-             onclick="showCarDetails('{{ car.id }}', '{{ car.model }}')">
+             data-model="{{ car.model }}">
             <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" alt="{{ car.model }}">
             <p>{{ car.model }}</p>
+            <button class="btn btn-secondary update-image-btn">Add/Update Image</button>
         </div>
         {% endfor %}
     {% else %}
@@ -114,10 +296,24 @@
     {% endif %}
 </div>
 
+<!-- Image URL Modal -->
+<div class="modal" id="imageModal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-modal" id="closeImageModal">&times;</span>
+        <h2 id="imageModalTitle"></h2>
+        <form id="imageUrlForm">
+            <input type="hidden" id="modalCarId" name="car_id">
+            <label for="imageUrlInput">Image URL:</label>
+            <input type="url" id="imageUrlInput" name="image_url" required>
+            <button type="submit" class="btn btn-primary">Save Image</button>
+        </form>
+    </div>
+</div>
+
 <!-- Car Variants Modal -->
 <div class="variants-modal" id="variantsModal">
     <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <span class="close-modal" id="closeVariantsModal">&times;</span>
         <h2 id="modalTitle"></h2>
         <div class="variants-container" id="variantsContainer"></div>
     </div>
@@ -125,5 +321,182 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/browse.js' %}"></script>
+<script>
+// Filter functions
+function showAllCars() {
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.style.display = 'block';
+    });
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-all').classList.add('active');
+    document.querySelectorAll('.dropdown-content').forEach(el => el.style.display = 'none');
+}
+
+function toggleDropdown(dropdownId) {
+    document.querySelectorAll('.dropdown-content').forEach(el => el.style.display = 'none');
+    const dropdown = document.getElementById(dropdownId);
+    if (dropdown) {
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+}
+
+function filterByBodyType(type) {
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.style.display = card.getAttribute('data-body-type') === type ? 'block' : 'none';
+    });
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn[data-dropdown="bodyTypeDropdown"]').classList.add('active');
+    document.getElementById('bodyTypeDropdown').style.display = 'none';
+}
+
+function filterByTransmission(trans) {
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.style.display = card.getAttribute('data-transmission') === trans ? 'block' : 'none';
+    });
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn[data-dropdown="transmissionDropdown"]').classList.add('active');
+    document.getElementById('transmissionDropdown').style.display = 'none';
+}
+
+function filterByPrice(min, max) {
+    document.querySelectorAll('.car-card').forEach(card => {
+        const price = parseFloat(card.getAttribute('data-price'));
+        card.style.display = (price >= min && price <= max) ? 'block' : 'none';
+    });
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn[data-dropdown="priceDropdown"]').classList.add('active');
+    document.getElementById('priceDropdown').style.display = 'none';
+}
+
+function openImageModal(carId, carModel) {
+    document.getElementById('imageModal').style.display = 'block';
+    document.getElementById('imageModalTitle').textContent = `Add/Update Image for ${carModel}`;
+    document.getElementById('modalCarId').value = carId;
+    document.getElementById('imageUrlInput').value = '';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Re-enable scrolling
+}
+
+function closeModal() {
+    document.getElementById('variantsModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Re-enable scrolling
+}
+
+function toggleMenu() {
+    const menu = document.getElementById("userMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+// Fix for any scroll locking or modal issues
+function fixScrollingIssues() {
+    // Clear any overflow settings that might be locking the scroll
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
+    
+    // Close any open dropdowns/modals when clicking outside of them
+    document.addEventListener('click', function(event) {
+        // Only handle clicks outside of dropdowns or modals
+        if (!event.target.closest('.dropdown') && 
+            !event.target.closest('.dropdown-content') && 
+            !event.target.closest('.modal-content')) {
+            
+            document.querySelectorAll('.dropdown-content').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+    });
+    
+    // Don't lock scroll for card click events
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent event bubbling
+        });
+    });
+}
+
+// Set up event listeners
+document.addEventListener("DOMContentLoaded", function() {
+    // Apply scroll fixing
+    fixScrollingIssues();
+    
+    // "All" button
+    document.getElementById('btn-all').addEventListener('click', showAllCars);
+    
+    // Toggle dropdowns
+    document.querySelectorAll('.filter-btn[data-dropdown]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            toggleDropdown(this.getAttribute('data-dropdown'));
+        });
+    });
+    
+    // Body type filters
+    document.querySelectorAll('.sub-filter-btn[data-body-type]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterByBodyType(this.getAttribute('data-body-type'));
+        });
+    });
+    
+    // Transmission filters
+    document.querySelectorAll('.sub-filter-btn[data-transmission]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterByTransmission(this.getAttribute('data-transmission'));
+        });
+    });
+    
+    // Price filters
+    document.querySelectorAll('.sub-filter-btn[data-price-min]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const min = parseInt(this.getAttribute('data-price-min'));
+            const max = parseInt(this.getAttribute('data-price-max'));
+            filterByPrice(min, max);
+        });
+    });
+    
+    // Profile icon
+    document.getElementById('profileIcon').addEventListener('click', toggleMenu);
+    
+    // Search functionality
+    document.getElementById('search-button').addEventListener('click', function() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+        document.querySelectorAll('.car-card').forEach(card => {
+            const carName = card.querySelector('p').textContent.toLowerCase();
+            card.style.display = carName.includes(searchInput) ? 'block' : 'none';
+        });
+    });
+    
+    // Enable search on Enter key
+    document.getElementById('search-input').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('search-button').click();
+        }
+    });
+    
+    // Image buttons
+    document.querySelectorAll('.update-image-btn').forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const card = this.closest('.car-card');
+            const carId = card.getAttribute('data-car-id');
+            const carModel = card.getAttribute('data-model');
+            openImageModal(carId, carModel);
+        });
+    });
+    
+    // Close modals
+    document.getElementById('closeImageModal').addEventListener('click', closeImageModal);
+    document.getElementById('closeVariantsModal').addEventListener('click', closeModal);
+
+    // Close modals on Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+            closeModal();
+        }
+    });
+});
+</script>
 {% endblock %}

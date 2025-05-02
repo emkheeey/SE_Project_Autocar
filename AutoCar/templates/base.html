@@ -80,10 +80,11 @@
 
     {% if not user.is_authenticated %}
     <footer>
-        <p>&copy; 2025 AutoCar System | Avila, Pelgone, Lorena, Rectra</p>
+        <p>&copy; 2025 AutoCar System | Lorena, Pelgone, Avila, Rectra</p>
     </footer>
     {% endif %}
 
     <script src="{% static 'js/hide_login_buttons.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

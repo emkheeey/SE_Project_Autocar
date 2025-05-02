@@ -99,15 +99,15 @@ WSGI_APPLICATION = 'AutoCar.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Default database configuration (PostgreSQL)
+# Default database configuration (Supabase)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DATABASE', 'postgres'),
-        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'NAME': 'postgres',
+        'USER': 'postgres.abrdxqzcaaghpyplixfx',
+        'PASSWORD': 'Meowko25164973',
+        'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
+        'PORT': '6543',
         'OPTIONS': {
             'sslmode': 'require',
             'connect_timeout': 10,
@@ -115,31 +115,18 @@ DATABASES = {
     }
 }
 
-# Use DATABASE_URL if available (for Supabase)
+# Override with DATABASE_URL if available
 if 'DATABASE_URL' in os.environ:
     try:
-        # Parse the DATABASE_URL
-        db_url = os.environ['DATABASE_URL']
-        
-        # Ensure the URL is properly formatted for Supabase
-        if 'supabase' in db_url.lower():
-            # Add connection options for Supabase
-            db_config = dj_database_url.config(
-                conn_max_age=600,
-                conn_health_checks=True,
-                sslmode='require',
-                options={
-                    'sslmode': 'require',
-                    'connect_timeout': 10,
-                }
-            )
-        else:
-            # Use default configuration for other PostgreSQL databases
-            db_config = dj_database_url.config(
-                conn_max_age=600,
-                conn_health_checks=True,
-            )
-        
+        db_config = dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+            sslmode='require',
+            options={
+                'sslmode': 'require',
+                'connect_timeout': 10,
+            }
+        )
         DATABASES['default'] = db_config
         logger.info(f"Using database configuration from DATABASE_URL: {db_config.get('ENGINE')}")
     except Exception as e:
