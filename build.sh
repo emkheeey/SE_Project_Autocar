@@ -19,6 +19,22 @@ pip3 install -r requirements.txt
 echo "Installed packages:"
 pip3 list
 
+# Make sure staticfiles directory exists
+echo "Creating staticfiles directory if needed..."
+mkdir -p AutoCar/staticfiles
+
+# Run collectstatic to gather all static files
+echo "Collecting static files..."
+cd AutoCar
+python3 manage.py collectstatic --noinput
+
+# Print static files info
+echo "Static files collected. Contents of staticfiles directory:"
+ls -la staticfiles
+
+# Return to root directory
+cd ..
+
 # Check if DATABASE_URL is set
 if [ -z "$DATABASE_URL" ]; then
     echo "Warning: DATABASE_URL is not set. Database migrations will be skipped."
@@ -63,9 +79,5 @@ fi
 # Verify Django is installed
 echo "Verifying Django installation..."
 python3 -c "import django; print(f'Django version: {django.__version__}')"
-
-# Create required directories
-echo "Ensuring staticfiles directory exists..."
-mkdir -p AutoCar/staticfiles
 
 echo "Build process completed successfully!" 
