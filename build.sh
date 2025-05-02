@@ -19,26 +19,45 @@ pip3 install -r requirements.txt
 echo "Installed packages:"
 pip3 list
 
+# Check if DATABASE_URL is set
+if [ -z "$DATABASE_URL" ]; then
+    echo "Warning: DATABASE_URL is not set. Database migrations will be skipped."
+    SKIP_MIGRATIONS=true
+else
+    echo "DATABASE_URL is set. Attempting database migrations..."
+    SKIP_MIGRATIONS=false
+fi
+
 # Run migrations to create database tables
 echo "Running database migrations..."
-if [ -d "AutoCar" ]; then
-  cd AutoCar
-  # Try to run migrations, but don't fail if database is not available
-  if python3 manage.py migrate --noinput; then
-    echo "Database migrations completed successfully"
-  else
-    echo "Warning: Database migrations failed, but continuing with build"
-  fi
-  python3 manage.py collectstatic --noinput
+if [ "$SKIP_MIGRATIONS" = false ]; then
+    if [ -d "AutoCar" ]; then
+        cd AutoCar
+        # Try to run migrations, but don't fail if database is not available
+        if python3 manage.py migrate --noinput; then
+            echo "Database migrations completed successfully"
+        else
+            echo "Warning: Database migrations failed, but continuing with build"
+        fi
+        python3 manage.py collectstatic --noinput
+    else
+        # If running from root of AutoCar (Vercel's path0)
+        # Try to run migrations, but don't fail if database is not available
+        if python3 manage.py migrate --noinput; then
+            echo "Database migrations completed successfully"
+        else
+            echo "Warning: Database migrations failed, but continuing with build"
+        fi
+        python3 manage.py collectstatic --noinput
+    fi
 else
-  # If running from root of AutoCar (Vercel's path0)
-  # Try to run migrations, but don't fail if database is not available
-  if python3 manage.py migrate --noinput; then
-    echo "Database migrations completed successfully"
-  else
-    echo "Warning: Database migrations failed, but continuing with build"
-  fi
-  python3 manage.py collectstatic --noinput
+    echo "Skipping database migrations as DATABASE_URL is not set"
+    if [ -d "AutoCar" ]; then
+        cd AutoCar
+        python3 manage.py collectstatic --noinput
+    else
+        python3 manage.py collectstatic --noinput
+    fi
 fi
 
 # Verify Django is installed

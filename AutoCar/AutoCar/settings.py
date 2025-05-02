@@ -99,15 +99,23 @@ WSGI_APPLICATION = 'AutoCar.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Default database configuration (SQLite)
+# Default database configuration (PostgreSQL)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DATABASE', 'postgres'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'require',
+            'connect_timeout': 10,
+        }
     }
 }
 
-# Use PostgreSQL in production if DATABASE_URL is set correctly
+# Use DATABASE_URL if available (for Supabase)
 if 'DATABASE_URL' in os.environ:
     try:
         # Parse the DATABASE_URL
@@ -137,8 +145,7 @@ if 'DATABASE_URL' in os.environ:
     except Exception as e:
         logger.error(f"Error configuring database from DATABASE_URL: {e}")
         logger.error(traceback.format_exc())
-        logger.warning("Using default SQLite database instead")
-        # Keep the default SQLite configuration
+        # Don't fall back to SQLite, just log the error
         pass
 
 
