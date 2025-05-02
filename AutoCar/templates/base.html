@@ -7,11 +7,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AutoCar{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="{{ request.scheme }}://{{ request.get_host }}{% static 'css/base.css' %}?v={% now 'U' %}" rel="stylesheet">
+    <!-- Base CSS with inline fallback -->
+    <link href="{% static 'css/base.css' %}?v={% now 'U' %}" rel="stylesheet" onerror="applyFallbackStyles()">
     <!-- Prevent browser caching issues -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- Fallback styles in case CSS doesn't load -->
+    <style>
+        /* Minimal fallback styles if CSS fails to load */
+        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+        header { background-color: #333; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo img { max-height: 50px; }
+        .dropdown { position: relative; }
+        .profile-icon img { width: 40px; height: 40px; border-radius: 50%; }
+        .messages-container { padding: 1rem; }
+        .message { padding: 0.5rem 1rem; margin-bottom: 0.5rem; border-radius: 4px; }
+        .message.success { background-color: #d4edda; color: #155724; }
+        .message.error { background-color: #f8d7da; color: #721c24; }
+        .message.warning { background-color: #fff3cd; color: #856404; }
+        .message.info { background-color: #d1ecf1; color: #0c5460; }
+        footer { background-color: #333; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 
@@ -20,7 +37,7 @@
     <header>
         <div class="logo">
             <a href="{% url 'home' %}">
-                <img src="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}?v={% now 'U' %}" alt="AutoCar Logo">
+                <img src="{% static 'images/logo.png' %}?v={% now 'U' %}" alt="AutoCar Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIGZpbGw9IiMzMzMiLz48dGV4dCB4PSIxMCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiPkF1dG9DYXI8L3RleHQ+PC9zdmc+'">
             </a>
         </div>
 
@@ -36,7 +53,8 @@
         {% if user.is_authenticated %}
         <div class="dropdown">
             <div class="profile-icon">
-                <img src="{{ request.scheme }}://{{ request.get_host }}{% static 'images/profileicon.png' %}?v={% now 'U' %}" alt="Profile Icon" onError="this.onerror=null; this.src='{% static 'images/profileicon.png' %}';">
+                <img src="{% static 'images/profileicon.png' %}?v={% now 'U' %}" alt="Profile Icon" 
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzU1NSIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iOSIgcj0iMyIgZmlsbD0iI2RkZCIvPjxwYXRoIGQ9Ik0xOSAxOGMwLTQuNCw3LTQuNCwzLTEyLTItNC01LTUtMTAtNS01IDAtOCAxLTEwIDVDLTEgMTMuNiA2IDEzLjYgNiAxOHoiIGZpbGw9IiNkZGQiLz48L3N2Zz4=';">
             </div>
             <div class="dropdown-content">
                 <div class="menu-header">
@@ -90,17 +108,56 @@
     </footer>
     {% endif %}
 
-    <script src="{{ request.scheme }}://{{ request.get_host }}{% static 'js/hide_login_buttons.js' %}?v={% now 'U' %}"></script>
+    <!-- Fallback script if JavaScript doesn't load -->
     <script>
-    // Handle page reload on back/forward navigation to prevent caching issues
-    window.addEventListener('pageshow', function(event) {
-        // If the page was loaded from the browser cache
-        if (event.persisted) {
-            // Force a reload to get fresh data
-            window.location.reload();
+        // Handle static file loading failures
+        function applyFallbackStyles() {
+            console.log('CSS failed to load, applying fallback styles');
+            // Fallback styles are already in the head
         }
-    });
+        
+        // Check if static files loaded successfully
+        window.addEventListener('load', function() {
+            // Log static files status
+            console.log('Page loaded. Checking static files status...');
+            
+            // For user debugging
+            if (window.location.search.includes('debug=1')) {
+                let staticStatus = document.createElement('div');
+                staticStatus.style.padding = '10px';
+                staticStatus.style.background = '#f8f9fa';
+                staticStatus.style.border = '1px solid #ddd';
+                staticStatus.style.margin = '10px';
+                staticStatus.innerHTML = '<h3>Static Files Debug</h3>' +
+                    '<p>Host: ' + window.location.host + '</p>' +
+                    '<p>Protocol: ' + window.location.protocol + '</p>';
+                document.body.prepend(staticStatus);
+            }
+        });
+        
+        // Handle page reload on back/forward navigation to prevent caching issues
+        window.addEventListener('pageshow', function(event) {
+            // If the page was loaded from the browser cache
+            if (event.persisted) {
+                // Force a reload to get fresh data
+                window.location.reload();
+            }
+        });
     </script>
+    
+    <!-- Hide login buttons script with fallback -->
+    <script src="{% static 'js/hide_login_buttons.js' %}?v={% now 'U' %}" onerror="
+        // Inline fallback for hide_login_buttons.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const userIsLoggedIn = document.querySelector('.user-menu') !== null;
+            const loginButtons = document.querySelectorAll('.login-button, .register-button');
+            if (userIsLoggedIn) {
+                loginButtons.forEach(function(button) { button.style.display = 'none'; });
+            }
+            console.log('Using fallback hide_login_buttons script');
+        });
+    "></script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>

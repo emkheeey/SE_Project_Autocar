@@ -10,11 +10,6 @@ python3 --version
 echo "Installing dependencies..."
 pip3 install -r requirements.txt
 
-# Debugging - list files to ensure correct directory structure
-echo "Directory contents (before static collection):"
-ls -la
-ls -la AutoCar
-
 # Make sure staticfiles directory exists
 echo "Creating staticfiles directory if needed..."
 mkdir -p AutoCar/staticfiles
@@ -24,16 +19,21 @@ echo "Collecting static files..."
 cd AutoCar
 python3 manage.py collectstatic --noinput --clear
 
-# Create a test file to verify static serving
-echo "Creating test file..."
+# Create test files to verify static serving
+echo "Creating test files..."
 echo "This is a test file to verify static serving" > staticfiles/test.txt
+
+# Create a touch file in each directory to ensure they exist
+touch staticfiles/css/.keep
+touch staticfiles/js/.keep
+touch staticfiles/images/.keep
 
 # Debug - list static files
 echo "Static files collected. Contents of staticfiles directory:"
 ls -la staticfiles
-ls -la staticfiles/css
-ls -la staticfiles/js
-ls -la staticfiles/images
+ls -la staticfiles/css || echo "css directory missing or empty"
+ls -la staticfiles/js || echo "js directory missing or empty"
+ls -la staticfiles/images || echo "images directory missing or empty"
 
 # Return to root directory
 cd ..

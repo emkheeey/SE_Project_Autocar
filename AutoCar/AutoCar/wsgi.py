@@ -64,10 +64,21 @@ def health_check_app(environ, start_response):
 try:
     from django.core.wsgi import get_wsgi_application
     
-    # Create Django WSGI application - simple version without WhiteNoise
-    application = get_wsgi_application()
+    # Create Django WSGI application
+    django_application = get_wsgi_application()
     
-    logger.info("WSGI application initialized successfully")
+    # Add WhiteNoise for static file serving in production
+    from whitenoise import WhiteNoise
+    from pathlib import Path
+    
+    # Get the base directory path
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    
+    # Configure WhiteNoise with proper static file paths
+    application = WhiteNoise(django_application)
+    application.add_files(os.path.join(BASE_DIR, 'staticfiles'), prefix='static/')
+    
+    logger.info("WSGI application initialized successfully with WhiteNoise")
 except Exception as e:
     logger.error(f"Error initializing WSGI application: {e}")
     logger.error(traceback.format_exc())
