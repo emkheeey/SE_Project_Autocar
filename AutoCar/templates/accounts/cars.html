@@ -5,113 +5,123 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/browse.css' %}">
+<style>
+    /* Override styles from base.html to prevent profile duplication */
+    header {
+        display: none !important;
+    }
+    
+    /* Ensure top margin is reset */
+    body {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Hide any content from base.html that might cause problems */
+    #home, footer {
+        display: none !important;
+    }
+</style>
 {% endblock %}
 
+{% block body_class %}browse-page{% endblock %}
+
 {% block content %}
-<!-- Navigation Bar -->
 <div class="header">
-    <div class="logo">
-        <img src="{% static 'images/logo.png' %}" alt="AutoCar Logo">
-    </div>
+    <div class="logo"><img src="{% static 'images/logo.png' %}"></div>  
     <nav>
         <ul>
             <li><a href="{% url 'home' %}">HOME</a></li>
             <li><a href="{% url 'cars' %}" class="active">BROWSE CARS</a></li>
-            <li><a href="#">RECOMMENDATIONS</a></li>
-            <li><a href="#">COMPARE CAR</a></li>
+            <li><a href="#recommend">RECOMMENDATIONS</a></li>
+            <li><a href="#compare-cars">COMPARE CAR</a></li>
         </ul>
     </nav>
-    <div class="profile-icon" id="profileIcon">
-        <img src="{% static 'images/profileicon.png' %}" alt="Profile">
+    <div class="profile-icon" onclick="toggleMenu()">
+        <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon">
+    </div> 
+    
+    <div class="user-menu" id="userMenu">
+        <div class="menu-header">
+            <div class="user-name">{{ user.first_name|default:user.username }}</div>
+            <div class="user-email">{{ user.email }}</div>
+        </div>
+        <div class="menu-item" onclick="window.location.href='{% url 'profile' %}'">Account</div>
+        <div class="menu-item" onclick="window.location.href='{% url 'cars' %}'">Saved Favorite</div>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="menu-item">Log Out</button>
+        </form>
     </div>
 </div>
 
-<!-- Add this right after the profile-icon div -->
-<div class="user-menu" id="userMenu">
-    <div class="user-name">{{ user.username }}</div>
-    <div class="user-email">{{ user.email }}</div>
-    <div class="menu-links">
-        <a href="#">Account</a>
-        <a href="#">Favorites</a>
-    </div>
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="logout-btn">Log Out</button>
-    </form>
-</div>
-
-<!-- Search Bar -->
 <div class="search-container">
     <input type="text" id="search-input" placeholder="Search for car models...">
     <button onclick="searchCars()">Search</button>
 </div>
 
-<!-- Filter Buttons -->
 <div class="filter-container">
-    <div class="filter-buttons">
+    <div class="filter-options main-filters">
         <button class="filter-btn active" onclick="showAllCars(this)">All</button>
         <button class="filter-btn" onclick="showBodyTypeFilters(this)">Body Type</button>
         <button class="filter-btn" onclick="showPriceFilters(this)">Price</button>
         <button class="filter-btn" onclick="showTransmissionFilters(this)">Transmission</button>
     </div>
+
+    <div id="bodyTypeFilters" class="filter-options sub-filters" style="display: none;">
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Sedan')">Sedan</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'SUV')">SUV</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Truck')">Truck</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'MPV')">MPV</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Van')">Van</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'bodyType', 'Station Wagon')">Station Wagon</button>
+    </div>
+
+    <div id="priceFilters" class="filter-options sub-filters" style="display: none;">
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '500000')">Below ₱500,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1000000')">₱500,000 – ₱1,000,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '1500000')">₱1,000,000 – ₱1,500,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '2000000')">₱1,500,000 – ₱2,000,000</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'price', '3000000')">Above ₱2,000,000</button>
+    </div>
+
+    <div id="transmissionFilters" class="filter-options sub-filters" style="display: none;">
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Automatic')">Automatic</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Manual')">Manual</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Electric')">Electric</button>
+        <button class="sub-filter-btn" onclick="toggleSubFilter(this, 'transmission', 'Hybrid')">Hybrid</button>
+    </div>
 </div>
 
-<!-- Car List -->
-<div class="car-grid">
-    <!-- Placeholder car cards - you can remove these when database is working -->
-    <div class="car-card">
-        <div class="car-image">
-            <img src="{% static 'images/cars/camry.jpg' %}" alt="Toyota Camry">
+<div class="car-list" id="car-list">
+    {% if cars %}
+        {% for car in cars %}
+        <div class="car-card" 
+             data-car-id="{{ car.id }}" 
+             data-body-type="{{ car.body_type }}" 
+             data-price="{{ car.price }}"
+             data-transmission="{{ car.transmission }}"
+             onclick="showCarDetails('{{ car.id }}', '{{ car.model }}')">
+            <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" alt="{{ car.model }}">
+            <p>{{ car.model }}</p>
         </div>
-        <div class="car-name">CAMRY</div>
-    </div>
-    
-    <div class="car-card">
-        <div class="car-image">
-            <img src="{% static 'images/cars/hillux.jpg' %}" alt="Toyota Hillux">
+        {% endfor %}
+    {% else %}
+        <!-- Display message when no cars are available -->
+        <div class="no-cars-message">
+            <p>No cars available in the database. Check back later.</p>
         </div>
-        <div class="car-name">HILLUX</div>
-    </div>
-    
-    <div class="car-card">
-        <div class="car-image">
-            <img src="{% static 'images/cars/innova.jpg' %}" alt="Toyota Innova">
-        </div>
-        <div class="car-name">INNOVA</div>
-    </div>
-    
-    <div class="car-card">
-        <div class="car-image">
-            <img src="{% static 'images/cars/vios.jpg' %}" alt="Toyota Vios">
-        </div>
-        <div class="car-name">VIOS</div>
-    </div>
-    
-    <div class="car-card">
-        <div class="car-image">
-            <img src="{% static 'images/cars/fortuner.jpg' %}" alt="Toyota Fortuner">
-        </div>
-        <div class="car-name">FORTUNER</div>
-    </div>
-    
-    <!-- When database is working, replace with this dynamic version:
-    {% for car in cars %}
-    <div class="car-card">
-        <div class="car-image">
-            <img src="{{ car.image_url }}" alt="{{ car.model }}">
-        </div>
-        <div class="car-name">{{ car.model|upper }}</div>
-    </div>
-    {% endfor %}
-    -->
+    {% endif %}
 </div>
 
-<!-- "No Cars" message - show only when needed -->
-{% if not cars %}
-<div class="no-cars-message" style="display: none;">
-    <p>No cars found. Please try different search criteria.</p>
+<!-- Car Variants Modal -->
+<div class="variants-modal" id="variantsModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <div class="variants-container" id="variantsContainer"></div>
+    </div>
 </div>
-{% endif %}
 {% endblock %}
 
 {% block extra_js %}
