@@ -75,8 +75,16 @@ try:
     BASE_DIR = Path(__file__).resolve().parent.parent
     
     # Configure WhiteNoise with proper static file paths
+    # Check for production environment (Vercel)
+    if os.environ.get('VERCEL', False):
+        static_root = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+        logger.info(f"Using Vercel static root: {static_root}")
+    else:
+        static_root = os.path.join(BASE_DIR, 'staticfiles')
+        logger.info(f"Using development static root: {static_root}")
+    
     application = WhiteNoise(django_application)
-    application.add_files(os.path.join(BASE_DIR, 'staticfiles'), prefix='static/')
+    application.add_files(static_root, prefix='static/')
     
     logger.info("WSGI application initialized successfully with WhiteNoise")
 except Exception as e:

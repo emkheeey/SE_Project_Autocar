@@ -1,0 +1,90 @@
+/* Override body styles only for login page */
+body.login-page {
+    margin: 0;
+    padding: 0;
+    background: url('../images/loginbg.png') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Super specific selector to override any other styles */
+body.login-page footer,
+.login-page footer,
+body.login-page>footer {
+    display: none !important;
+}
+
+/* Container wrapper */
+.container-wrapper {
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    text-align: center;
+    margin-top: 80px;
+    /* Add space for header */
+}
+
+.form-container {
+    width: 100%;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.input-field {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.btn {
+    width: 90%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: #d32f2f;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #b71c1c;
+}
+
+.switch {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.switch a {
+    color: #d32f2f;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Error messages */
+.error-message,
+.form-error {
+    color: #d32f2f;
+    font-size: 14px;
+    text-align: left;
+    margin: 5px 0 10px 5%;
+}
+
+.input-error {
+    border-color: #d32f2f;
+}

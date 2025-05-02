@@ -4,7 +4,9 @@
         {
             "src": "build.sh",
             "use": "@vercel/static-build",
-            "config": { "distDir": "AutoCar/staticfiles" }
+            "config": { 
+                "distDir": "AutoCar/staticfiles_build" 
+            }
         },
         {
             "src": "AutoCar/AutoCar/wsgi.py",
@@ -18,10 +20,7 @@
     "routes": [
         {
             "src": "/static/(.*)",
-            "dest": "/static/$1",
-            "headers": {
-                "cache-control": "public, max-age=31536000, immutable"
-            }
+            "dest": "/static/$1"
         },
         {
             "src": "/(.*)",
