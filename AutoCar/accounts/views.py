@@ -5,27 +5,11 @@ from django.http import HttpResponse
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout
+import logging
+from AutoCar.utils.supabase_utils import fetch_data, insert_data, update_data, delete_data
 
-# Fix import path for supabase_utils
-try:
-    from AutoCar.utils.supabase_utils import fetch_data, insert_data, update_data, delete_data
-except ImportError:
-    try:
-        from supabase_utils import fetch_data, insert_data, update_data, delete_data
-    except ImportError:
-        # Fallback functions to prevent crashes if imports fail
-        def fetch_data(*args, **kwargs): 
-            print(f"Mock fetch_data called with {args} {kwargs}")
-            return type('obj', (object,), {'data': []})
-        def insert_data(*args, **kwargs): 
-            print(f"Mock insert_data called with {args} {kwargs}")
-            return None
-        def update_data(*args, **kwargs): 
-            print(f"Mock update_data called with {args} {kwargs}")
-            return None
-        def delete_data(*args, **kwargs): 
-            print(f"Mock delete_data called with {args} {kwargs}")
-            return None
+# Configure logging
+logger = logging.getLogger(__name__)
 
 def signup(request):
     if request.method == 'POST':
@@ -70,7 +54,7 @@ def signup(request):
                     except Exception as supabase_error:
                         # Don't fail if Supabase storage fails - just log the error
                         messages.warning(request, f"Note: User profile sync to database failed, but your account was created.")
-                        print(f"Supabase error: {str(supabase_error)}")
+                        logger.warning(f"Supabase error: {str(supabase_error)}")
                     
                     messages.success(request, f'Account created for {username}!')
                     return redirect('home')
@@ -97,7 +81,7 @@ def profile(request):
         profile_data = supabase_profile.data[0] if supabase_profile and supabase_profile.data else {}
     except Exception as e:
         # Log the error
-        print(f"Error fetching profile: {e}")
+        logger.error(f"Error fetching profile: {e}")
     
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -140,7 +124,7 @@ def home(request):
     except Exception as e:
         # Handle error more gracefully
         error_message = str(e)
-        print(f"Error fetching featured cars: {e}")
+        logger.error(f"Error fetching featured cars: {e}")
         messages.warning(request, "Unable to fetch featured cars. Using demo data instead.")
         # Provide demo data if database fetch fails
         cars = [
@@ -175,7 +159,7 @@ def home(request):
         'error_message': error_message
     }
     
-    return render(request, 'accounts/home.html', context) 
+    return render(request, 'accounts/home.html', context)
 
 # Add a dedicated error handler view
 def error_handler(request):

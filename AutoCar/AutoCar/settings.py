@@ -30,9 +30,6 @@ except Exception as e:
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(f"BASE_DIR: {BASE_DIR}")
-#nonsense I made it work
-#I AM AWESOOOOOME
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -41,20 +38,13 @@ print(f"BASE_DIR: {BASE_DIR}")
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-0$z8x(!1b6y_5q+(1k)q-uy_y7ec&*7yu-b%mzzj#)w=77&+zf')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-print(f"DEBUG mode: {DEBUG}")
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app').split(',')
-print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 
 # Add Supabase configuration 
-SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://vbuqisvpvgqpkxstezik.supabase.co')
-# Don't print the entire key for security reasons
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZidXFpc3ZwdmdxcGt4c3RlemlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2OTc4OTMsImV4cCI6MjA2MDI3Mzg5M30.9KVom9DQy1ZpKMCmlleeKwDImvn-zGBpaSEn3ZgRisk')
-# We'll instantiate the client when needed, not at module level
-print(f"SUPABASE_URL is set: {'Yes' if SUPABASE_URL else 'No'}")
-print(f"SUPABASE_KEY is set: {'Yes' if SUPABASE_KEY else 'No'}")
-
+SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://abrdxqzcaaghpyplixfx.supabase.co')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFicmR4cXpjYWFnaHB5cGxpeGZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMTczMjUsImV4cCI6MjA2MTY5MzMyNX0.-hVd-yim3e4eHTGmfSulAfLM07S6nG5Qx2feaB--fIU')
 
 # Application definition
 
@@ -122,9 +112,10 @@ if db_url:
         if ':' in prefix:
             user_part, pass_part = prefix.rsplit(':', 1)
             masked_url = f"{user_part}:****@{suffix}"
-    print(f"DATABASE_URL is set (masked): {masked_url}")
+    # Removed print statement for DATABASE_URL
 else:
-    print("DATABASE_URL is not set, using SQLite")
+    # Removed print statement for DATABASE_URL not set
+    pass
 
 # Use PostgreSQL in production if DATABASE_URL is set correctly
 if 'DATABASE_URL' in os.environ:

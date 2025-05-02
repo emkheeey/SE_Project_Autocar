@@ -11,35 +11,31 @@ import os
 import sys
 import traceback
 import json
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Import path setup script for Vercel
 try:
     # Import the Vercel-specific setup script
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     import vercel_setup
-    print("Imported vercel_setup script")
+    logger.info("Imported vercel_setup script")
 except Exception as e:
-    print(f"Error importing vercel_setup: {e}")
-
-# Additional diagnostics at module level
-print(f"Initial directory listing: {os.listdir()}")
+    logger.error(f"Error importing vercel_setup: {e}")
 
 # Load environment variables from .env file if present
 try:
     from dotenv import load_dotenv
     load_dotenv()
-    print("Loaded environment variables from .env file")
+    logger.info("Loaded environment variables from .env file")
 except Exception as e:
-    print(f"Error loading .env file: {e}")
+    logger.error(f"Error loading .env file: {e}")
 
 # Set up settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AutoCar.settings')
-
-# Print diagnostics
-print(f"Python version: {sys.version}")
-print(f"PYTHONPATH: {sys.path}")
-print(f"Current directory: {os.getcwd()}")
-print(f"Settings module: {os.environ.get('DJANGO_SETTINGS_MODULE')}")
 
 # Define a health check application
 def health_check_app(environ, start_response):
@@ -68,10 +64,10 @@ def health_check_app(environ, start_response):
 try:
     from django.core.wsgi import get_wsgi_application
     application = get_wsgi_application()
-    print("WSGI application initialized successfully")
+    logger.info("WSGI application initialized successfully")
 except Exception as e:
-    print(f"Error initializing WSGI application: {e}")
-    print(traceback.format_exc())
+    logger.error(f"Error initializing WSGI application: {e}")
+    logger.error(traceback.format_exc())
     # Store the exception for later use
     error_info = str(e)
     error_traceback = traceback.format_exc()

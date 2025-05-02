@@ -1,12 +1,18 @@
 # Add these imports at the top
 from django.conf import settings
-import supabase
+from supabase import create_client
 
 def get_supabase_client():
     """
     Returns the Supabase client instance or None if not configured
     """
-    return settings.supabase
+    supabase_url = getattr(settings, 'SUPABASE_URL', None)
+    supabase_key = getattr(settings, 'SUPABASE_KEY', None)
+    
+    if not supabase_url or not supabase_key:
+        return None
+        
+    return create_client(supabase_url, supabase_key)
 
 def fetch_data(table_name, query=None):
     """
