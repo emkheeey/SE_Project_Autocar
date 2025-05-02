@@ -121,11 +121,14 @@ def profile(request):
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
+        
+        favorites = []
     
     context = {
         'u_form': u_form,
         'p_form': p_form,
-        'supabase_data': profile_data
+        'supabase_data': profile_data,
+        'favorites': favorites,
     }
     return render(request, 'accounts/profile.html', context)
 

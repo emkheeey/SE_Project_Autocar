@@ -3,116 +3,106 @@
 
 {% block title %}My Profile | AutoCar{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Override styles from base.html */
+    header.main-header {
+        display: none !important;
+    }
+    
+    #home, footer {
+        display: none !important;
+    }
+</style>
+{% endblock %}
+
+{% block body_class %}profile-page{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="profile-section">
-                <h2 class="mb-4">Manage Your Profile</h2>
-                
-                <form method="post" novalidate>
-                    {% csrf_token %}
-                    
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h4 class="mb-0">Account Information</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="{{ u_form.username.id_for_label }}" class="form-label">Username</label>
-                                <input type="text" name="{{ u_form.username.name }}" id="{{ u_form.username.id_for_label }}" 
-                                       class="form-control {% if u_form.username.errors %}is-invalid{% endif %}" 
-                                       value="{{ u_form.username.value }}">
-                                {% if u_form.username.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in u_form.username.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ u_form.email.id_for_label }}" class="form-label">Email</label>
-                                <input type="email" name="{{ u_form.email.name }}" id="{{ u_form.email.id_for_label }}" 
-                                       class="form-control {% if u_form.email.errors %}is-invalid{% endif %}" 
-                                       value="{{ u_form.email.value }}">
-                                {% if u_form.email.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in u_form.email.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-header bg-secondary text-white">
-                            <h4 class="mb-0">Profile Details</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="{{ p_form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
-                                <input type="text" name="{{ p_form.phone_number.name }}" id="{{ p_form.phone_number.id_for_label }}" 
-                                       class="form-control {% if p_form.phone_number.errors %}is-invalid{% endif %}" 
-                                       value="{{ p_form.phone_number.value|default:'' }}">
-                                {% if p_form.phone_number.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in p_form.phone_number.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ p_form.address.id_for_label }}" class="form-label">Address</label>
-                                <input type="text" name="{{ p_form.address.name }}" id="{{ p_form.address.id_for_label }}" 
-                                       class="form-control {% if p_form.address.errors %}is-invalid{% endif %}" 
-                                       value="{{ p_form.address.value|default:'' }}">
-                                {% if p_form.address.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in p_form.address.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-lg">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Supabase Profile Information -->
-            {% if supabase_data %}
-            <div class="card mt-4 mb-4">
-                <div class="card-header bg-info text-white">
-                    <h4 class="mb-0">Additional Profile Information</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>User ID:</strong> {{ supabase_data.user_id }}</p>
-                            <p><strong>Username:</strong> {{ supabase_data.username }}</p>
-                            <p><strong>Email:</strong> {{ supabase_data.email }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Created:</strong> {{ supabase_data.created_at|date:"F j, Y" }}</p>
-                            {% if supabase_data.updated_at %}
-                            <p><strong>Last Updated:</strong> {{ supabase_data.updated_at|date:"F j, Y" }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- Header with Back Button -->
+<header class="profile-header">
+    <button class="back-btn" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <h1>My Profile</h1>
+</header>
+
+<!-- Profile Section -->
+<main>
+    <div class="profile-section">
+        <div class="profile-pic">
+            {% if user.profile_image %}
+                <img src="{{ user.profile_image }}" alt="Profile Picture" id="profileImage">
+            {% else %}
+                <img src="{% static 'images/default-profile.png' %}" alt="Profile Picture" id="profileImage">
             {% endif %}
+            <button class="edit-pic-btn" onclick="document.getElementById('profileUpload').click()">
+                <i class="fas fa-camera"></i>
+            </button>
+            <input type="file" id="profileUpload" name="profile_image" accept="image/*" style="display: none;">
+        </div>
+
+        <div class="profile-details">
+            <div class="detail-item">
+                <label>Full Name</label>
+                <div class="editable" id="userName">{{ user.first_name }} {{ user.last_name }}</div>
+                <button class="edit-btn" onclick="editField('userName')"><i class="fas fa-pencil-alt"></i></button>
+            </div>
+
+            <div class="detail-item">
+                <label>Email</label>
+                <div class="non-editable" id="userEmail">{{ user.email }}</div>
+            </div>
+
+            <div class="detail-item">
+                <label>Password</label>
+                <div class="editable" id="userPassword">••••••••</div>
+                <button class="edit-btn" onclick="editField('userPassword')"><i class="fas fa-pencil-alt"></i></button>
+            </div>
         </div>
     </div>
+
+    <!-- Saved Favorites Section -->
+    <section class="saved-favorites">
+        <h2><i class="fas fa-heart"></i> Saved Favorites</h2>
+        <div class="favorites-grid" id="favoritesGrid">
+            {% if favorites %}
+                {% for car in favorites %}
+                <div class="favorite-card">
+                    <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" alt="{{ car.model }}">
+                    <p>{{ car.model }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-favorites">You haven't saved any favorites yet.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Logout Button -->
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+        </button>
+    </form>
+</main>
+
+<!-- Edit Field Modal -->
+<div class="edit-modal" id="editModal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h2 id="editFieldTitle">Edit Field</h2>
+        <form id="editForm">
+            <input type="text" id="editInput" class="edit-input">
+            <button type="submit" class="save-btn">Save</button>
+        </form>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

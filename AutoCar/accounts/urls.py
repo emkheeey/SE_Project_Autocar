@@ -13,4 +13,5 @@ urlpatterns = [
     path('diagnostics/', views.error_handler, name='diagnostics'),
     path('minimal/', views.minimal_view, name='minimal'),
     path('about/', views.about_view, name='about'),
+    path('profile/', views.profile, name='profile'),
 ]
