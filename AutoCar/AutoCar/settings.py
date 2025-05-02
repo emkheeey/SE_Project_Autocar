@@ -49,7 +49,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app
 
 # Add Supabase configuration 
 SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://abrdxqzcaaghpyplixfx.supabase.co')
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFicmR4cXpjYWFnaHB5cGxpeGZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMTczMjUsImV4cCI6MjA2MTY5MzMyNX0.-hVd-yim3e4eHTGmfSulAfLM07S6nG5Qx2feaB--fIU')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFicmR4cXpjYWFnaHB5cGxpeGZ4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NjExNzMyNSwiZXhwIjoyMDYxNjkzMzI1fQ.7uzezozqlIywMeKJ269mA3EackvszEI5v1cDUz2mxZ4')
 
 # Application definition
 

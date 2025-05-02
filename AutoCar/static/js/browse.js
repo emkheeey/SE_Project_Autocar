@@ -48,7 +48,7 @@ function setupNavigation() {
             window.location.href = "/compare/";
         });
     }
-}
+    }
 
 // Set up search functionality
 function setupSearch() {
@@ -211,7 +211,7 @@ function setupProfileMenu() {
 function toggleMenu() {
     const menu = document.getElementById("userMenu");
     if (menu) {
-        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 }
 

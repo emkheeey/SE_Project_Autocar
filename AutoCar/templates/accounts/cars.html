@@ -183,6 +183,37 @@
     .modal, .variants-modal {
         position: fixed;
         z-index: 1050;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+        width: 100%;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #999;
+    }
+    
+    .close-modal:hover {
+        color: #333;
     }
     
     /* Fix main page scrolling */
@@ -196,6 +227,185 @@
         overflow-y: auto !important;
         height: auto !important;
         min-height: 100vh;
+    }
+    
+    /* File input styling */
+    .file-input-container {
+        margin: 15px 0;
+    }
+    
+    .file-input-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    
+    .file-input-container input[type="file"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    
+    .file-preview {
+        margin: 15px auto;
+        max-width: 100%;
+        max-height: 200px;
+        display: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    #imageUploadForm button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 15px;
+    }
+    
+    #imageUploadForm button[type="submit"]:hover {
+        background-color: #c0392b;
+    }
+    
+    /* Modal title styling */
+    .modal-title {
+        margin-top: 0;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    /* Custom file input styling */
+    .custom-file-input {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .custom-file-input input[type="file"] {
+        position: absolute;
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        z-index: -1;
+    }
+    
+    .file-button {
+        background-color: #e74c3c;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+        transition: background-color 0.3s;
+    }
+    
+    .file-button:hover {
+        background-color: #c0392b;
+    }
+    
+    .file-name {
+        margin-left: 10px;
+        color: #666;
+    }
+    
+    /* Upload status styling */
+    .upload-status {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    .upload-status.uploading {
+        background-color: #f8f9fa;
+        color: #495057;
+        border: 1px solid #dee2e6;
+    }
+    
+    .upload-status.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .upload-status.warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+    
+    .upload-status.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    /* Error details styling */
+    .error-details {
+        margin-top: 10px;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+    
+    .error-details summary {
+        cursor: pointer;
+        color: #721c24;
+        font-size: 0.9em;
+        padding: 5px;
+    }
+    
+    .error-details pre {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 10px;
+        overflow-x: auto;
+        font-size: 0.85em;
+        white-space: pre-wrap;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+    
+    /* Car image handling */
+    .car-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        transition: opacity 0.3s ease;
+    }
+    
+    .car-image.loading {
+        opacity: 0.5;
+    }
+    
+    .fallback-image {
+        border: 1px solid #ffcccb;
+    }
+    
+    /* Force image refresh on page load */
+    @keyframes refreshFade {
+        0% { opacity: 0.7; }
+        100% { opacity: 1; }
+    }
+    
+    .refresh-image {
+        animation: refreshFade 0.5s ease-in-out;
     }
 </style>
 {% endblock %}
@@ -214,7 +424,7 @@
         </ul>
     </nav>
     <div class="profile-icon" id="profileIcon">
-        <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon">
+        <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon" onError="this.onerror=null; this.src='{% static 'images/profileicon.png' %}';">
     </div> 
     
     <div class="user-menu" id="userMenu">
@@ -283,7 +493,10 @@
              data-price="{{ car.price }}"
              data-transmission="{{ car.transmission }}"
              data-model="{{ car.model }}">
-            <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" alt="{{ car.model }}">
+            <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" 
+                 alt="{{ car.model }}"
+                 class="car-image"
+                 onError="this.onerror=null; this.src='{% static 'images/cars/default.jpg' %}'; this.classList.add('fallback-image');">
             <p>{{ car.model }}</p>
             <button class="btn btn-secondary update-image-btn">Add/Update Image</button>
         </div>
@@ -296,16 +509,24 @@
     {% endif %}
 </div>
 
-<!-- Image URL Modal -->
+<!-- Image Upload Modal -->
 <div class="modal" id="imageModal" style="display:none;">
     <div class="modal-content">
         <span class="close-modal" id="closeImageModal">&times;</span>
-        <h2 id="imageModalTitle"></h2>
-        <form id="imageUrlForm">
+        <h2 id="imageModalTitle" class="modal-title"></h2>
+        <form id="imageUploadForm" enctype="multipart/form-data">
+            {% csrf_token %}
             <input type="hidden" id="modalCarId" name="car_id">
-            <label for="imageUrlInput">Image URL:</label>
-            <input type="url" id="imageUrlInput" name="image_url" required>
-            <button type="submit" class="btn btn-primary">Save Image</button>
+            <div class="file-input-container">
+                <label for="carImageInput">Select Image:</label>
+                <div class="custom-file-input">
+                    <input type="file" id="carImageInput" name="car_image" accept="image/*" required>
+                    <label for="carImageInput" class="file-button">Choose File</label>
+                    <span class="file-name" id="fileName">No file chosen</span>
+                </div>
+            </div>
+            <img id="imagePreview" class="file-preview" alt="Preview">
+            <button type="submit" class="btn btn-primary">Upload Image</button>
         </form>
     </div>
 </div>
@@ -372,7 +593,8 @@ function openImageModal(carId, carModel) {
     document.getElementById('imageModal').style.display = 'block';
     document.getElementById('imageModalTitle').textContent = `Add/Update Image for ${carModel}`;
     document.getElementById('modalCarId').value = carId;
-    document.getElementById('imageUrlInput').value = '';
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('carImageInput').value = '';
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
 }
 
@@ -418,8 +640,47 @@ function fixScrollingIssues() {
     });
 }
 
+// Handle page reload on back/forward navigation to prevent caching issues
+window.addEventListener('pageshow', function(event) {
+    // If the page was loaded from the browser cache
+    if (event.persisted) {
+        // Force a reload to get fresh data
+        window.location.reload();
+    }
+});
+
+// Force refresh all car images on page load
+function refreshCarImages() {
+    const carImages = document.querySelectorAll('.car-image');
+    carImages.forEach(img => {
+        if (img.complete && img.naturalHeight !== 0) {
+            // Image already loaded correctly
+            img.classList.add('refresh-image');
+        } else {
+            // Image needs to be refreshed
+            img.classList.add('loading');
+            const originalSrc = img.src;
+            
+            // Add cache-busting parameter
+            if (originalSrc.includes('?')) {
+                img.src = originalSrc + '&t=' + new Date().getTime();
+            } else {
+                img.src = originalSrc + '?t=' + new Date().getTime();
+            }
+            
+            img.onload = function() {
+                img.classList.remove('loading');
+                img.classList.add('refresh-image');
+            };
+        }
+    });
+}
+
 // Set up event listeners
 document.addEventListener("DOMContentLoaded", function() {
+    // Refresh car images on page load
+    refreshCarImages();
+    
     // Apply scroll fixing
     fixScrollingIssues();
     
@@ -497,6 +758,175 @@ document.addEventListener("DOMContentLoaded", function() {
             closeModal();
         }
     });
+    
+    // Close modal when clicking outside modal content
+    document.getElementById('imageModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeImageModal();
+        }
+    });
+    
+    // Image preview functionality
+    const imageInput = document.getElementById('carImageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const fileName = document.getElementById('fileName');
+    
+    if (imageInput && imagePreview) {
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                // Update file name display
+                fileName.textContent = this.files[0].name;
+                
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+    
+    // Image upload form submission
+    const uploadForm = document.getElementById('imageUploadForm');
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitButton.textContent;
+            submitButton.textContent = 'Uploading...';
+            submitButton.disabled = true;
+            
+            // Add status message element if it doesn't exist
+            let statusMsg = document.getElementById('uploadStatusMsg');
+            if (!statusMsg) {
+                statusMsg = document.createElement('div');
+                statusMsg.id = 'uploadStatusMsg';
+                statusMsg.className = 'upload-status';
+                this.appendChild(statusMsg);
+            }
+            statusMsg.textContent = 'Uploading image to Supabase storage...';
+            statusMsg.className = 'upload-status uploading';
+            
+            const formData = new FormData(this);
+            const carId = document.getElementById('modalCarId').value;
+            
+            try {
+                const response = await fetch('/accounts/update_car_image/', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                // Parse the response
+                let data;
+                try {
+                    data = await response.json();
+                } catch (parseError) {
+                    console.error('Error parsing JSON response:', parseError);
+                    statusMsg.textContent = 'Error: Server returned invalid response';
+                    statusMsg.className = 'upload-status error';
+                    submitButton.textContent = originalBtnText;
+                    submitButton.disabled = false;
+                    return;
+                }
+                
+                if (response.ok) {
+                    // Update the image in the UI
+                    if (data.image_url) {
+                        const card = document.querySelector(`.car-card[data-car-id='${carId}'] img`);
+                        if (card) {
+                            // Add cache-busting parameter to ensure the image is refreshed
+                            let imageUrl = data.image_url;
+                            if (imageUrl.includes('?')) {
+                                imageUrl += '&t=' + new Date().getTime();
+                            } else {
+                                imageUrl += '?t=' + new Date().getTime();
+                            }
+                            
+                            // Apply loading state
+                            card.classList.add('loading');
+                            
+                            // Set the new image URL with cache busting
+                            card.src = imageUrl;
+                            
+                            // Handle image load completion
+                            card.onload = function() {
+                                card.classList.remove('loading');
+                                card.classList.add('refresh-image');
+                            };
+                            
+                            // Special handling for fallback images
+                            if (data.method === 'fallback') {
+                                statusMsg.textContent = 'Image updated with a fallback. ' + (data.message || '');
+                                statusMsg.className = 'upload-status warning';
+                                
+                                // Keep modal open for fallback messages
+                                submitButton.textContent = originalBtnText;
+                                submitButton.disabled = false;
+                                setTimeout(() => {
+                                    closeImageModal();
+                                }, 3000); // Close after 3 seconds
+                                return;
+                            }
+                        }
+                    }
+                    
+                    statusMsg.textContent = 'Image uploaded successfully!';
+                    statusMsg.className = 'upload-status success';
+                    
+                    // Close the modal after a short delay
+                    setTimeout(() => {
+                        closeImageModal();
+                    }, 1500);
+                } else {
+                    // Display error from server
+                    submitButton.textContent = originalBtnText;
+                    submitButton.disabled = false;
+                    
+                    let errorMessage = data.error || 'Unknown server error';
+                    statusMsg.textContent = `Error: ${errorMessage}`;
+                    statusMsg.className = 'upload-status error';
+                    
+                    // Add detailed error as hidden element that can be toggled
+                    if (data.detail) {
+                        console.error('Detailed error:', data.detail);
+                        
+                        // Add a details element if it doesn't exist
+                        let detailsElem = document.getElementById('errorDetails');
+                        if (!detailsElem) {
+                            detailsElem = document.createElement('details');
+                            detailsElem.id = 'errorDetails';
+                            detailsElem.className = 'error-details';
+                            
+                            const summary = document.createElement('summary');
+                            summary.textContent = 'Show technical details';
+                            detailsElem.appendChild(summary);
+                            
+                            const pre = document.createElement('pre');
+                            pre.id = 'errorDetailContent';
+                            detailsElem.appendChild(pre);
+                            
+                            statusMsg.parentNode.insertBefore(detailsElem, statusMsg.nextSibling);
+                        }
+                        
+                        // Update the details content
+                        document.getElementById('errorDetailContent').textContent = data.detail;
+                    }
+                }
+            } catch (err) {
+                console.error('Error uploading image:', err);
+                
+                submitButton.textContent = originalBtnText;
+                submitButton.disabled = false;
+                
+                statusMsg.textContent = `Network error: ${err.message || 'Failed to connect to server'}`;
+                statusMsg.className = 'upload-status error';
+            }
+        });
+    }
 });
 </script>
 {% endblock %}

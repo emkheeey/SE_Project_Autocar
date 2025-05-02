@@ -8,6 +8,10 @@
     <title>{% block title %}AutoCar{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <!-- Prevent browser caching issues -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     {% block extra_css %}{% endblock %}
 </head>
 
@@ -15,7 +19,9 @@
     {% csrf_token %}
     <header>
         <div class="logo">
-            <img src="{% static 'images/logo.png' %}">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="AutoCar Logo">
+            </a>
         </div>
 
         {% if not user.is_authenticated %}
@@ -30,7 +36,7 @@
         {% if user.is_authenticated %}
         <div class="dropdown">
             <div class="profile-icon">
-                <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon">
+                <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon" onError="this.onerror=null; this.src='{% static 'images/profileicon.png' %}';">
             </div>
             <div class="dropdown-content">
                 <div class="menu-header">
@@ -85,6 +91,16 @@
     {% endif %}
 
     <script src="{% static 'js/hide_login_buttons.js' %}"></script>
+    <script>
+    // Handle page reload on back/forward navigation to prevent caching issues
+    window.addEventListener('pageshow', function(event) {
+        // If the page was loaded from the browser cache
+        if (event.persisted) {
+            // Force a reload to get fresh data
+            window.location.reload();
+        }
+    });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
