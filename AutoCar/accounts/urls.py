@@ -15,4 +15,5 @@ urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('update_car_image/', views.update_car_image, name='update_car_image'),
     path('debug/', views.debug_info, name='debug_info'),
+    path('static-test/', views.debug_static, name='debug_static'),
 ]

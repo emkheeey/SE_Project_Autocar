@@ -466,3 +466,17 @@ def debug_info(request):
         data['dir_error'] = str(e)
         
     return JsonResponse(data)
+
+# Add this debug view for static file testing
+def debug_static(request):
+    """
+    View to test static file loading
+    """
+    from django.conf import settings
+    
+    context = {
+        'STATIC_URL': settings.STATIC_URL,
+        'DEBUG': settings.DEBUG,
+        'request': request
+    }
+    return render(request, 'debug_static.html', context)

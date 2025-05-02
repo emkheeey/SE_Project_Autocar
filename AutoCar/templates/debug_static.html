@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static File Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        .test-box { 
+            background-color: #f5f5f5; 
+            padding: 20px; 
+            border-radius: 5px; 
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        img { max-width: 300px; border: 1px solid #ddd; display: block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Static File Debug Page</h1>
+    
+    <div class="test-box">
+        <h2>Test 1: Direct Static URL</h2>
+        <p>Testing base.css with direct URL:</p>
+        <div id="test1-result" class="error">Loading...</div>
+        <img id="direct-img" src="{% static 'images/logo.png' %}" alt="Logo Test" 
+             onerror="document.getElementById('test1-result').textContent = 'Failed to load logo.png'">
+    </div>
+    
+    <div class="test-box">
+        <h2>Test 2: Absolute URL with Cache Busting</h2>
+        <p>Testing with full URL path:</p>
+        <div id="test2-result" class="error">Loading...</div>
+        <img id="absolute-img" src="https://{{ request.get_host }}{% static 'images/logo.png' %}?v={% now 'U' %}" 
+             alt="Logo Test Absolute" 
+             onerror="document.getElementById('test2-result').textContent = 'Failed to load logo.png with absolute URL'">
+    </div>
+
+    <div class="test-box">
+        <h2>Test 3: Test.txt File</h2>
+        <p>This tests a simple text file created in the build script:</p>
+        <div id="test3-result" class="error">Loading...</div>
+        <a href="{% static 'test.txt' %}" target="_blank">test.txt link</a>
+    </div>
+
+    <div class="test-box">
+        <h2>Environment Info</h2>
+        <p>Host: {{ request.get_host }}</p>
+        <p>Path: {{ request.path }}</p>
+        <p>Static URL: {{ STATIC_URL }}</p>
+    </div>
+    
+    <script>
+        // Test image loading with onload handlers
+        document.getElementById('direct-img').onload = function() {
+            document.getElementById('test1-result').textContent = 'Successfully loaded logo.png';
+            document.getElementById('test1-result').className = 'success';
+        };
+        
+        document.getElementById('absolute-img').onload = function() {
+            document.getElementById('test2-result').textContent = 'Successfully loaded logo.png with absolute URL';
+            document.getElementById('test2-result').className = 'success';
+        };
+        
+        // Test text file
+        fetch('{% static "test.txt" %}')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('test3-result').textContent = 'Successfully loaded test.txt';
+                    document.getElementById('test3-result').className = 'success';
+                    return response.text();
+                }
+                throw new Error('Network response was not ok');
+            })
+            .catch(error => {
+                document.getElementById('test3-result').textContent = 'Failed to load test.txt: ' + error.message;
+            });
+    </script>
+</body>
+</html> 
