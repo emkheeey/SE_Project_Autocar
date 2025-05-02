@@ -1,0 +1,13 @@
+/* Debug CSS file for static file testing */
+body {
+    background-color: #f8f8f8;
+}
+
+.debug-message {
+    padding: 20px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 5px;
+    margin: 20px;
+    font-family: monospace;
+} 

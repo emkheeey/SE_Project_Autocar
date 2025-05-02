@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import uuid
 import traceback
+from django.conf import settings
+import os
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -422,3 +424,45 @@ def update_car_image(request):
             }, status=500)
             
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@csrf_exempt
+def debug_info(request):
+    """
+    Debug view to check environment and static file setup
+    """
+    data = {
+        'STATIC_URL': settings.STATIC_URL,
+        'STATIC_ROOT': settings.STATIC_ROOT,
+        'STATICFILES_DIRS': [str(path) for path in settings.STATICFILES_DIRS],
+        'STATICFILES_STORAGE': settings.STATICFILES_STORAGE,
+        'DEBUG': settings.DEBUG,
+        'BASE_DIR': str(settings.BASE_DIR),
+        'static_files': []
+    }
+    
+    # Check for static files
+    try:
+        static_root = settings.STATIC_ROOT
+        if os.path.exists(static_root):
+            data['static_root_exists'] = True
+            # List some key static files
+            for root, dirs, files in os.walk(static_root):
+                for file in files:
+                    if file.endswith('.css') or file.endswith('.js') or file.endswith('.png'):
+                        rel_path = os.path.relpath(os.path.join(root, file), static_root)
+                        data['static_files'].append(rel_path)
+                        if len(data['static_files']) > 10:  # Limit to 10 files
+                            break
+        else:
+            data['static_root_exists'] = False
+    except Exception as e:
+        data['static_files_error'] = str(e)
+    
+    # Current directory info
+    try:
+        data['cwd'] = os.getcwd()
+        data['dir_contents'] = os.listdir()
+    except Exception as e:
+        data['dir_error'] = str(e)
+        
+    return JsonResponse(data)

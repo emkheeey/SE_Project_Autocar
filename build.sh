@@ -6,78 +6,31 @@ echo "Starting build process..."
 # Print Python version for debugging
 python3 --version
 
-# Print directory contents for debugging
-echo "Current directory: $(pwd)"
-echo "Directory contents:"
-ls -la
-
 # Install dependencies
 echo "Installing dependencies..."
 pip3 install -r requirements.txt
 
-# Print installed packages for debugging
-echo "Installed packages:"
-pip3 list
-
 # Make sure staticfiles directory exists
-echo "Creating staticfiles directory if needed..."
+echo "Making sure the staticfiles directory exists..."
 mkdir -p AutoCar/staticfiles
 
 # Run collectstatic to gather all static files
 echo "Collecting static files..."
 cd AutoCar
-python3 manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput --clear
 
-# Print static files info
-echo "Static files collected. Contents of staticfiles directory:"
+# Debugging: List static files
+echo "Static files collected. Checking staticfiles directory:"
 ls -la staticfiles
+ls -la staticfiles/css
+ls -la staticfiles/js
+ls -la staticfiles/images
+
+# Create a simple test file to verify static serving
+echo "Creating test file..."
+echo "This is a test file to verify static serving" > staticfiles/test.txt
 
 # Return to root directory
 cd ..
-
-# Check if DATABASE_URL is set
-if [ -z "$DATABASE_URL" ]; then
-    echo "Warning: DATABASE_URL is not set. Database migrations will be skipped."
-    SKIP_MIGRATIONS=true
-else
-    echo "DATABASE_URL is set. Attempting database migrations..."
-    SKIP_MIGRATIONS=false
-fi
-
-# Run migrations to create database tables
-echo "Running database migrations..."
-if [ "$SKIP_MIGRATIONS" = false ]; then
-    if [ -d "AutoCar" ]; then
-        cd AutoCar
-        # Try to run migrations, but don't fail if database is not available
-        if python3 manage.py migrate --noinput; then
-            echo "Database migrations completed successfully"
-        else
-            echo "Warning: Database migrations failed, but continuing with build"
-        fi
-        python3 manage.py collectstatic --noinput
-    else
-        # If running from root of AutoCar (Vercel's path0)
-        # Try to run migrations, but don't fail if database is not available
-        if python3 manage.py migrate --noinput; then
-            echo "Database migrations completed successfully"
-        else
-            echo "Warning: Database migrations failed, but continuing with build"
-        fi
-        python3 manage.py collectstatic --noinput
-    fi
-else
-    echo "Skipping database migrations as DATABASE_URL is not set"
-    if [ -d "AutoCar" ]; then
-        cd AutoCar
-        python3 manage.py collectstatic --noinput
-    else
-        python3 manage.py collectstatic --noinput
-    fi
-fi
-
-# Verify Django is installed
-echo "Verifying Django installation..."
-python3 -c "import django; print(f'Django version: {django.__version__}')"
 
 echo "Build process completed successfully!" 

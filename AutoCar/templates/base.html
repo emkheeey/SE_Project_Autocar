@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AutoCar{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link href="{{ request.scheme }}://{{ request.get_host }}{% static 'css/base.css' %}?v={% now 'U' %}" rel="stylesheet">
     <!-- Prevent browser caching issues -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -20,7 +20,7 @@
     <header>
         <div class="logo">
             <a href="{% url 'home' %}">
-                <img src="{% static 'images/logo.png' %}" alt="AutoCar Logo">
+                <img src="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}?v={% now 'U' %}" alt="AutoCar Logo">
             </a>
         </div>
 
@@ -36,7 +36,7 @@
         {% if user.is_authenticated %}
         <div class="dropdown">
             <div class="profile-icon">
-                <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon" onError="this.onerror=null; this.src='{% static 'images/profileicon.png' %}';">
+                <img src="{{ request.scheme }}://{{ request.get_host }}{% static 'images/profileicon.png' %}?v={% now 'U' %}" alt="Profile Icon" onError="this.onerror=null; this.src='{% static 'images/profileicon.png' %}';">
             </div>
             <div class="dropdown-content">
                 <div class="menu-header">
@@ -90,7 +90,7 @@
     </footer>
     {% endif %}
 
-    <script src="{% static 'js/hide_login_buttons.js' %}"></script>
+    <script src="{{ request.scheme }}://{{ request.get_host }}{% static 'js/hide_login_buttons.js' %}?v={% now 'U' %}"></script>
     <script>
     // Handle page reload on back/forward navigation to prevent caching issues
     window.addEventListener('pageshow', function(event) {
