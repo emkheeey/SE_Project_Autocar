@@ -23,11 +23,21 @@ pip3 list
 echo "Running database migrations..."
 if [ -d "AutoCar" ]; then
   cd AutoCar
-  python3 manage.py migrate
+  # Try to run migrations, but don't fail if database is not available
+  if python3 manage.py migrate --noinput; then
+    echo "Database migrations completed successfully"
+  else
+    echo "Warning: Database migrations failed, but continuing with build"
+  fi
   python3 manage.py collectstatic --noinput
 else
   # If running from root of AutoCar (Vercel's path0)
-  python3 manage.py migrate
+  # Try to run migrations, but don't fail if database is not available
+  if python3 manage.py migrate --noinput; then
+    echo "Database migrations completed successfully"
+  else
+    echo "Warning: Database migrations failed, but continuing with build"
+  fi
   python3 manage.py collectstatic --noinput
 fi
 

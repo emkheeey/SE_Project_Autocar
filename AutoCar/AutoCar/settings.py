@@ -14,19 +14,24 @@ from pathlib import Path
 import os
 import sys
 import traceback
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 try:
     from supabase import create_client
-    print("Successfully imported supabase")
+    logger.info("Successfully imported supabase")
 except Exception as e:
-    print(f"Error importing supabase: {e}")
+    logger.error(f"Error importing supabase: {e}")
 
 try:
     from typing import Any
     import dj_database_url
-    print("Successfully imported dj_database_url")
+    logger.info("Successfully imported dj_database_url")
 except Exception as e:
-    print(f"Error importing dj_database_url: {e}")
+    logger.error(f"Error importing dj_database_url: {e}")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -102,34 +107,39 @@ DATABASES = {
     }
 }
 
-# Print database URL (without password for security)
-db_url = os.environ.get('DATABASE_URL', '')
-if db_url:
-    # Mask the password for logging
-    masked_url = db_url
-    if '@' in db_url:
-        prefix, suffix = db_url.split('@', 1)
-        if ':' in prefix:
-            user_part, pass_part = prefix.rsplit(':', 1)
-            masked_url = f"{user_part}:****@{suffix}"
-    # Removed print statement for DATABASE_URL
-else:
-    # Removed print statement for DATABASE_URL not set
-    pass
-
 # Use PostgreSQL in production if DATABASE_URL is set correctly
 if 'DATABASE_URL' in os.environ:
     try:
-        db_config = dj_database_url.config(
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+        # Parse the DATABASE_URL
+        db_url = os.environ['DATABASE_URL']
+        
+        # Ensure the URL is properly formatted for Supabase
+        if 'supabase' in db_url.lower():
+            # Add connection options for Supabase
+            db_config = dj_database_url.config(
+                conn_max_age=600,
+                conn_health_checks=True,
+                sslmode='require',
+                options={
+                    'sslmode': 'require',
+                    'connect_timeout': 10,
+                }
+            )
+        else:
+            # Use default configuration for other PostgreSQL databases
+            db_config = dj_database_url.config(
+                conn_max_age=600,
+                conn_health_checks=True,
+            )
+        
         DATABASES['default'] = db_config
-        print(f"Using database configuration from DATABASE_URL: {db_config.get('ENGINE')}")
+        logger.info(f"Using database configuration from DATABASE_URL: {db_config.get('ENGINE')}")
     except Exception as e:
-        print(f"Error configuring database from DATABASE_URL: {e}")
-        print(traceback.format_exc())
-        print("Using default SQLite database instead")
+        logger.error(f"Error configuring database from DATABASE_URL: {e}")
+        logger.error(traceback.format_exc())
+        logger.warning("Using default SQLite database instead")
+        # Keep the default SQLite configuration
+        pass
 
 
 # Password validation
