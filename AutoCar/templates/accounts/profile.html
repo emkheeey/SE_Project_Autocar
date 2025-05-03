@@ -3,116 +3,280 @@
 
 {% block title %}My Profile | AutoCar{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Hide elements from base template that we don't need */
+    header.main-header, footer, #home {
+        display: none !important;
+    }
+    
+    body {
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Custom profile header */
+    header {
+        background-color: #d32f2f;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+    
+    .back-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-right: 15px;
+    }
+    
+    header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    
+    /* Profile section styles */
+    main {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px;
+    }
+    
+    .profile-section, .saved-favorites {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .profile-pic {
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 30px;
+    }
+    
+    .profile-pic img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .edit-pic-btn {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background: #d32f2f;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+    
+    .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .detail-item label {
+        width: 100px;
+        font-weight: bold;
+    }
+    
+    .editable, .non-editable {
+        flex: 1;
+    }
+    
+    .edit-btn {
+        background: none;
+        border: none;
+        color: #d32f2f;
+        cursor: pointer;
+    }
+    
+    /* Favorites section */
+    .saved-favorites h2 {
+        color: #d32f2f;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .favorites-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    /* Logout button */
+    .logout-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="profile-section">
-                <h2 class="mb-4">Manage Your Profile</h2>
+<!-- Header with Back Button -->
+<header>
+    <button class="back-btn" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <h1>My Profile</h1>
+</header>
+
+<!-- Profile Section -->
+<main>
+    <div class="profile-section">
+        <div class="profile-pic">
+            <img src="{% static 'images/default-profile.png' %}" alt="Profile Picture" id="profileImage">
+            <button class="edit-pic-btn" onclick="document.getElementById('profileUpload').click()">
+                <i class="fas fa-camera"></i>
+            </button>
+            <input type="file" id="profileUpload" accept="image/*" style="display: none;">
+        </div>
+
+        <div class="profile-details">
+            <form method="post" novalidate>
+                {% csrf_token %}
                 
-                <form method="post" novalidate>
-                    {% csrf_token %}
-                    
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h4 class="mb-0">Account Information</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="{{ u_form.username.id_for_label }}" class="form-label">Username</label>
-                                <input type="text" name="{{ u_form.username.name }}" id="{{ u_form.username.id_for_label }}" 
-                                       class="form-control {% if u_form.username.errors %}is-invalid{% endif %}" 
-                                       value="{{ u_form.username.value }}">
-                                {% if u_form.username.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in u_form.username.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ u_form.email.id_for_label }}" class="form-label">Email</label>
-                                <input type="email" name="{{ u_form.email.name }}" id="{{ u_form.email.id_for_label }}" 
-                                       class="form-control {% if u_form.email.errors %}is-invalid{% endif %}" 
-                                       value="{{ u_form.email.value }}">
-                                {% if u_form.email.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in u_form.email.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-header bg-secondary text-white">
-                            <h4 class="mb-0">Profile Details</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="{{ p_form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
-                                <input type="text" name="{{ p_form.phone_number.name }}" id="{{ p_form.phone_number.id_for_label }}" 
-                                       class="form-control {% if p_form.phone_number.errors %}is-invalid{% endif %}" 
-                                       value="{{ p_form.phone_number.value|default:'' }}">
-                                {% if p_form.phone_number.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in p_form.phone_number.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ p_form.address.id_for_label }}" class="form-label">Address</label>
-                                <input type="text" name="{{ p_form.address.name }}" id="{{ p_form.address.id_for_label }}" 
-                                       class="form-control {% if p_form.address.errors %}is-invalid{% endif %}" 
-                                       value="{{ p_form.address.value|default:'' }}">
-                                {% if p_form.address.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in p_form.address.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-lg">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Supabase Profile Information -->
-            {% if supabase_data %}
-            <div class="card mt-4 mb-4">
-                <div class="card-header bg-info text-white">
-                    <h4 class="mb-0">Additional Profile Information</h4>
+                <div class="detail-item">
+                    <label>Username</label>
+                    <div class="editable" id="userName">{{ user.username }}</div>
+                    <button type="button" class="edit-btn" onclick="editField('userName')">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <input type="hidden" name="{{ u_form.username.name }}" id="{{ u_form.username.id_for_label }}" 
+                           value="{{ u_form.username.value }}">
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>User ID:</strong> {{ supabase_data.user_id }}</p>
-                            <p><strong>Username:</strong> {{ supabase_data.username }}</p>
-                            <p><strong>Email:</strong> {{ supabase_data.email }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Created:</strong> {{ supabase_data.created_at|date:"F j, Y" }}</p>
-                            {% if supabase_data.updated_at %}
-                            <p><strong>Last Updated:</strong> {{ supabase_data.updated_at|date:"F j, Y" }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
+
+                <div class="detail-item">
+                    <label>Email</label>
+                    <div class="non-editable" id="userEmail">{{ user.email }}</div>
+                    <input type="hidden" name="{{ u_form.email.name }}" id="{{ u_form.email.id_for_label }}" 
+                           value="{{ u_form.email.value }}">
                 </div>
-            </div>
-            {% endif %}
+
+                <div class="detail-item">
+                    <label>Phone</label>
+                    <div class="editable" id="userPhone">{{ p_form.phone_number.value|default:'Add phone number' }}</div>
+                    <button type="button" class="edit-btn" onclick="editField('userPhone')">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <input type="hidden" name="{{ p_form.phone_number.name }}" id="{{ p_form.phone_number.id_for_label }}" 
+                           value="{{ p_form.phone_number.value|default:'' }}">
+                </div>
+
+                <div class="detail-item">
+                    <label>Address</label>
+                    <div class="editable" id="userAddress">{{ p_form.address.value|default:'Add address' }}</div>
+                    <button type="button" class="edit-btn" onclick="editField('userAddress')">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <input type="hidden" name="{{ p_form.address.name }}" id="{{ p_form.address.id_for_label }}" 
+                           value="{{ p_form.address.value|default:'' }}">
+                </div>
+                
+                <button type="submit" class="logout-btn" style="background-color: #4CAF50;">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
         </div>
     </div>
-</div>
+
+    <!-- Saved Favorites Section -->
+    <section class="saved-favorites">
+        <h2><i class="fas fa-heart"></i> Saved Favorites</h2>
+        <div class="favorites-grid" id="favoritesGrid">
+            {% if favorites %}
+                {% for car in favorites %}
+                <div class="favorite-car">
+                    <img src="{% if car.image %}{{ car.image.url }}{% else %}{% static 'images/default-car.png' %}{% endif %}" alt="{{ car.make }} {{ car.model }}">
+                    <p>{{ car.make }} {{ car.model }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No favorite cars saved yet.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Logout Button -->
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+        </button>
+    </form>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function editField(fieldId) {
+        const element = document.getElementById(fieldId);
+        const currentValue = element.textContent;
+        const input = document.createElement('input');
+        input.type = fieldId === 'userPassword' ? 'password' : 'text';
+        input.value = fieldId === 'userPassword' ? '' : currentValue;
+        input.className = 'form-control';
+        input.placeholder = fieldId === 'userPassword' ? 'Enter new password' : 'Enter ' + fieldId.replace('user', '').toLowerCase();
+        
+        element.innerHTML = '';
+        element.appendChild(input);
+        input.focus();
+        
+        // Update hidden form field
+        input.addEventListener('blur', function() {
+            let formFieldId;
+            if (fieldId === 'userName') formFieldId = '{{ u_form.username.id_for_label }}';
+            else if (fieldId === 'userPhone') formFieldId = '{{ p_form.phone_number.id_for_label }}';
+            else if (fieldId === 'userAddress') formFieldId = '{{ p_form.address.id_for_label }}';
+            
+            if (formFieldId) {
+                document.getElementById(formFieldId).value = input.value;
+            }
+            
+            element.innerHTML = input.value || (fieldId === 'userPassword' ? '••••••••' : 'Not set');
+        });
+    }
+    
+    // Handle profile image upload
+    document.getElementById('profileUpload').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 {% endblock %}
