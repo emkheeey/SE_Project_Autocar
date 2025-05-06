@@ -143,7 +143,7 @@
 {% endblock %}
 
 {% block content %}
-<!-- Header with Back Button -->
+<!-- Header with Back Button - SIMPLIFIED -->
 <header>
     <button class="back-btn" onclick="window.history.back()">
         <i class="fas fa-arrow-left"></i>
@@ -227,13 +227,16 @@
         </div>
     </section>
 
-    <!-- Logout Button -->
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="logout-btn">
-            <i class="fas fa-sign-out-alt"></i> Log Out
-        </button>
-    </form>
+    <!-- Move the logout button to the footer area -->
+    <!-- Add this at the bottom of your main content, after the Saved Favorites section -->
+    <footer class="profile-footer">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+            </button>
+        </form>
+    </footer>
 </main>
 {% endblock %}
 

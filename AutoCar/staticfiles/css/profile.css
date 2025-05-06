@@ -1,0 +1,109 @@
+/* Add these styles to your profile.css file */
+
+/* Footer styling */
+.profile-footer {
+    background-color: #f5f5f5;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    width: 100%;
+}
+
+/* Logout button in footer */
+.profile-footer .logout-btn {
+    display: inline-block;
+    width: auto;
+    min-width: 150px;
+    padding: 12px 25px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.profile-footer .logout-btn:hover {
+    background-color: #b71c1c;
+}
+
+/* Make sure favorites section looks good as the main content */
+.saved-favorites {
+    background: white;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.saved-favorites h2 {
+    color: #d32f2f;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Clean up the header by removing the extra elements */
+header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #d32f2f;
+    color: white;
+    position: relative;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+header h1 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Remove this if you had special styling for the right side profile info */
+.header-right,
+.profile-info,
+.header-username {
+    display: none !important;
+}
+
+/* Style the new footer */
+.profile-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+/* Make sure the logout button stands out */
+.logout-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #2d0808;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #b71c1c;
+}
