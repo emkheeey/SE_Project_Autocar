@@ -965,176 +965,61 @@ def car_variants_json(request, car_id):
         # Debug log for tracking
         logger.info(f"Fetching variants for parent car ID: {car_id}")
         
-        # Fetch variants from the new car_variants table
-        variants_result = fetch_data('car_variants', lambda q: q.eq('parent_model_id', car_id))
-        variants = variants_result.data if variants_result and variants_result.data else []
+        # Initialize empty variants list
+        variants = []
         
-        # If no variants in new table, try the old approach as fallback
-        if not variants:
-            old_variants_result = fetch_data('cars', lambda q: q.eq('parent_model_id', car_id))
-            variants = old_variants_result.data if old_variants_result and old_variants_result.data else []
-            logger.info(f"Found {len(variants)} variants using old approach")
-        else:
-            logger.info(f"Found {len(variants)} variants in car_variants table")
+        # Special case for LITE (car_id = 60)
+        if car_id == 60:  # LITE has no variants
+            logger.info("LITE selected - has no variants")
+            return JsonResponse({
+                'success': True,
+                'variants': []
+            })
+            
+        # Special case for Land Cruiser (car_id = 58)
+        elif car_id == 58:  # Land Cruiser
+            logger.info("Land Cruiser selected - fetching single variant")
+            # Fetch only the legitimate Land Cruiser variant with ID 59
+            lc_variant_result = fetch_data('cars', lambda q: q.eq('id', 59))
+            if lc_variant_result and lc_variant_result.data:
+                variants = [lc_variant_result.data[0]]
+                variants[0]['parent_model_id'] = 58  # Ensure correct parent ID
         
-        # Comprehensive variant ID mapping based on model names
-        # This mapping ensures all variant IDs match those in the CSV file
-        variant_id_map = {
-            # Toyota Alphard variants
-            "Alphard 2.5 HEV CVT": 30,
-            
-            # Toyota Avanza variants
-            "Avanza 1.3 E CVT": 31,
-            "Avanza 1.3 E M/T": 32,
-            "Avanza 1.3 J M/T": 33,
-            "Avanza 1.5 G CVT": 34,
-            
-            # Toyota Camry variants
-            "Camry Hybrid 2.5 HEV": 35,
-            "Camry Hybrid 2.5 HEV White Pearl Mica": 36,
-            
-            # Toyota Coaster variants
-            "Coaster 29-Seater": 37,
-            
-            # Toyota GR Yaris variants
-            "GR Yaris 1.6 Turbo MT": 38,
-            "GR Yaris 1.6 Turbo MT (Emotional Red)": 39,
-            
-            # Toyota Corolla Altis variants
-            "Corolla Altis 1.8 E CVT": 40,
-            "Corolla Altis 1.8 G GR-S CVT": 41,
-            "Corolla Altis 1.8 GR-S Hybrid CVT": 42,
-            
-            # Toyota Fortuner variants
-            "Fortuner 2.4 G Diesel 4x2 AT": 43,
-            "Fortuner 2.4 G Diesel 4x2 MT": 44,
-            
-            # Toyota GR Supra variants
-            "GR Supra 3.0 Turbo Inline-6 AT (Black Metallic 2)": 45,
-            
-            # Toyota GR86 variants
-            "GR86 2.4 AT": 46,
-            "GR86 2.4 MT": 47,
-            
-            # Toyota Hiace variants
-            "Hiace 2.8 Commuter Deluxe MT": 48,
-            "Hiace 2.8 GL Grandia AT": 49,
-            "Hiace 3.0 Ambulance": 50,
-            "Hiace 3.0 Cargo": 51,
-            
-            # Toyota Hilux variants
-            "Hilux 2.4 Cab & Chassis 4x2 MT": 52,
-            "Hilux 2.4 Cargo 4x2 MT": 53,
-            "Hilux 2.4 E DSL 4x2 AT": 54,
-            "Hilux 2.8 GR Sport AT": 55,
-            "Hilux Conquest 2.4 DSL": 56,
-            
-            # Toyota Innova variants
-            "Innova 2.8 E Diesel AT": 57,
-            
-            # Toyota Land Cruiser variants
-            "Land Cruiser ZX AT (Precious White Pearl)": 59,
-            
-            # Toyota Vios variants
-            "Vios 1.3 J MT": 61,
-            "Vios 1.3 XE CVT": 62,
-            "Vios 1.3 XLE CVT": 63,
-            
-            # Toyota Wigo variants
-            "Wigo 1.0 E CVT": 64,
-            "Wigo 1.0 J MT": 65
-        }
-        
-        # Parent model correction map - fixed parent relationships
-        # This ensures variants are associated with the correct parent models 
-        parent_model_correction = {
-            # Fix GR Yaris variants to show under GR Yaris (not GR Supra)
-            38: 20,  # GR Yaris 1.6 Turbo MT belongs to GR Yaris (ID 20)
-            39: 20,  # GR Yaris 1.6 Turbo MT (Emotional Red) belongs to GR Yaris (ID 20)
-            
-            # Additional parent corrections if needed
-            # variant_id: correct_parent_id,
-        }
-        
-        # If we're looking for GR Supra variants (car_id = 19) but getting GR Yaris variants
-        # Filter out the incorrectly associated variants
-        if car_id == 19:  # GR Supra parent ID
-            # Log that we're fixing the issue
-            logger.info("GR Supra selected - filtering out incorrect GR Yaris variants")
-            
-            # Log all variants before filtering for debugging
-            logger.info(f"Before filtering - variants count: {len(variants)}")
-            for v in variants:
-                logger.info(f"Before filtering - variant ID: {v.get('id')}, Model: {v.get('model')}")
-            
-            # Identify the specific variants to remove (GR Yaris variants)
-            yaris_variant_ids = [38, 39]
-            
-            # Filter to keep only true GR Supra variants (exclude only IDs 38 and 39)
-            original_count = len(variants)
-            variants = [v for v in variants if v.get('id') not in yaris_variant_ids]
-            filtered_count = len(variants)
-            
-            logger.info(f"Filtered out {original_count - filtered_count} GR Yaris variants from GR Supra")
-            
-            # Also look for the correct GR Supra variant (ID 45)
+        # Special case for GR Supra (car_id = 19)
+        elif car_id == 19:  # GR Supra
+            logger.info("GR Supra selected - fetching GR Supra variant only")
+            # Fetch only the legitimate GR Supra variant with ID 45
             supra_variant_result = fetch_data('cars', lambda q: q.eq('id', 45))
             if supra_variant_result and supra_variant_result.data:
-                # Add it if it wasn't already included
-                supra_variant = supra_variant_result.data[0]
-                if not any(v.get('id') == 45 for v in variants):
-                    variants.append(supra_variant)
-                    logger.info("Added correct GR Supra variant (ID 45)")
-            
-            # Log variants after filtering
-            logger.info(f"After filtering - variants count: {len(variants)}")
-            for v in variants:
-                logger.info(f"After filtering - variant ID: {v.get('id')}, Model: {v.get('model')}")
+                variants = [supra_variant_result.data[0]]
+                variants[0]['parent_model_id'] = 19  # Ensure correct parent ID
         
-        # If we're looking for GR Yaris variants (car_id = 20)
-        # Make sure we include the GR Yaris variants even if they're incorrectly associated
-        elif car_id == 20:  # GR Yaris parent ID
-            # Log that we're fixing the issue
-            logger.info("GR Yaris selected - ensuring GR Yaris variants are included")
-            
-            # Look for GR Yaris variants directly by ID
+        # Special case for GR Yaris (car_id = 20)
+        elif car_id == 20:  # GR Yaris
+            logger.info("GR Yaris selected - fetching GR Yaris variants")
+            # Fetch GR Yaris variants directly by IDs
+            yaris_variants = []
             for yaris_variant_id in [38, 39]:
-                # Check if this variant is already included
-                if not any(v.get('id') == yaris_variant_id for v in variants):
-                    # Fetch the variant directly by ID
-                    yaris_variant_result = fetch_data('cars', lambda q: q.eq('id', yaris_variant_id))
-                    if yaris_variant_result and yaris_variant_result.data:
-                        variants.append(yaris_variant_result.data[0])
-                        logger.info(f"Added GR Yaris variant (ID {yaris_variant_id})")
-            
-            # Force parent_model_id to be correct for all variants
-            for variant in variants:
-                variant['parent_model_id'] = 20  # Ensure everything shows under GR Yaris
-                logger.info(f"Set parent_model_id to 20 for variant {variant.get('id')}")
-            
-            # Log final variants
-            logger.info(f"Final variants count for GR Yaris: {len(variants)}")
-            for v in variants:
-                logger.info(f"GR Yaris variant: ID={v.get('id')}, Model={v.get('model')}, Parent={v.get('parent_model_id')}")
+                variant_result = fetch_data('cars', lambda q: q.eq('id', yaris_variant_id))
+                if variant_result and variant_result.data:
+                    variant = variant_result.data[0]
+                    variant['parent_model_id'] = 20  # Ensure correct parent ID
+                    yaris_variants.append(variant)
+            variants = yaris_variants
         
-        # Log all variant details for debugging
-        for index, variant in enumerate(variants):
-            variant_model = variant.get('model')
-            original_id = variant.get('id')
+        # Standard case for all other cars
+        else:
+            # Fetch variants from the new car_variants table
+            variants_result = fetch_data('car_variants', lambda q: q.eq('parent_model_id', car_id))
+            variants = variants_result.data if variants_result and variants_result.data else []
             
-            # Apply ID correction from the mapping
-            if variant_model in variant_id_map:
-                corrected_id = variant_id_map[variant_model]
-                if original_id != corrected_id:
-                    logger.info(f"CORRECTING ID for '{variant_model}': {original_id} -> {corrected_id}")
-                    variant['id'] = corrected_id
-            
-            # Also, override parent model ID if needed based on the correction map
-            if original_id in parent_model_correction:
-                variant['parent_model_id'] = parent_model_correction[original_id]
-                logger.info(f"CORRECTING PARENT for variant ID {original_id}: Parent set to {parent_model_correction[original_id]}")
-            
-            logger.info(f"Variant {index+1}: ID={variant.get('id')}, Model={variant_model}, Parent={variant.get('parent_model_id')}")
+            # If no variants in new table, try the old approach as fallback
+            if not variants:
+                old_variants_result = fetch_data('cars', lambda q: q.eq('parent_model_id', car_id))
+                variants = old_variants_result.data if old_variants_result and old_variants_result.data else []
+                logger.info(f"Found {len(variants)} variants using old approach")
+            else:
+                logger.info(f"Found {len(variants)} variants in car_variants table")
         
         # Format variant prices for display
         for variant in variants:
