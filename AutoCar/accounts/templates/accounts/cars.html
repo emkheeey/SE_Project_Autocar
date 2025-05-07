@@ -142,6 +142,7 @@
     
     .update-image-btn:hover {
         background-color: #c0392b;
+        transform: none; /* Prevent button from rising */
     }
     
     /* Better search styling */
@@ -529,6 +530,130 @@
         padding: 10px;
     }
     
+    /* Car Details Section in Modal */
+    .car-details-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .car-image-container {
+        flex: 1;
+        min-width: 280px;
+    }
+    
+    .car-main-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    .car-info-container {
+        flex: 2;
+        min-width: 280px;
+    }
+    
+    .car-specs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        margin: 15px 0;
+    }
+    
+    .car-specs p {
+        margin: 5px 0;
+        color: #333;
+    }
+    
+    .car-actions button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .car-actions button:hover {
+        background-color: #c0392b;
+    }
+    
+    .variants-heading {
+        margin: 15px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e74c3c;
+        color: #333;
+    }
+    
+    /* Variant image container and update button */
+    .variant-image-container {
+        position: relative;
+        margin-bottom: 10px;
+        height: 150px;
+        overflow: hidden;
+        border-radius: 5px;
+    }
+    
+    .variant-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .variant-update-image-btn {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(231, 76, 60, 0.9);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        opacity: 0;
+        z-index: 10;
+    }
+    
+    .variant-image-container:hover .variant-update-image-btn {
+        opacity: 1;
+    }
+    
+    .variant-update-image-btn:hover {
+        background-color: rgb(192, 57, 43);
+        transform: translateX(-50%); /* Keep only the horizontal centering */
+    }
+    
+    /* Modal content size adjustment for car details */
+    .modal-content {
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 25px;
+    }
+    
+    #variantsModal .modal-content {
+        width: 90%;
+        max-width: 1000px;
+    }
+    
+    #modalTitle {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+    
     .variant-item {
         background-color: white;
         border: 1px solid #ddd;
@@ -536,18 +661,12 @@
         padding: 15px;
         text-align: center;
         transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
     
-    .variant-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .variant-item img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 5px;
+    .variant-item > div {
         margin-bottom: 10px;
     }
     
@@ -559,7 +678,7 @@
     .variant-item p {
         color: #e74c3c;
         font-weight: bold;
-        margin: 10px 0;
+        margin: 5px 0;
     }
     
     .variant-item button {
@@ -568,14 +687,16 @@
         border: none;
         padding: 8px 15px;
         border-radius: 5px;
-        margin-top: 10px;
+        margin-top: auto;
         cursor: pointer;
         transition: background-color 0.3s;
         width: 100%;
     }
     
-    .variant-item button:hover {
-        background-color: #c0392b;
+    /* Override the existing variants container in the modal */
+    #variantsContainer .variants-container {
+        max-height: none;
+        overflow-y: visible;
     }
     
     /* No cars message */
@@ -631,6 +752,37 @@
         .variants-container {
             grid-template-columns: 1fr;
         }
+    }
+    
+    .variant-item button:hover {
+        background-color: #c0392b;
+    }
+    
+    .variant-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* Add clear hover effects for all buttons */
+    button {
+        transition: all 0.2s ease-in-out;
+    }
+    
+    /* Override transform for specific buttons */
+    .update-image-btn:hover,
+    .variant-update-image-btn:hover,
+    #imageUploadForm button[type="submit"]:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+    }
+    
+    button:active {
+        transform: translateY(0);
     }
 </style>
 {% endblock %}
@@ -739,6 +891,8 @@
     <div class="modal-content">
         <span class="close-modal" id="closeImageModal">&times;</span>
         <h2 id="imageModalTitle" class="modal-title"></h2>
+        <!-- Debug info for variant ID -->
+        <div id="carIdIndicator" style="font-size: 16px; font-weight: bold; color: #e74c3c; padding: 10px; background-color: #f8f9fa; border: 2px solid #e74c3c; border-radius: 5px; margin-bottom: 15px; text-align: center;">Car ID: <span id="displayCarId"></span></div>
         <form id="imageUploadForm" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" id="modalCarId" name="car_id">
@@ -815,17 +969,100 @@ function filterByPrice(min, max) {
 }
 
 function openImageModal(carId, carModel) {
-    document.getElementById('imageModal').style.display = 'block';
-    document.getElementById('imageModalTitle').textContent = `Add/Update Image for ${carModel}`;
-    document.getElementById('modalCarId').value = carId;
+    console.log("OPEN PARENT IMAGE MODAL CALLED");
+    console.log(`CAR ID: ${carId}`);
+    console.log(`CAR MODEL: ${carModel}`);
+    
+    if (!carId) {
+        alert('Error: Missing car ID');
+        return;
+    }
+    
+    // Clear previous data
     document.getElementById('imagePreview').style.display = 'none';
     document.getElementById('carImageInput').value = '';
+    document.getElementById('fileName').textContent = 'No file chosen';
+    
+    // Remove any previous status messages or error details
+    const statusMsg = document.getElementById('uploadStatusMsg');
+    if (statusMsg) statusMsg.remove();
+    
+    const errorDetails = document.getElementById('errorDetails');
+    if (errorDetails) errorDetails.remove();
+    
+    // Set car ID - CRITICAL STEP
+    const modalCarIdInput = document.getElementById('modalCarId');
+    modalCarIdInput.value = carId;
+    
+    // Set the displayed ID in the UI
+    document.getElementById('displayCarId').textContent = carId;
+    
+    // Set modal title
+    document.getElementById('imageModalTitle').textContent = `Add/Update Image for ${carModel}`;
+    
+    // Clear any previous variant info
+    const imageModal = document.getElementById('imageModal');
+    imageModal.removeAttribute('data-updating-variant-id');
+    imageModal.removeAttribute('data-updating-variant-model');
+    
+    // Add hidden backup field
+    let backupField = document.getElementById('backupCarId');
+    if (!backupField) {
+        backupField = document.createElement('input');
+        backupField.type = 'hidden';
+        backupField.id = 'backupCarId';
+        backupField.name = 'backup_car_id';
+        document.getElementById('imageUploadForm').appendChild(backupField);
+    }
+    backupField.value = carId;
+    
+    // Double-check all IDs are set correctly
+    console.log("VERIFYING CAR IDs:");
+    console.log(`- modalCarId input value: ${modalCarIdInput.value}`);
+    console.log(`- backup field value: ${backupField.value}`);
+    console.log(`- display element: ${document.getElementById('displayCarId').textContent}`);
+    
+    // Show the modal
+    imageModal.style.display = 'block';
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
 }
 
 function closeImageModal() {
-    document.getElementById('imageModal').style.display = 'none';
-    document.body.style.overflow = 'auto'; // Re-enable scrolling
+    const imageModal = document.getElementById('imageModal');
+    
+    // Hide the modal
+    imageModal.style.display = 'none';
+    
+    // Clear any stored car information
+    imageModal.removeAttribute('data-updating-variant-id');
+    imageModal.removeAttribute('data-updating-variant-model');
+    
+    // Reset the form
+    document.getElementById('modalCarId').value = '';
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('carImageInput').value = '';
+    document.getElementById('fileName').textContent = 'No file chosen';
+    
+    // Remove any status messages
+    const statusMsg = document.getElementById('uploadStatusMsg');
+    if (statusMsg) {
+        statusMsg.remove();
+    }
+    
+    // Remove any error details
+    const errorDetails = document.getElementById('errorDetails');
+    if (errorDetails) {
+        errorDetails.remove();
+    }
+    
+    // Remove the car ID indicator
+    const carIdIndicator = document.getElementById('carIdIndicator');
+    if (carIdIndicator) {
+        carIdIndicator.remove();
+    }
+    
+    // Re-enable scrolling
+    document.body.style.overflow = 'auto';
 }
 
 function closeModal() {
@@ -901,44 +1138,188 @@ function refreshCarImages() {
     });
 }
 
-// Show car modal with variants
-function showCarModal(carId) {
-    const modal = document.getElementById('variantsModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const variantsContainer = document.getElementById('variantsContainer');
+// Helper function to add cache-busting to image URLs
+function getCacheBustedUrl(imageUrl) {
+    if (!imageUrl) return '/static/images/cars/default.jpg';
     
-    // Find car data
-    const car = window.carsData.find(c => c.id === parseInt(carId));
-    
-    if (!car) {
-        console.error('Car not found with ID:', carId);
-        return;
+    const timestamp = new Date().getTime();
+    if (imageUrl.includes('?')) {
+        return imageUrl + '&t=' + timestamp;
+    } else {
+        return imageUrl + '?t=' + timestamp;
     }
+}
+
+// Function to handle variant button events
+function setupVariantEventListeners() {
+    console.log("Setting up variant event listeners");
+    // Add event listeners to the variant image update buttons after they are added to the DOM
+    document.querySelectorAll('.variant-update-image-btn').forEach(btn => {
+        // Get the variant ID and model from the button attributes
+        let variantId = btn.getAttribute('data-variant-id');
+        const variantModel = btn.getAttribute('data-variant-model');
     
-    // Set modal title
-    modalTitle.textContent = car.model;
+        console.log(`Setup: Button for variant "${variantModel}" has ID: ${variantId}`);
+        
+        btn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Get the ID again at click time (it might have been updated)
+            let clickedVariantId = this.getAttribute('data-variant-id');
+            const clickedVariantModel = this.getAttribute('data-variant-model');
     
-    // Show loading state
-    variantsContainer.innerHTML = '<p style="text-align:center">Loading variants...</p>';
-    
-    // Show modal
-    modal.style.display = 'block';
+            console.log(`VARIANT BUTTON CLICKED:`);
+            console.log(`- Variant ID: ${clickedVariantId}`);
+            console.log(`- Variant Model: ${clickedVariantModel}`);
+            
+            // First close the variants modal
+            closeModal();
+            
+            // Then open the image modal with a slight delay
+            setTimeout(() => {
+                openVariantImageModal(clickedVariantId, clickedVariantModel);
+            }, 100);
+        });
+    });
+}
+
+// Function to display variants in the modal - modify the variant HTML generation
+function showVariantsInModal(carId, carModel) {
+    console.log(`OPENING VARIANTS MODAL for Car ID: ${carId}, Model: ${carModel}`);
+    document.getElementById('variantsModal').style.display = 'block';
+    document.getElementById('modalTitle').textContent = `${carModel} Variants`;
+    const variantsContainer = document.getElementById('variantsContainer');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
-    // Fetch variants
-    fetch(`/accounts/cars/variants-json/${carId}/`)
-        .then(response => response.json())
+    // Clear previous content
+    variantsContainer.innerHTML = '<p style="text-align:center">Loading variants...</p>';
+    
+    // Define a comprehensive mapping of variant model names to their correct IDs
+    // This ensures all variants have the correct IDs matching the database
+    const variantIdMap = {
+        // Toyota Alphard variants
+        "Alphard 2.5 HEV CVT": 30,
+        
+        // Toyota Avanza variants
+        "Avanza 1.3 E CVT": 31,
+        "Avanza 1.3 E M/T": 32,
+        "Avanza 1.3 J M/T": 33,
+        "Avanza 1.5 G CVT": 34,
+        
+        // Toyota Camry variants
+        "Camry Hybrid 2.5 HEV": 35,
+        "Camry Hybrid 2.5 HEV White Pearl Mica": 36,
+        
+        // Toyota Coaster variants
+        "Coaster 29-Seater": 37,
+        
+        // Toyota GR Yaris variants
+        "GR Yaris 1.6 Turbo MT": 38,
+        "GR Yaris 1.6 Turbo MT (Emotional Red)": 39,
+        
+        // Toyota Corolla Altis variants
+        "Corolla Altis 1.8 E CVT": 40,
+        "Corolla Altis 1.8 G GR-S CVT": 41,
+        "Corolla Altis 1.8 GR-S Hybrid CVT": 42,
+        
+        // Toyota Fortuner variants
+        "Fortuner 2.4 G Diesel 4x2 AT": 43,
+        "Fortuner 2.4 G Diesel 4x2 MT": 44,
+        
+        // Toyota GR Supra variants
+        "GR Supra 3.0 Turbo Inline-6 AT (Black Metallic 2)": 45,
+        
+        // Toyota GR86 variants
+        "GR86 2.4 AT": 46,
+        "GR86 2.4 MT": 47,
+        
+        // Toyota Hiace variants
+        "Hiace 2.8 Commuter Deluxe MT": 48,
+        "Hiace 2.8 GL Grandia AT": 49,
+        "Hiace 3.0 Ambulance": 50,
+        "Hiace 3.0 Cargo": 51,
+        
+        // Toyota Hilux variants
+        "Hilux 2.4 Cab & Chassis 4x2 MT": 52,
+        "Hilux 2.4 Cargo 4x2 MT": 53,
+        "Hilux 2.4 E DSL 4x2 AT": 54,
+        "Hilux 2.8 GR Sport AT": 55,
+        "Hilux Conquest 2.4 DSL": 56,
+        
+        // Toyota Innova variants
+        "Innova 2.8 E Diesel AT": 57,
+        
+        // Toyota Land Cruiser variants
+        "Land Cruiser ZX AT (Precious White Pearl)": 59,
+        
+        // Toyota Vios variants
+        "Vios 1.3 J MT": 61,
+        "Vios 1.3 XE CVT": 62,
+        "Vios 1.3 XLE CVT": 63,
+        
+        // Toyota Wigo variants
+        "Wigo 1.0 E CVT": 64,
+        "Wigo 1.0 J MT": 65
+    };
+    
+    // Fetch variants using the JSON API endpoint
+    const url = `/accounts/cars/variants-json/${carId}/`;
+    console.log(`Fetching variants from URL: ${url}`);
+    
+    fetch(url)
+        .then(response => {
+            console.log(`Response status: ${response.status}`);
+            return response.json();
+        })
         .then(data => {
+            console.log("Variants data received:", data);
+            
             if (data.variants && data.variants.length > 0) {
+                console.log(`Found ${data.variants.length} variants:`);
+                data.variants.forEach((v, index) => {
+                    console.log(`Variant ${index+1}: ID=${v.id}, Model=${v.model}, Image URL=${v.image_url}`);
+                });
+                
                 // Build variants HTML
-                let variantsHTML = '';
+                let variantsHTML = '<div class="variants-container">';
+                
+                // Create an array to track which variant details we need to fetch later
+                const variantsToFetch = [];
                 
                 data.variants.forEach(variant => {
+                    const variantModel = variant.model;
+                    
+                    // Use the mapping to override any incorrect IDs
+                    if (variantModel in variantIdMap) {
+                        const mappedId = variantIdMap[variantModel];
+                        if (variant.id !== mappedId) {
+                            console.log(`CORRECTING VARIANT ID: ${variant.model} ID changed from ${variant.id} to ${mappedId}`);
+                            variant.id = mappedId;
+                        }
+                    }
+                    
+                    // Add this variant to our list to fetch details for
+                    variantsToFetch.push(variant.id);
+                    
+                    // Ensure image URL has a cache-busting parameter and fallback to default if needed
+                    let imageUrl = variant.image_url || '/static/images/cars/default.jpg';
+                    imageUrl = getCacheBustedUrl(imageUrl);
+                    
+                    // Debug variant info
+                    console.log(`[IMPORTANT] Generating variant UI for - ID: ${variant.id}, Model: ${variant.model}, Image URL: ${imageUrl}`);
+                    
                     variantsHTML += `
-                        <div class="variant-item">
-                            <img src="${variant.image_url || '/static/images/cars/default.jpg'}" 
-                                 alt="${variant.model}"
-                                 onerror="this.onerror=null;this.src='/static/images/cars/default.jpg';">
+                        <div class="variant-item" data-variant-id="${variant.id}">
+                            <div class="variant-image-container">
+                                <img src="${imageUrl}" 
+                                     alt="${variant.model}"
+                                     onerror="this.onerror=null;this.src='${getCacheBustedUrl('/static/images/cars/default.jpg')}';"
+                                     style="width: 100%; height: 150px; object-fit: cover;">
+                                <button type="button" class="variant-update-image-btn" data-variant-id="${variant.id}" data-variant-model="${variant.model}">
+                                    Update Image
+                                </button>
+                            </div>
                             <h3>${variant.model}</h3>
                             <p>₱${variant.price}</p>
                             <div>
@@ -951,14 +1332,97 @@ function showCarModal(carId) {
                     `;
                 });
                 
+                variantsHTML += '</div>';
                 variantsContainer.innerHTML = variantsHTML;
+                
+                // Set up event listeners for the variant buttons
+                setupVariantEventListeners();
+
+                // Force refresh all images in the variant modal
+                document.querySelectorAll('#variantsContainer img').forEach(img => {
+                    const originalSrc = img.src;
+                    
+                    // Add timestamp to force refresh
+                    const timestamp = new Date().getTime();
+                    if (originalSrc.includes('?')) {
+                        img.src = originalSrc + '&refresh=' + timestamp;
+                    } else {
+                        img.src = originalSrc + '?refresh=' + timestamp;
+                    }
+                });
+                
+                // Fetch updated image information for ALL variants
+                // This makes a direct call to each variant's detail page to extract the most current image
+                console.log("Fetching detailed image information for all variants");
+                
+                // Use Promise.all to fetch all variant details concurrently
+                const variantFetchPromises = variantsToFetch.map(variantId => {
+                    return fetch(`/accounts/cars/${variantId}/`)
+                        .then(response => {
+                            if (response.ok) {
+                                return response.text();
+                            }
+                            throw new Error(`Network response not ok for variant ${variantId}`);
+                        })
+                        .then(html => {
+                            // Parse the HTML to extract the image URL
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const carImage = doc.querySelector('.car-image');
+                            
+                            if (carImage && carImage.src) {
+                                console.log(`Found image URL in car details page for ID ${variantId}: ${carImage.src}`);
+                                // Update all matching variant images in the modal
+                                document.querySelectorAll(`.variant-item[data-variant-id="${variantId}"] img`).forEach(img => {
+                                    img.src = getCacheBustedUrl(carImage.src);
+                                    console.log(`Updated variant ${variantId} image to: ${img.src}`);
+                                });
+                                return true;
+                            }
+                            return false;
+                        })
+                        .catch(error => {
+                            console.error(`Error fetching details for variant ${variantId}:`, error);
+                            return false;
+                        });
+                });
+                
+                // Handle all the promises
+                Promise.all(variantFetchPromises)
+                    .then(results => {
+                        console.log(`Completed fetching details for ${results.filter(Boolean).length} variants successfully`);
+                    })
+                    .catch(error => {
+                        console.error('Error during variant detail fetching:', error);
+                    });
+                    
+                // Additional direct API call approach for all variants
+                // This is a backup approach using the variants-json endpoint
+                console.log("Using direct API approach for all variants as well");
+                data.variants.forEach(variant => {
+                    fetch(`/accounts/cars/variants-json/${variant.id}/`)
+                        .then(res => res.json())
+                        .then(variantData => {
+                            if (variantData.variants && variantData.variants.length > 0) {
+                                const matchingVariant = variantData.variants.find(v => v.id === variant.id || v.model === variant.model);
+                                if (matchingVariant && matchingVariant.image_url) {
+                                    console.log(`Found direct API image for ${variant.model}: ${matchingVariant.image_url}`);
+                                    // Update the image in DOM after it's loaded
+                                    document.querySelectorAll(`.variant-item[data-variant-id="${variant.id}"] img`).forEach(img => {
+                                        img.src = getCacheBustedUrl(matchingVariant.image_url);
+                                    });
+                                }
+                            }
+                        })
+                        .catch(e => console.error(`Error fetching API details for variant ${variant.id}:`, e));
+                });
             } else {
                 variantsContainer.innerHTML = '<p style="text-align:center">No variants available for this model.</p>';
             }
         })
         .catch(error => {
             console.error('Error fetching variants:', error);
-            variantsContainer.innerHTML = `
+            variantsContainer.innerHTML += `
                 <p style="text-align:center">Failed to load variants: ${error.message}</p>
                 <p style="text-align:center">
                     <a href="/accounts/cars/${carId}/" style="color:#d32f2f;text-decoration:underline">
@@ -967,6 +1431,67 @@ function showCarModal(carId) {
                 </p>
             `;
         });
+}
+
+// Function to open image upload modal for variants
+function openVariantImageModal(variantId, variantModel) {
+    console.log("OPEN VARIANT IMAGE MODAL CALLED");
+    console.log(`VARIANT ID: ${variantId}`);
+    console.log(`VARIANT MODEL: ${variantModel}`);
+    
+    if (!variantId) {
+        alert('Error: Missing variant ID');
+        return;
+    }
+    
+    // Clear previous data
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('carImageInput').value = '';
+    document.getElementById('fileName').textContent = 'No file chosen';
+    
+    // Remove any previous status messages or error details
+    const statusMsg = document.getElementById('uploadStatusMsg');
+    if (statusMsg) statusMsg.remove();
+    
+    const errorDetails = document.getElementById('errorDetails');
+    if (errorDetails) errorDetails.remove();
+    
+    // Set car ID - CRITICAL STEP
+    const modalCarIdInput = document.getElementById('modalCarId');
+    modalCarIdInput.value = variantId;
+    
+    // Set the displayed ID in the UI
+    document.getElementById('displayCarId').textContent = variantId;
+    
+    // Set modal title
+    document.getElementById('imageModalTitle').textContent = `Add/Update Image for ${variantModel}`;
+    
+    // Store variant info in data attributes
+    const imageModal = document.getElementById('imageModal');
+    imageModal.setAttribute('data-updating-variant-id', variantId);
+    imageModal.setAttribute('data-updating-variant-model', variantModel);
+    
+    // Add hidden backup field
+    let backupField = document.getElementById('backupCarId');
+    if (!backupField) {
+        backupField = document.createElement('input');
+        backupField.type = 'hidden';
+        backupField.id = 'backupCarId';
+        backupField.name = 'backup_car_id';
+        document.getElementById('imageUploadForm').appendChild(backupField);
+    }
+    backupField.value = variantId;
+    
+    // Double-check all IDs are set correctly
+    console.log("VERIFYING CAR IDs:");
+    console.log(`- modalCarId input value: ${modalCarIdInput.value}`);
+    console.log(`- modal data attribute: ${imageModal.getAttribute('data-updating-variant-id')}`);
+    console.log(`- backup field value: ${backupField.value}`);
+    console.log(`- display element: ${document.getElementById('displayCarId').textContent}`);
+    
+    // Show the modal
+    imageModal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
 }
 
 // Set up event listeners
@@ -1048,25 +1573,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-    // Image buttons
-    document.querySelectorAll('.update-image-btn').forEach(btn => {
-        btn.addEventListener('click', function(event) {
-            event.stopPropagation();
-            const card = this.closest('.car-card');
-            const carId = card.getAttribute('data-car-id');
-            const carModel = card.getAttribute('data-model');
-            openImageModal(carId, carModel);
-        });
-    });
-    
-    // Car card clicks for showing variants
+    // Set up card interactions
     document.querySelectorAll('.car-card').forEach(card => {
         card.addEventListener('click', function(event) {
+            // Only trigger modal if not clicking the update image button
             if (!event.target.classList.contains('update-image-btn')) {
                 const carId = this.getAttribute('data-car-id');
-                showCarModal(carId);
+                const carModel = this.getAttribute('data-model');
+                showVariantsInModal(carId, carModel);
             }
         });
+        
+        // Make sure the image update button has its own handler
+        const updateImageBtn = card.querySelector('.update-image-btn');
+        if (updateImageBtn) {
+            updateImageBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                const carId = card.getAttribute('data-car-id');
+                const carModel = card.getAttribute('data-model');
+                openImageModal(carId, carModel);
+            });
+        }
     });
     
     // Close modals
@@ -1122,6 +1650,28 @@ document.addEventListener("DOMContentLoaded", function() {
         uploadForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             
+            // Get car ID directly from multiple sources
+            const formCarId = document.getElementById('modalCarId').value;
+            const displayCarId = document.getElementById('displayCarId').textContent;
+            const backupCarId = document.getElementById('backupCarId')?.value;
+            const dataVariantId = document.getElementById('imageModal').getAttribute('data-updating-variant-id');
+            
+            // Log all ID sources for debugging
+            console.log('***** FORM SUBMISSION - CAR ID SOURCES *****');
+            console.log(`1. Form input value: ${formCarId}`);
+            console.log(`2. Display element: ${displayCarId}`);
+            console.log(`3. Backup field: ${backupCarId}`);
+            console.log(`4. Data attribute: ${dataVariantId}`);
+            
+            // Determine which ID to use (prefer display element as most reliable)
+            const idToUse = displayCarId || formCarId || backupCarId || dataVariantId;
+            console.log(`FINAL ID TO USE: ${idToUse}`);
+            
+            if (!idToUse) {
+                alert('Error: Unable to determine which car to update. Please try again.');
+                return;
+            }
+            
             // Show loading state
             const submitButton = this.querySelector('button[type="submit"]');
             const originalBtnText = submitButton.textContent;
@@ -1136,22 +1686,49 @@ document.addEventListener("DOMContentLoaded", function() {
                 statusMsg.className = 'upload-status';
                 this.appendChild(statusMsg);
             }
-            statusMsg.textContent = 'Uploading image...';
+            statusMsg.textContent = `Uploading image for car ID: ${idToUse}...`;
             statusMsg.className = 'upload-status uploading';
             
-            const formData = new FormData(this);
-            const carId = document.getElementById('modalCarId').value;
+            // Create a completely new FormData object
+            const formData = new FormData();
+            
+            // Add the file if selected
+            const fileInput = document.getElementById('carImageInput');
+            if (fileInput.files.length > 0) {
+                formData.append('car_image', fileInput.files[0]);
+            } else {
+                statusMsg.textContent = 'Error: Please select an image file';
+                statusMsg.className = 'upload-status error';
+                submitButton.textContent = originalBtnText;
+                submitButton.disabled = false;
+                return;
+            }
+            
+            // Add the CSRF token
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            formData.append('csrfmiddlewaretoken', csrfToken);
+            
+            // EXPLICITLY set the car_id
+            formData.append('car_id', idToUse);
+            formData.append('backup_car_id', idToUse);
             
             try {
+                console.log('Sending upload request with FormData:');
+                for (const pair of formData.entries()) {
+                    console.log(`${pair[0]}: ${pair[1]}`);
+                }
+                
                 const response = await fetch('/accounts/update_car_image/', {
                     method: 'POST',
                     body: formData,
                 });
                 
-                // Parse the response
+                console.log(`Response status: ${response.status}`);
+                
                 let data;
                 try {
                     data = await response.json();
+                    console.log('Response data:', data);
                 } catch (parseError) {
                     console.error('Error parsing JSON response:', parseError);
                     statusMsg.textContent = 'Error: Server returned invalid response';
@@ -1161,97 +1738,52 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
                 
-                if (response.ok) {
-                    // Update the image in the UI
-                    if (data.image_url) {
-                        const card = document.querySelector(`.car-card[data-car-id='${carId}'] img`);
-                        if (card) {
-                            // Add cache-busting parameter to ensure the image is refreshed
-                            let imageUrl = data.image_url;
-                            if (imageUrl.includes('?')) {
-                                imageUrl += '&t=' + new Date().getTime();
-                            } else {
-                                imageUrl += '?t=' + new Date().getTime();
-                            }
-                            
-                            // Apply loading state
-                            card.classList.add('loading');
-                            
-                            // Set the new image URL with cache busting
-                            card.src = imageUrl;
-                            
-                            // Handle image load completion
-                            card.onload = function() {
-                                card.classList.remove('loading');
-                                card.classList.add('refresh-image');
-                            };
-                            
-                            // Special handling for fallback images
-                            if (data.method === 'fallback') {
-                                statusMsg.textContent = 'Image updated with a fallback. ' + (data.message || '');
-                                statusMsg.className = 'upload-status warning';
-                                
-                                // Keep modal open for fallback messages
-                                submitButton.textContent = originalBtnText;
-                                submitButton.disabled = false;
-                                setTimeout(() => {
-                                    closeImageModal();
-                                }, 3000); // Close after 3 seconds
-                                return;
-                            }
-                        }
-                    }
-                    
-                    statusMsg.textContent = 'Image uploaded successfully!';
+                if (data.success) {
+                    // Success message
+                    statusMsg.textContent = `Image successfully uploaded for car ID: ${data.car_id}!`;
                     statusMsg.className = 'upload-status success';
                     
-                    // Close the modal after a short delay
+                    // The ID that was actually updated (from server response)
+                    const updatedCarId = data.car_id;
+                    const cacheBustedImageUrl = getCacheBustedUrl(data.image_url);
+                    
+                    console.log(`Server confirmed update of car ID: ${updatedCarId}`);
+                    console.log(`Updated image URL: ${cacheBustedImageUrl}`);
+                            
+                    // Update the UI with the new image
+                    // Try updating all possible locations where this car's image might appear
+                    
+                    // 1. Update variant images in the variants modal
+                    document.querySelectorAll(`.variant-item[data-variant-id="${updatedCarId}"] .variant-image-container img`).forEach(img => {
+                        console.log(`Updating variant image in modal for ID: ${updatedCarId}`);
+                        img.src = cacheBustedImageUrl;
+                    });
+                    
+                    // 2. Update car cards on the main page
+                    document.querySelectorAll(`.car-card[data-car-id="${updatedCarId}"] img`).forEach(img => {
+                        console.log(`Updating car card image for ID: ${updatedCarId}`);
+                        img.src = cacheBustedImageUrl;
+                    });
+                    
+                    // Close the modal after a delay
                     setTimeout(() => {
                         closeImageModal();
-                    }, 1500);
-                } else {
-                    // Display error from server
                     submitButton.textContent = originalBtnText;
                     submitButton.disabled = false;
-                    
-                    let errorMessage = data.error || 'Unknown server error';
-                    statusMsg.textContent = `Error: ${errorMessage}`;
+                    }, 2000);
+                } else {
+                    // Show error message
+                    statusMsg.textContent = data.error || 'Error uploading image';
                     statusMsg.className = 'upload-status error';
-                    
-                    // Add detailed error as hidden element that can be toggled
-                    if (data.detail) {
-                        console.error('Detailed error:', data.detail);
-                        
-                        // Add a details element if it doesn't exist
-                        let detailsElem = document.getElementById('errorDetails');
-                        if (!detailsElem) {
-                            detailsElem = document.createElement('details');
-                            detailsElem.id = 'errorDetails';
-                            detailsElem.className = 'error-details';
-                            
-                            const summary = document.createElement('summary');
-                            summary.textContent = 'Show technical details';
-                            detailsElem.appendChild(summary);
-                            
-                            const pre = document.createElement('pre');
-                            pre.id = 'errorDetailContent';
-                            detailsElem.appendChild(pre);
-                            
-                            statusMsg.parentNode.insertBefore(detailsElem, statusMsg.nextSibling);
-                        }
-                        
-                        // Update the details content
-                        document.getElementById('errorDetailContent').textContent = data.detail;
-                    }
+                    submitButton.textContent = originalBtnText;
+                    submitButton.disabled = false;
                 }
             } catch (err) {
                 console.error('Error uploading image:', err);
-                
+                statusMsg.textContent = 'Network error: ' + err.message;
+                statusMsg.className = 'upload-status error';
                 submitButton.textContent = originalBtnText;
                 submitButton.disabled = false;
-                
-                statusMsg.textContent = `Network error: ${err.message || 'Failed to connect to server'}`;
-                statusMsg.className = 'upload-status error';
             }
         });
     }

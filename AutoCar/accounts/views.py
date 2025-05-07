@@ -380,60 +380,250 @@ def base_view(request):
     
     return render(request, 'base.html', context)
 
+def debug_car_info(request):
+    """
+    Debug view to display all car info for troubleshooting
+    """
+    try:
+        # Fetch all cars
+        all_cars_result = fetch_data('cars')
+        all_cars = all_cars_result.data if all_cars_result and all_cars_result.data else []
+        
+        # Sort by model name for easier reading
+        all_cars.sort(key=lambda x: x.get('model', ''))
+        
+        # Build HTML response
+        response_text = f"""
+        <html>
+        <head>
+            <title>Car Database Debug</title>
+            <style>
+                body {{ font-family: Arial, sans-serif; padding: 20px; }}
+                table {{ border-collapse: collapse; width: 100%; }}
+                th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+                tr:nth-child(even) {{ background-color: #f2f2f2; }}
+                th {{ background-color: #4CAF50; color: white; }}
+                .highlight {{ background-color: #ffffcc; }}
+                .parent {{ background-color: #d1e7dd; }}
+                .variant {{ background-color: #f8d7da; }}
+            </style>
+        </head>
+        <body>
+            <h1>Car Database Debug Information</h1>
+            <p>Total cars: {len(all_cars)}</p>
+            
+            <h2>All Cars</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Model</th>
+                    <th>Parent ID</th>
+                    <th>Featured</th>
+                    <th>Image URL</th>
+                </tr>
+        """
+        
+        for car in all_cars:
+            # Determine row class
+            row_class = ''
+            if car.get('parent_model_id') is None:
+                row_class = 'parent'
+            else:
+                row_class = 'variant'
+                
+            response_text += f"""
+                <tr class="{row_class}">
+                    <td>{car.get('id')}</td>
+                    <td>{car.get('model')}</td>
+                    <td>{car.get('parent_model_id')}</td>
+                    <td>{car.get('featured')}</td>
+                    <td>{car.get('image_url', 'None')[:50]}{'...' if car.get('image_url') and len(car.get('image_url')) > 50 else ''}</td>
+                </tr>
+            """
+            
+        response_text += """
+            </table>
+            
+            <h2>Car Variants Relationships</h2>
+            <table>
+                <tr>
+                    <th>Parent Model</th>
+                    <th>Parent ID</th>
+                    <th>Variants</th>
+                </tr>
+        """
+        
+        # Group variants by parent
+        parent_models = [car for car in all_cars if car.get('parent_model_id') is None]
+        
+        for parent in parent_models:
+            parent_id = parent.get('id')
+            variants = [car for car in all_cars if car.get('parent_model_id') == parent_id]
+            
+            variant_list = ", ".join([f"{v.get('model')} (ID: {v.get('id')})" for v in variants])
+            
+            response_text += f"""
+                <tr>
+                    <td>{parent.get('model')} (ID: {parent_id})</td>
+                    <td>{parent_id}</td>
+                    <td>{variant_list if variants else 'No variants'}</td>
+                </tr>
+            """
+            
+        response_text += """
+            </table>
+            
+            <h2>Potential Issues</h2>
+            <ul>
+        """
+        
+        # Check for orphaned variants
+        orphaned_variants = [car for car in all_cars if car.get('parent_model_id') and 
+                           not any(p.get('id') == car.get('parent_model_id') for p in all_cars)]
+        
+        if orphaned_variants:
+            response_text += f"<li>Found {len(orphaned_variants)} orphaned variants (parent ID doesn't exist)</li>"
+            response_text += "<ul>"
+            for v in orphaned_variants:
+                response_text += f"<li>{v.get('model')} (ID: {v.get('id')}) references non-existent parent ID: {v.get('parent_model_id')}</li>"
+            response_text += "</ul>"
+        
+        # Check for duplicate model names
+        model_counts = {}
+        for car in all_cars:
+            model = car.get('model')
+            if model in model_counts:
+                model_counts[model] += 1
+            else:
+                model_counts[model] = 1
+                
+        duplicate_models = {model: count for model, count in model_counts.items() if count > 1}
+        if duplicate_models:
+            response_text += f"<li>Found {len(duplicate_models)} duplicate model names</li>"
+            response_text += "<ul>"
+            for model, count in duplicate_models.items():
+                dupe_cars = [car for car in all_cars if car.get('model') == model]
+                car_ids = [str(c.get('id')) for c in dupe_cars]
+                response_text += f"<li>{model} appears {count} times: IDs: {', '.join(car_ids)}</li>"
+            response_text += "</ul>"
+            
+        response_text += """
+            </ul>
+            
+            <p><a href="/accounts/cars/">Back to Cars List</a></p>
+        </body>
+        </html>
+        """
+        
+        return HttpResponse(response_text)
+    except Exception as e:
+        logger.error(f"Error in debug_car_info view: {e}")
+        return HttpResponse(f"Error: {str(e)}", content_type="text/plain")
+
 @csrf_exempt
 def update_car_image(request):
     if request.method == 'POST':
         try:
-            # Handle both form data and JSON payload
-            car_id = request.POST.get('car_id')
+            # Extract all potential car ID sources
+            form_car_id = request.POST.get('car_id')
+            backup_car_id = request.POST.get('backup_car_id')
             
-            # Debug log
-            logger.info(f"Received image upload request for car ID: {car_id}")
-            logger.info(f"Request POST data: {request.POST}")
-            logger.info(f"Request FILES data: {request.FILES}")
+            # Log all incoming data for debugging
+            logger.info(f"UPDATE CAR IMAGE REQUEST - POST DATA: {request.POST}")
+            logger.info(f"Form car_id: {form_car_id}, Backup car_id: {backup_car_id}")
             
-            if not car_id:
-                # Try to get from JSON if not found in form data
+            # Step 1: Determine and validate the car ID - try all sources
+            car_id = None
+            
+            # Try the form car_id first
+            if form_car_id:
+                try:
+                    car_id = int(form_car_id)
+                    logger.info(f"Using form car_id: {car_id}")
+                except (ValueError, TypeError):
+                    logger.warning(f"Invalid form car_id format: {form_car_id}")
+            
+            # If that failed, try backup_car_id
+            if car_id is None and backup_car_id:
+                try:
+                    car_id = int(backup_car_id)
+                    logger.info(f"Using backup car_id: {car_id}")
+                except (ValueError, TypeError):
+                    logger.warning(f"Invalid backup car_id format: {backup_car_id}")
+            
+            # If still no valid ID, try to parse from JSON body
+            if car_id is None:
                 try:
                     data = json.loads(request.body)
-                    car_id = data.get('car_id')
-                    image_url = data.get('image_url')
-                    
-                    # If we have both car_id and image_url from JSON, update directly
-                    if car_id and image_url:
-                        logger.info(f"Using direct URL update for car {car_id}: {image_url}")
-                        update_data('cars', {'image_url': image_url}, 'id', car_id)
-                        return JsonResponse({
-                            'success': True,
-                            'image_url': image_url,
-                            'method': 'direct_url'
-                        })
+                    json_car_id = data.get('car_id')
+                    if json_car_id:
+                        car_id = int(json_car_id)
+                        logger.info(f"Using JSON car_id: {car_id}")
+                        
+                        # If we also have an image URL in JSON, process direct URL update
+                        image_url = data.get('image_url')
+                        if image_url:
+                            logger.info(f"Using direct URL update for car {car_id}: {image_url}")
+                            
+                            # Verify car exists
+                            car_data = fetch_data('cars', lambda q: q.eq('id', car_id))
+                            if not car_data or not car_data.data:
+                                return JsonResponse({'error': f'Car with ID {car_id} not found'}, status=404)
+                                
+                            # Update image and return success
+                            update_data('cars', {'image_url': image_url}, 'id', car_id)
+                            return JsonResponse({
+                                'success': True,
+                                'image_url': image_url,
+                                'car_id': car_id,
+                                'car_model': car_data.data[0].get('model'),
+                                'method': 'direct_url'
+                            })
                 except Exception as json_error:
-                    logger.error(f"Error parsing JSON: {json_error}")
-                    
-            if not car_id:
-                return JsonResponse({'error': 'Missing car_id'}, status=400)
-                
-            # Handle file upload
+                    logger.error(f"Error processing JSON data: {json_error}")
+            
+            # If we still don't have a valid car ID, return an error
+            if car_id is None:
+                logger.error("No valid car ID found in request")
+                return JsonResponse({
+                    'error': 'No valid car ID provided',
+                    'request_data': {k: v for k, v in request.POST.items()}
+                }, status=400)
+            
+            # Step 2: Verify car exists in database
+            logger.info(f"Verifying car with ID {car_id} exists in database")
+            car_data = fetch_data('cars', lambda q: q.eq('id', car_id))
+            if not car_data or not car_data.data:
+                logger.error(f"Car with ID {car_id} not found in database")
+                return JsonResponse({
+                    'error': f'Car with ID {car_id} not found in database',
+                    'car_id': car_id
+                }, status=404)
+            
+            # Extract car details
+            car = car_data.data[0]
+            car_model = car.get('model')
+            parent_model_id = car.get('parent_model_id')
+            logger.info(f"Found car: {car_model} (ID: {car_id}, Parent ID: {parent_model_id})")
+            
+            # Step 3: Process file upload
             if 'car_image' in request.FILES:
                 image_file = request.FILES['car_image']
-                logger.info(f"Processing file: {image_file.name}, size: {image_file.size}, type: {image_file.content_type}")
+                logger.info(f"Processing file upload: {image_file.name}, size: {image_file.size}")
                 
-                # Flag to determine if we should use Supabase storage
-                try_supabase_upload = True
-                
-                if try_supabase_upload:
-                    # Generate a unique filename to prevent overwrites
+                # Upload to Supabase storage
+                try:
+                    # Generate unique filename
                     unique_filename = f"{uuid.uuid4()}_{image_file.name}"
                     
                     # Set up storage parameters
                     bucket_name = 'car-images'
                     file_path = f"{car_id}/{unique_filename}"
                     
-                    # Read the file content
+                    # Read file content
                     file_content = image_file.read()
                     
-                    # Use our improved upload helper
+                    # Attempt upload
                     success, result = upload_file_to_storage(
                         bucket_name, 
                         file_path, 
@@ -443,67 +633,62 @@ def update_car_image(request):
                     
                     if success:
                         image_url = result
-                        logger.info(f"Successfully uploaded to Supabase storage: {image_url}")
+                        logger.info(f"File uploaded successfully: {image_url}")
                         
-                        # Update the car record with the new image URL
+                        # Update car record with new image URL
+                        logger.info(f"Updating car record ID {car_id} with new image URL")
                         update_result = update_data('cars', {'image_url': image_url}, 'id', car_id)
-                        logger.info(f"Database update result: {update_result}")
                         
+                        if update_result and hasattr(update_result, 'data'):
+                            logger.info(f"Database updated: {len(update_result.data)} records")
+                            
+                            # Verify update worked
+                            verify_result = fetch_data('cars', lambda q: q.eq('id', car_id))
+                            if verify_result and verify_result.data:
+                                current_url = verify_result.data[0].get('image_url')
+                                logger.info(f"Verified new image URL: {current_url}")
+                                
+                            return JsonResponse({
+                                'success': True,
+                                'image_url': image_url,
+                                'car_id': car_id,
+                                'car_model': car_model
+                            })
+                        else:
+                            logger.warning("Database update returned unexpected result")
+                            return JsonResponse({
+                                'error': 'Database update failed',
+                                'car_id': car_id
+                            }, status=500)
+                    else:
+                        logger.error(f"File upload failed: {result}")
                         return JsonResponse({
-                            'success': True,
-                            'image_url': image_url
-                        })
-                
-                # If we reach here, either storage upload failed or was skipped
-                # Use free external image hosting as a fallback
-                logger.warning("Using external image hosting fallback")
-                
-                # Read the file again if needed (since it was consumed earlier)
-                if 'file_content' in locals() and not file_content:
-                    image_file.seek(0)
-                    file_content = image_file.read()
-                
-                # Generate a friendly, persistent URL based on car ID
-                # This uses an external service that reliably serves the same car image for the same ID
-                # Production versions would use a proper image hosting solution
-                model_name = "Car"
-                
-                # Try to get the car model from the database
-                try:
-                    car_data = fetch_data('cars', lambda q: q.eq('id', car_id))
-                    if car_data and car_data.data:
-                        model_name = car_data.data[0].get('model', 'Car')
-                        logger.info(f"Found car model: {model_name}")
-                except Exception as fetch_error:
-                    logger.error(f"Error fetching car model: {fetch_error}")
-                
-                # Use a reliable image service that returns the same car for the same ID
-                fallback_url = f"https://loremflickr.com/640/480/car,{model_name.replace(' ', '_')}?lock={car_id}"
-                logger.info(f"Using fallback URL: {fallback_url}")
-                
-                # Update the car record with the fallback URL
-                update_result = update_data('cars', {'image_url': fallback_url}, 'id', car_id)
-                logger.info(f"Database update result with fallback: {update_result}")
-                
-                return JsonResponse({
-                    'success': True,
-                    'image_url': fallback_url,
-                    'method': 'fallback',
-                    'message': 'Using fallback image service due to storage issues. Please check your Supabase storage configuration.'
-                })
+                            'error': f'File upload failed: {result}',
+                            'car_id': car_id
+                        }, status=500)
+                except Exception as upload_error:
+                    logger.error(f"Error during file upload: {upload_error}")
+                    logger.error(traceback.format_exc())
+                    return JsonResponse({
+                        'error': f'Error during file upload: {str(upload_error)}',
+                        'car_id': car_id
+                    }, status=500)
             else:
-                logger.warning("No image file found in request")
-                return JsonResponse({'error': 'No image file uploaded'}, status=400)
+                logger.error("No image file found in request")
+                return JsonResponse({
+                    'error': 'No image file uploaded',
+                    'car_id': car_id
+                }, status=400)
                 
         except Exception as e:
-            logger.error(f"Error updating car image: {e}")
+            logger.error(f"Unhandled error in update_car_image: {e}")
             logger.error(traceback.format_exc())
             return JsonResponse({
-                'error': str(e),
+                'error': f'Server error: {str(e)}',
                 'detail': traceback.format_exc()
             }, status=500)
             
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @csrf_exempt
 def debug_info(request):
@@ -776,6 +961,9 @@ def car_variants_json(request, car_id):
     JSON API endpoint to return variants for a car
     """
     try:
+        # Debug log for tracking
+        logger.info(f"Fetching variants for parent car ID: {car_id}")
+        
         # Fetch variants from the new car_variants table
         variants_result = fetch_data('car_variants', lambda q: q.eq('parent_model_id', car_id))
         variants = variants_result.data if variants_result and variants_result.data else []
@@ -784,6 +972,91 @@ def car_variants_json(request, car_id):
         if not variants:
             old_variants_result = fetch_data('cars', lambda q: q.eq('parent_model_id', car_id))
             variants = old_variants_result.data if old_variants_result and old_variants_result.data else []
+            logger.info(f"Found {len(variants)} variants using old approach")
+        else:
+            logger.info(f"Found {len(variants)} variants in car_variants table")
+        
+        # Comprehensive variant ID mapping based on model names
+        # This mapping ensures all variant IDs match those in the CSV file
+        variant_id_map = {
+            # Toyota Alphard variants
+            "Alphard 2.5 HEV CVT": 30,
+            
+            # Toyota Avanza variants
+            "Avanza 1.3 E CVT": 31,
+            "Avanza 1.3 E M/T": 32,
+            "Avanza 1.3 J M/T": 33,
+            "Avanza 1.5 G CVT": 34,
+            
+            # Toyota Camry variants
+            "Camry Hybrid 2.5 HEV": 35,
+            "Camry Hybrid 2.5 HEV White Pearl Mica": 36,
+            
+            # Toyota Coaster variants
+            "Coaster 29-Seater": 37,
+            
+            # Toyota GR Yaris variants
+            "GR Yaris 1.6 Turbo MT": 38,
+            "GR Yaris 1.6 Turbo MT (Emotional Red)": 39,
+            
+            # Toyota Corolla Altis variants
+            "Corolla Altis 1.8 E CVT": 40,
+            "Corolla Altis 1.8 G GR-S CVT": 41,
+            "Corolla Altis 1.8 GR-S Hybrid CVT": 42,
+            
+            # Toyota Fortuner variants
+            "Fortuner 2.4 G Diesel 4x2 AT": 43,
+            "Fortuner 2.4 G Diesel 4x2 MT": 44,
+            
+            # Toyota GR Supra variants
+            "GR Supra 3.0 Turbo Inline-6 AT (Black Metallic 2)": 45,
+            
+            # Toyota GR86 variants
+            "GR86 2.4 AT": 46,
+            "GR86 2.4 MT": 47,
+            
+            # Toyota Hiace variants
+            "Hiace 2.8 Commuter Deluxe MT": 48,
+            "Hiace 2.8 GL Grandia AT": 49,
+            "Hiace 3.0 Ambulance": 50,
+            "Hiace 3.0 Cargo": 51,
+            
+            # Toyota Hilux variants
+            "Hilux 2.4 Cab & Chassis 4x2 MT": 52,
+            "Hilux 2.4 Cargo 4x2 MT": 53,
+            "Hilux 2.4 E DSL 4x2 AT": 54,
+            "Hilux 2.8 GR Sport AT": 55,
+            "Hilux Conquest 2.4 DSL": 56,
+            
+            # Toyota Innova variants
+            "Innova 2.8 E Diesel AT": 57,
+            
+            # Toyota Land Cruiser variants
+            "Land Cruiser ZX AT (Precious White Pearl)": 59,
+            
+            # Toyota Vios variants
+            "Vios 1.3 J MT": 61,
+            "Vios 1.3 XE CVT": 62,
+            "Vios 1.3 XLE CVT": 63,
+            
+            # Toyota Wigo variants
+            "Wigo 1.0 E CVT": 64,
+            "Wigo 1.0 J MT": 65
+        }
+        
+        # Log all variant details for debugging
+        for index, variant in enumerate(variants):
+            variant_model = variant.get('model')
+            original_id = variant.get('id')
+            
+            # Apply ID correction from the mapping
+            if variant_model in variant_id_map:
+                corrected_id = variant_id_map[variant_model]
+                if original_id != corrected_id:
+                    logger.info(f"CORRECTING ID for '{variant_model}': {original_id} -> {corrected_id}")
+                    variant['id'] = corrected_id
+            
+            logger.info(f"Variant {index+1}: ID={variant.get('id')}, Model={variant_model}")
         
         # Format variant prices for display
         for variant in variants:
