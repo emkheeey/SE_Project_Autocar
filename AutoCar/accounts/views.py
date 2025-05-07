@@ -13,6 +13,7 @@ import uuid
 import traceback
 from django.conf import settings
 import os
+from accounts.models import Car
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -1153,3 +1154,69 @@ def car_variants_json(request, car_id):
             'success': False,
             'error': str(e)
         }, status=500)
+
+# Favorites page view
+@login_required
+def favorites_page(request):
+    return render(request, 'accounts/favorites.html')
+
+# Compare cars page view
+@login_required
+def compare_cars(request):
+    # Get the IDs from query parameters
+    car_ids = request.GET.getlist('id')
+    car_types = request.GET.getlist('type')
+    
+    # Ensure we have matching pairs of IDs and types
+    if len(car_ids) != len(car_types) or len(car_ids) < 2 or len(car_ids) > 3:
+        messages.error(request, 'Invalid comparison request. Select 2-3 cars to compare.')
+        return redirect('favorites')
+    
+    # Fetch car data for comparison
+    compare_items = []
+    
+    for i in range(len(car_ids)):
+        car_id = car_ids[i]
+        car_type = car_types[i]
+        
+        try:
+            # Fetch car/variant data based on type
+            if car_type == 'car':
+                car = Car.objects.get(id=car_id)
+                compare_items.append({
+                    'id': car.id,
+                    'model': car.model,
+                    'price': car.price,
+                    'image_url': car.image_url,
+                    'body_type': car.body_type,
+                    'transmission': car.transmission,
+                    'fuel_type': car.fuel_type,
+                    'max_output': car.max_output,
+                    'num_seats': car.num_seats,
+                    'drivetrain': car.drivetrain,
+                    'type': 'car'
+                })
+            else:  # variant
+                variant = Car.objects.get(id=car_id)
+                compare_items.append({
+                    'id': variant.id,
+                    'model': variant.model,
+                    'price': variant.price,
+                    'image_url': variant.image_url,
+                    'body_type': variant.body_type, 
+                    'transmission': variant.transmission,
+                    'fuel_type': variant.fuel_type,
+                    'max_output': variant.max_output,
+                    'num_seats': variant.num_seats,
+                    'drivetrain': variant.drivetrain,
+                    'type': 'variant'
+                })
+        except Car.DoesNotExist:
+            messages.error(request, f'Car with ID {car_id} not found.')
+            return redirect('favorites')
+    
+    context = {
+        'compare_items': compare_items
+    }
+    
+    return render(request, 'accounts/compare.html', context)

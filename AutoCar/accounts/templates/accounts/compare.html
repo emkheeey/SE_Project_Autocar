@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Compare Cars | AutoCar{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/favorite.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Override styles from base.html to prevent profile duplication */
+    header {
+        display: none !important;
+    }
+    
+    /* Ensure top margin is reset */
+    body {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        overflow-y: auto !important; /* Fix scrolling */
+    }
+    
+    /* Hide any content from base.html that might cause problems */
+    #home, footer {
+        display: none !important;
+    }
+    
+    /* Specific compare page styling */
+    .compare-header {
+        width: 100%;
+        background: #FF8383;
+        background-image: url({% static 'images/Navigation2.jpg' %});
+        height: 80px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 50px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 8px 15px;
+        border-radius: 50%;
+        transition: background-color 0.3s;
+    }
+    
+    .back-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .compare-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        padding: 30px;
+    }
+    
+    .compare-row {
+        display: grid;
+        grid-template-columns: 150px repeat({{compare_items|length}}, 1fr);
+        gap: 20px;
+        padding: 0 30px;
+        margin-bottom: 10px;
+    }
+    
+    .feature-label {
+        font-weight: bold;
+        color: #333;
+        padding: 10px 0;
+    }
+    
+    .feature-value {
+        padding: 10px;
+        text-align: center;
+        color: #666;
+    }
+    
+    .feature-value.highlight {
+        font-weight: bold;
+        color: #e74c3c;
+    }
+    
+    .compare-card {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .compare-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .compare-card h3 {
+        padding: 15px;
+        margin: 0;
+        font-size: 1.3rem;
+        color: #333;
+    }
+    
+    .compare-card .price {
+        color: #e74c3c;
+        font-weight: bold;
+        font-size: 1.2rem;
+        padding-bottom: 15px;
+    }
+    
+    .section-header {
+        background-color: #f8f8f8;
+        padding: 10px 30px;
+        margin: 20px 0;
+        border-left: 4px solid #e74c3c;
+        color: #333;
+        font-size: 1.2rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .compare-header {
+            padding: 10px 20px;
+        }
+        
+        .compare-row {
+            grid-template-columns: 100px repeat({{compare_items|length}}, 1fr);
+            padding: 0 15px;
+            gap: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body_class %}compare-page{% endblock %}
+
+{% block content %}
+<header class="compare-header">
+    <button class="back-btn" onclick="window.location.href='{% url 'favorites' %}'">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <h1>Compare Cars</h1>
+    <div></div> <!-- Empty div for flex spacing -->
+</header>
+
+<main>
+    <!-- Car cards -->
+    <div class="compare-grid">
+        {% for item in compare_items %}
+        <div class="compare-card">
+            <img src="{% if item.image_url %}{{ item.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" 
+                 alt="{{ item.model }}"
+                 onError="this.onerror=null; this.src='{% static 'images/cars/default.jpg' %}';">
+            <h3>{{ item.model }}</h3>
+            <div class="price">₱{{ item.price|floatformat:0|intcomma }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Basic Info Section -->
+    <h2 class="section-header">Basic Information</h2>
+    
+    <div class="compare-row">
+        <div class="feature-label">Body Type</div>
+        {% for item in compare_items %}
+        <div class="feature-value">{{ item.body_type|default:"N/A" }}</div>
+        {% endfor %}
+    </div>
+    
+    <div class="compare-row">
+        <div class="feature-label">Transmission</div>
+        {% for item in compare_items %}
+        <div class="feature-value">{{ item.transmission|default:"N/A" }}</div>
+        {% endfor %}
+    </div>
+    
+    <div class="compare-row">
+        <div class="feature-label">Fuel Type</div>
+        {% for item in compare_items %}
+        <div class="feature-value">{{ item.fuel_type|default:"N/A" }}</div>
+        {% endfor %}
+    </div>
+    
+    <div class="compare-row">
+        <div class="feature-label">Seating Capacity</div>
+        {% for item in compare_items %}
+        <div class="feature-value">{{ item.num_seats|default:"N/A" }}</div>
+        {% endfor %}
+    </div>
+    
+    <!-- Performance Section -->
+    <h2 class="section-header">Performance</h2>
+    
+    <div class="compare-row">
+        <div class="feature-label">Max Output</div>
+        {% for item in compare_items %}
+        <div class="feature-value">{{ item.max_output|default:"N/A" }}</div>
+        {% endfor %}
+    </div>
+    
+    <div class="compare-row">
+        <div class="feature-label">Drivetrain</div>
+        {% for item in compare_items %}
+        <div class="feature-value">{{ item.drivetrain|default:"N/A" }}</div>
+        {% endfor %}
+    </div>
+    
+    <!-- Links to full details -->
+    <div class="compare-row" style="margin-top: 30px;">
+        <div class="feature-label"></div>
+        {% for item in compare_items %}
+        <div class="feature-value">
+            <a href="{% url 'car_detail' car_id=item.id %}" class="btn" style="background-color: #e74c3c; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; display: inline-block;">
+                View Details
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Highlight the best values
+document.addEventListener('DOMContentLoaded', function() {
+    // Find rows to highlight (numeric values)
+    highlightBestInRow('Seating Capacity', 'max');
+    highlightBestInRow('Max Output', 'max');
+});
+
+// Function to highlight the best value in a row
+function highlightBestInRow(labelText, type = 'max') {
+    // Find the row with this label
+    const rows = document.querySelectorAll('.compare-row');
+    let targetRow;
+    
+    rows.forEach(row => {
+        const label = row.querySelector('.feature-label');
+        if (label && label.textContent === labelText) {
+            targetRow = row;
+        }
+    });
+    
+    if (!targetRow) return;
+    
+    // Get all values in this row
+    const valueElements = targetRow.querySelectorAll('.feature-value');
+    let bestValue = type === 'max' ? -Infinity : Infinity;
+    let bestElements = [];
+    
+    // Find the best numeric value
+    valueElements.forEach(element => {
+        const text = element.textContent.trim();
+        let numericValue;
+        
+        // Extract numeric value from text
+        const match = text.match(/\d+(\.\d+)?/);
+        if (match) {
+            numericValue = parseFloat(match[0]);
+            
+            if (type === 'max' && numericValue > bestValue) {
+                bestValue = numericValue;
+                bestElements = [element];
+            } else if (type === 'min' && numericValue < bestValue) {
+                bestValue = numericValue;
+                bestElements = [element];
+            } else if ((type === 'max' && numericValue === bestValue) || 
+                      (type === 'min' && numericValue === bestValue)) {
+                bestElements.push(element);
+            }
+        }
+    });
+    
+    // Highlight the best elements
+    bestElements.forEach(element => {
+        element.classList.add('highlight');
+    });
+}
+</script>
+{% endblock %}

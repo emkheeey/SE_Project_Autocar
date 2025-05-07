@@ -1,0 +1,547 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Saved Favorites | AutoCar{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/favorite.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Override styles from base.html to prevent profile duplication */
+    header {
+        display: none !important;
+    }
+    
+    /* Ensure top margin is reset */
+    body {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        overflow-y: auto !important; /* Fix scrolling */
+    }
+    
+    /* Hide any content from base.html that might cause problems */
+    #home, footer {
+        display: none !important;
+    }
+    
+    /* Header styling */
+    .favorites-header {
+        width: 100%;
+        background: #FF8383;
+        background-image: url({% static 'images/Navigation2.jpg' %});
+        height: 80px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 50px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 8px 15px;
+        border-radius: 50%;
+        transition: background-color 0.3s;
+    }
+    
+    .back-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .compare-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .compare-btn:hover {
+        background-color: #c0392b;
+    }
+    
+    .compare-btn.hidden {
+        display: none;
+    }
+    
+    /* Empty state styling */
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        margin: 50px auto;
+        max-width: 400px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: #e74c3c;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .empty-state p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .empty-state button:hover {
+        background-color: #c0392b;
+    }
+    
+    .empty-state.hidden {
+        display: none;
+    }
+    
+    /* Favorites grid styling */
+    .favorites-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .favorites-grid.hidden {
+        display: none;
+    }
+    
+    .favorite-card {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+    }
+    
+    .favorite-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .favorite-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    
+    .favorite-card .details {
+        padding: 15px;
+    }
+    
+    .favorite-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+        color: #333;
+    }
+    
+    .favorite-card p {
+        margin: 5px 0;
+        color: #666;
+    }
+    
+    .favorite-card .price {
+        font-weight: bold;
+        color: #e74c3c;
+        font-size: 1.1rem;
+        margin-top: 10px;
+    }
+    
+    .favorite-card .actions {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-top: 1px solid #eee;
+    }
+    
+    .favorite-card button {
+        background: none;
+        border: none;
+        color: #e74c3c;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 5px;
+        transition: color 0.3s;
+    }
+    
+    .favorite-card button:hover {
+        color: #c0392b;
+    }
+    
+    /* Modal styling */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    
+    .modal-overlay.hidden {
+        display: none;
+    }
+    
+    .modal {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal h2 {
+        color: #333;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+    
+    .compare-checkboxes {
+        margin: 20px 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .compare-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .compare-item:last-child {
+        border-bottom: none;
+    }
+    
+    .compare-item input[type="checkbox"] {
+        margin-right: 10px;
+    }
+    
+    .compare-item img {
+        width: 60px;
+        height: 40px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+    }
+    
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .modal-buttons button {
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    
+    .modal-buttons button:first-child {
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+        color: #333;
+    }
+    
+    .modal-buttons button:last-child {
+        background-color: #e74c3c;
+        border: none;
+        color: white;
+    }
+    
+    .modal-buttons button:hover {
+        opacity: 0.9;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .favorites-header {
+            padding: 10px 20px;
+        }
+        
+        .favorites-grid {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            padding: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body_class %}favorites-page{% endblock %}
+
+{% block content %}
+<!-- Header with Back Button -->
+<header class="favorites-header">
+    <button class="back-btn" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <h1>Saved Favorites</h1>
+    
+    <!-- Compare Button (Visible when 2+ favorites exist) -->
+    <button class="compare-btn hidden" id="compareBtn" onclick="openCompareModal()">
+        <i class="fas fa-exchange-alt"></i> Compare
+    </button>
+</header>
+
+<!-- Main Content -->
+<main>
+    <!-- Empty State -->
+    <div class="empty-state hidden" id="emptyState">
+        <i class="far fa-heart"></i>
+        <h2>No Saved Cars Yet</h2>
+        <p>Save your favorite cars to compare them later</p>
+        <button onclick="window.location.href='{% url 'cars' %}'">Browse Cars</button>
+    </div>
+
+    <!-- Favorites Grid -->
+    <div class="favorites-grid" id="favoritesGrid">
+        <!-- Dynamically populated via JS -->
+    </div>
+
+    <!-- Compare Modal -->
+    <div class="modal-overlay hidden" id="compareModal">
+        <div class="modal">
+            <h2>Compare Cars</h2>
+            <p>Select 2 or 3 cars to compare:</p>
+            
+            <div class="compare-checkboxes" id="compareCheckboxes">
+                <!-- Dynamically populated -->
+            </div>
+            
+            <div class="modal-buttons">
+                <button onclick="closeCompareModal()">Cancel</button>
+                <button onclick="proceedToCompare()">Compare Now</button>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Favorites Management
+let favorites = [];
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Load favorites from localStorage
+    loadFavorites();
+    
+    // Render favorites
+    renderFavorites();
+    
+    // Update UI based on favorites count
+    updateUI();
+});
+
+// Load favorites from localStorage
+function loadFavorites() {
+    const savedFavorites = localStorage.getItem('autocarFavorites');
+    if (savedFavorites) {
+        try {
+            favorites = JSON.parse(savedFavorites);
+        } catch (e) {
+            console.error('Error parsing favorites from localStorage:', e);
+            favorites = [];
+        }
+    }
+}
+
+// Save favorites to localStorage
+function saveFavorites() {
+    localStorage.setItem('autocarFavorites', JSON.stringify(favorites));
+}
+
+// Render favorites in the grid
+function renderFavorites() {
+    const grid = document.getElementById('favoritesGrid');
+    if (!grid) return;
+    
+    // Clear existing content
+    grid.innerHTML = '';
+    
+    // Add each favorite to the grid
+    favorites.forEach(car => {
+        const card = document.createElement('div');
+        card.className = 'favorite-card';
+        card.setAttribute('data-id', car.id);
+        card.setAttribute('data-type', car.type);
+        
+        // Format price with commas
+        const formattedPrice = new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP',
+            minimumFractionDigits: 0
+        }).format(car.price);
+        
+        // Determine what specs to show based on type
+        let specsHtml = '';
+        if (car.transmission) {
+            specsHtml += `<p><i class="fas fa-cog"></i> ${car.transmission}</p>`;
+        }
+        if (car.fuel_type) {
+            specsHtml += `<p><i class="fas fa-gas-pump"></i> ${car.fuel_type}</p>`;
+        }
+        if (car.body_type) {
+            specsHtml += `<p><i class="fas fa-car"></i> ${car.body_type}</p>`;
+        }
+        
+        card.innerHTML = `
+            <img src="${car.image_url || '/static/images/cars/default.jpg'}?t=${new Date().getTime()}" 
+                 alt="${car.model}" 
+                 onerror="this.onerror=null; this.src='/static/images/cars/default.jpg';">
+            <div class="details">
+                <h3>${car.model}</h3>
+                ${specsHtml}
+                <p class="price">${formattedPrice}</p>
+            </div>
+            <div class="actions">
+                <button onclick="viewDetails(${car.id}, '${car.type}')">
+                    <i class="fas fa-eye"></i> View
+                </button>
+                <button onclick="removeFavorite(${car.id}, '${car.type}')">
+                    <i class="fas fa-heart"></i> Remove
+                </button>
+            </div>
+        `;
+        
+        grid.appendChild(card);
+    });
+}
+
+// Update UI based on favorites count
+function updateUI() {
+    const emptyState = document.getElementById('emptyState');
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    const compareBtn = document.getElementById('compareBtn');
+    
+    if (favorites.length === 0) {
+        emptyState.classList.remove('hidden');
+        favoritesGrid.classList.add('hidden');
+        compareBtn.classList.add('hidden');
+    } else {
+        emptyState.classList.add('hidden');
+        favoritesGrid.classList.remove('hidden');
+        
+        // Show compare button only if 2+ favorites
+        if (favorites.length >= 2) {
+            compareBtn.classList.remove('hidden');
+        } else {
+            compareBtn.classList.add('hidden');
+        }
+    }
+}
+
+// Remove a favorite
+function removeFavorite(id, type) {
+    favorites = favorites.filter(car => !(car.id === id && car.type === type));
+    saveFavorites();
+    renderFavorites();
+    updateUI();
+}
+
+// View car details
+function viewDetails(id, type) {
+    // Redirect to the car details page
+    window.location.href = `/accounts/cars/${id}/`;
+}
+
+// Open compare modal
+function openCompareModal() {
+    const modal = document.getElementById('compareModal');
+    const checkboxesContainer = document.getElementById('compareCheckboxes');
+    
+    // Clear existing checkboxes
+    checkboxesContainer.innerHTML = '';
+    
+    // Add checkbox for each favorite
+    favorites.forEach(car => {
+        const item = document.createElement('div');
+        item.className = 'compare-item';
+        
+        item.innerHTML = `
+            <input type="checkbox" id="compare-${car.id}-${car.type}" 
+                   data-id="${car.id}" data-type="${car.type}">
+            <img src="${car.image_url || '/static/images/cars/default.jpg'}" 
+                 alt="${car.model}"
+                 onerror="this.onerror=null; this.src='/static/images/cars/default.jpg';">
+            <label for="compare-${car.id}-${car.type}">${car.model}</label>
+        `;
+        
+        checkboxesContainer.appendChild(item);
+    });
+    
+    // Show modal
+    modal.classList.remove('hidden');
+}
+
+// Close compare modal
+function closeCompareModal() {
+    const modal = document.getElementById('compareModal');
+    modal.classList.add('hidden');
+}
+
+// Proceed to compare selected cars
+function proceedToCompare() {
+    const selectedCheckboxes = document.querySelectorAll('#compareCheckboxes input[type="checkbox"]:checked');
+    
+    if (selectedCheckboxes.length < 2) {
+        alert('Please select at least 2 cars to compare.');
+        return;
+    }
+    
+    if (selectedCheckboxes.length > 3) {
+        alert('You can compare a maximum of 3 cars at once.');
+        return;
+    }
+    
+    // Collect IDs of selected cars
+    const selectedIds = [];
+    selectedCheckboxes.forEach(checkbox => {
+        selectedIds.push({
+            id: checkbox.getAttribute('data-id'),
+            type: checkbox.getAttribute('data-type')
+        });
+    });
+    
+    // Create query string for compare page
+    let queryString = selectedIds.map(item => `id=${item.id}&type=${item.type}`).join('&');
+    
+    // Redirect to compare page
+    window.location.href = `/accounts/compare?${queryString}`;
+}
+</script>
+{% endblock %}

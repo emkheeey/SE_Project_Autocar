@@ -5,6 +5,8 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/browse.css' %}">
+<link rel="stylesheet" href="{% static 'css/favorite.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     /* Override styles from base.html to prevent profile duplication */
     header {
@@ -821,7 +823,7 @@
             <div class="user-email">{{ user.email }}</div>
         </div>
         <div class="menu-item" onclick="window.location.href='{% url 'profile' %}'">Account</div>
-        <div class="menu-item" onclick="window.location.href='{% url 'cars' %}'">Saved Favorite</div>
+        <div class="menu-item" onclick="window.location.href='{% url 'favorites' %}'">Saved Favorites</div>
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="menu-item">Log Out</button>
@@ -885,6 +887,9 @@
                  alt="{{ car.model }}"
                  class="car-image"
                  onError="this.onerror=null; this.src='{% static 'images/cars/default.jpg' %}'; this.classList.add('fallback-image');">
+            <button class="favorite-btn" onclick="toggleFavorite(event, {{ car.id }}, 'car', '{{ car.model }}', '{{ car.image_url|default:'' }}', {{ car.price }}, '{{ car.body_type }}', '{{ car.transmission }}', '{{ car.fuel_type }}')">
+                <i class="far fa-heart" id="favorite-icon-{{ car.id }}-car"></i>
+            </button>
             <p>{{ car.model }}</p>
             <button class="update-image-btn">Add/Update Image</button>
         </div>
@@ -1043,6 +1048,117 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Stopped automatic modal checking");
     }, 5000);
 })();
+
+// Favorites Management 
+let favorites = [];
+
+// Toast for notifications
+function showToast(message, type = 'success') {
+    // Create toast if it doesn't exist
+    let toast = document.getElementById('toast-notification');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast-notification';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+    }
+    
+    // Set message and type
+    toast.textContent = message;
+    toast.className = 'toast ' + type + ' show';
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        toast.className = toast.className.replace('show', '');
+    }, 3000);
+}
+
+// Load favorites from localStorage
+function loadFavorites() {
+    const savedFavorites = localStorage.getItem('autocarFavorites');
+    if (savedFavorites) {
+        try {
+            favorites = JSON.parse(savedFavorites);
+        } catch (e) {
+            console.error('Error parsing favorites:', e);
+            favorites = [];
+        }
+    }
+}
+
+// Save favorites to localStorage
+function saveFavorites() {
+    localStorage.setItem('autocarFavorites', JSON.stringify(favorites));
+}
+
+// Check if an item is already a favorite
+function isFavorite(id, type) {
+    return favorites.some(item => item.id === id && item.type === type);
+}
+
+// Update favorite icon based on status
+function updateFavoriteIcon(id, type) {
+    const iconId = `favorite-icon-${id}-${type}`;
+    const icon = document.getElementById(iconId);
+    if (icon) {
+        if (isFavorite(id, type)) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+        }
+    }
+}
+
+// Toggle favorite status
+function toggleFavorite(event, id, type, model, imageUrl, price, bodyType, transmission, fuelType) {
+    // Prevent the card click event
+    event.stopPropagation();
+    
+    // Load current favorites
+    loadFavorites();
+    
+    if (isFavorite(id, type)) {
+        // Remove from favorites
+        favorites = favorites.filter(item => !(item.id === id && item.type === type));
+        showToast(`Removed ${model} from favorites`, 'error');
+    } else {
+        // Add to favorites
+        favorites.push({
+            id,
+            type,
+            model,
+            image_url: imageUrl,
+            price,
+            body_type: bodyType,
+            transmission,
+            fuel_type: fuelType,
+            added_date: new Date().toISOString()
+        });
+        showToast(`Added ${model} to favorites`);
+    }
+    
+    // Save changes
+    saveFavorites();
+    
+    // Update icon
+    updateFavoriteIcon(id, type);
+}
+
+// Initialize favorites on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Load favorites
+    loadFavorites();
+    
+    // Update all favorite icons
+    document.querySelectorAll('[id^="favorite-icon-"]').forEach(icon => {
+        const parts = icon.id.split('-');
+        const id = parseInt(parts[2]);
+        const type = parts[3];
+        updateFavoriteIcon(id, type);
+    });
+});
 
 // Filter functions
 function showAllCars() {
@@ -1460,6 +1576,9 @@ function showVariantsInModal(carId, carModel) {
                                      style="width: 100%; height: 150px; object-fit: cover; position: relative; z-index: 10;">
                                 <button type="button" class="variant-update-image-btn" data-variant-id="${variant.id}" data-variant-model="${variant.model}">
                                     Update Image
+                                </button>
+                                <button type="button" class="favorite-btn" onclick="toggleFavorite(event, ${variant.id}, 'variant', '${variant.model}', '${imageUrl}', ${variant.price}, null, '${variant.transmission || ''}', '${variant.fuel_type || ''}')">
+                                    <i class="far fa-heart" id="favorite-icon-${variant.id}-variant"></i>
                                 </button>
                             </div>
                             <h3>${variant.model}</h3>
