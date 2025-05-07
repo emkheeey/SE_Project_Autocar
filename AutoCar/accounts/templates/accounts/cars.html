@@ -11,6 +11,16 @@
         display: none !important;
     }
     
+    /* CRITICAL FIX FOR MODAL ISSUE */
+    body > .modal:not(#imageModal):not(#variantsModal) {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        z-index: -9999 !important;
+    }
+    
     /* Ensure top margin is reset */
     body {
         margin-top: 0 !important;
@@ -621,7 +631,8 @@
         cursor: pointer;
         transition: background-color 0.3s;
         opacity: 0;
-        z-index: 10;
+        z-index: 20; /* Increase z-index to ensure it's above the image */
+        pointer-events: auto; /* Explicitly enable pointer events */
     }
     
     .variant-image-container:hover .variant-update-image-btn {
@@ -911,17 +922,128 @@
 </div>
 
 <!-- Car Variants Modal -->
-<div class="variants-modal" id="variantsModal">
+<div class="variants-modal" id="variantsModal" style="display: none !important;">
     <div class="modal-content">
         <span class="close-modal" id="closeVariantsModal">&times;</span>
         <h2 id="modalTitle"></h2>
         <div class="variants-container" id="variantsContainer"></div>
     </div>
 </div>
+
+<!-- Script to ensure modal stays hidden until explicitly shown -->
+<script>
+// Ensure variantsModal is hidden on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const variantsModal = document.getElementById('variantsModal');
+    if (variantsModal) {
+        // Force it to be hidden initially
+        variantsModal.style.display = 'none';
+        
+        // Watch for any attempt to show it automatically and prevent it
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'style' && 
+                    variantsModal.style.display !== 'none' && 
+                    !window.isManuallyShown) {
+                    console.log('Preventing automatic modal display');
+                    variantsModal.style.display = 'none';
+                }
+            });
+        });
+        
+        // Start observing the modal for attribute changes
+        observer.observe(variantsModal, { attributes: true });
+        
+        // Override the function that shows variants in modal to mark it as manually shown
+        const originalShowVariantsInModal = window.showVariantsInModal;
+        window.showVariantsInModal = function(carId, carModel) {
+            console.log('Manual show variants triggered');
+            window.isManuallyShown = true;
+            if (originalShowVariantsInModal) {
+                originalShowVariantsInModal(carId, carModel);
+            } else {
+                console.log('Original function not found');
+            }
+            // Reset after a short delay
+            setTimeout(() => window.isManuallyShown = false, 1000);
+        };
+    }
+});
+</script>
 {% endblock %}
 
 {% block extra_js %}
 <script>
+// EMERGENCY FIX: First code to run - find and remove any unwanted modals
+(function() {
+    // Execute immediately
+    console.log("Running emergency modal removal");
+    
+    // Find any modals that might be added to the page
+    function removeUnwantedModals() {
+        console.log("Checking for unwanted modals...");
+        
+        // Target specifically modals that are direct children of body and not explicitly known modals
+        document.querySelectorAll('body > .modal:not(#imageModal):not(#variantsModal)').forEach(function(modal) {
+            console.log("Found unwanted modal:", modal);
+            modal.style.display = 'none';
+            
+            // Force remove after a short delay
+            setTimeout(function() {
+                if (modal && modal.parentNode) {
+                    console.log("Removing unwanted modal");
+                    modal.parentNode.removeChild(modal);
+                }
+            }, 10);
+        });
+        
+        // SPECIFIC TARGET - Find any modal that has a variants-container but isn't our variantsModal
+        document.querySelectorAll('.modal .variants-container').forEach(function(container) {
+            const parentModal = container.closest('.modal');
+            if (parentModal && parentModal.id !== 'variantsModal') {
+                console.log("Found unwanted variant container in modal:", parentModal);
+                parentModal.style.display = 'none';
+                
+                setTimeout(function() {
+                    if (parentModal && parentModal.parentNode) {
+                        console.log("Removing unwanted variant modal");
+                        parentModal.parentNode.removeChild(parentModal);
+                    }
+                }, 10);
+            }
+        });
+        
+        // Target any modal with an X button but not our known modals
+        document.querySelectorAll('.modal .close-modal, .modal .modal-close').forEach(function(closeBtn) {
+            const parentModal = closeBtn.closest('.modal');
+            if (parentModal && parentModal.id !== 'imageModal' && parentModal.id !== 'variantsModal') {
+                console.log("Found unwanted modal with close button:", parentModal);
+                parentModal.style.display = 'none';
+                
+                setTimeout(function() {
+                    if (parentModal && parentModal.parentNode) {
+                        console.log("Removing unwanted modal with close button");
+                        parentModal.parentNode.removeChild(parentModal);
+                    }
+                }, 10);
+            }
+        });
+    }
+    
+    // Run immediately
+    removeUnwantedModals();
+    
+    // Run when DOM loads
+    document.addEventListener('DOMContentLoaded', removeUnwantedModals);
+    
+    // Run periodically for a short time after page load
+    const intervalId = setInterval(removeUnwantedModals, 500);
+    setTimeout(function() {
+        clearInterval(intervalId);
+        console.log("Stopped automatic modal checking");
+    }, 5000);
+})();
+
 // Filter functions
 function showAllCars() {
     document.querySelectorAll('.car-card').forEach(card => {
@@ -1153,7 +1275,14 @@ function getCacheBustedUrl(imageUrl) {
 // Function to handle variant button events
 function setupVariantEventListeners() {
     console.log("Setting up variant event listeners");
-    // Add event listeners to the variant image update buttons after they are added to the DOM
+    
+    // First, remove any existing event listeners to prevent duplicates
+    document.querySelectorAll('.variant-update-image-btn').forEach(btn => {
+        const clone = btn.cloneNode(true);
+        btn.parentNode.replaceChild(clone, btn);
+    });
+    
+    // Now add event listeners to all variant update buttons
     document.querySelectorAll('.variant-update-image-btn').forEach(btn => {
         // Get the variant ID and model from the button attributes
         let variantId = btn.getAttribute('data-variant-id');
@@ -1164,7 +1293,7 @@ function setupVariantEventListeners() {
         btn.addEventListener('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
-            
+    
             // Get the ID again at click time (it might have been updated)
             let clickedVariantId = this.getAttribute('data-variant-id');
             const clickedVariantModel = this.getAttribute('data-variant-model');
@@ -1186,6 +1315,19 @@ function setupVariantEventListeners() {
 
 // Function to display variants in the modal - modify the variant HTML generation
 function showVariantsInModal(carId, carModel) {
+    // NEW: Skip showing modal if no parameters (likely auto-triggered)
+    if (!carId || !carModel) {
+        console.log('Attempted to show variants modal without proper parameters');
+        return;
+    }
+    
+    // NEW: Distinguish between automatic calls and manual clicks
+    const isUserAction = window.lastUserActionTime && (Date.now() - window.lastUserActionTime < 1000);
+    if (!isUserAction && !window.isManuallyShown) {
+        console.log('Preventing auto-display of variants modal');
+        return;
+    }
+    
     console.log(`OPENING VARIANTS MODAL for Car ID: ${carId}, Model: ${carModel}`);
     document.getElementById('variantsModal').style.display = 'block';
     document.getElementById('modalTitle').textContent = `${carModel} Variants`;
@@ -1313,9 +1455,9 @@ function showVariantsInModal(carId, carModel) {
                         <div class="variant-item" data-variant-id="${variant.id}">
                             <div class="variant-image-container">
                                 <img src="${imageUrl}" 
-                                     alt="${variant.model}"
+                                 alt="${variant.model}"
                                      onerror="this.onerror=null;this.src='${getCacheBustedUrl('/static/images/cars/default.jpg')}';"
-                                     style="width: 100%; height: 150px; object-fit: cover;">
+                                     style="width: 100%; height: 150px; object-fit: cover; position: relative; z-index: 10;">
                                 <button type="button" class="variant-update-image-btn" data-variant-id="${variant.id}" data-variant-model="${variant.model}">
                                     Update Image
                                 </button>
@@ -1335,9 +1477,10 @@ function showVariantsInModal(carId, carModel) {
                 variantsHTML += '</div>';
                 variantsContainer.innerHTML = variantsHTML;
                 
-                // Set up event listeners for the variant buttons
+                // Set up event listeners for the variant buttons - Must be called AFTER the HTML is inserted
                 setupVariantEventListeners();
-
+                
+                // Move the image refresh AFTER setting up event listeners
                 // Force refresh all images in the variant modal
                 document.querySelectorAll('#variantsContainer img').forEach(img => {
                     const originalSrc = img.src;
@@ -1496,6 +1639,12 @@ function openVariantImageModal(variantId, variantModel) {
 
 // Set up event listeners
 document.addEventListener("DOMContentLoaded", function() {
+    // Track user clicks for modal control
+    window.lastUserActionTime = 0;
+    document.addEventListener('click', function() {
+        window.lastUserActionTime = Date.now();
+    });
+    
     // Store car data for JavaScript access
     window.carsData = [
         {% for car in cars %}
@@ -1575,6 +1724,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Set up card interactions
     document.querySelectorAll('.car-card').forEach(card => {
+        // Store original event handlers to prevent duplication
+        const cardListeners = {};
+        
         card.addEventListener('click', function(event) {
             // Only trigger modal if not clicking the update image button
             if (!event.target.classList.contains('update-image-btn')) {
@@ -1587,11 +1739,18 @@ document.addEventListener("DOMContentLoaded", function() {
         // Make sure the image update button has its own handler
         const updateImageBtn = card.querySelector('.update-image-btn');
         if (updateImageBtn) {
-            updateImageBtn.addEventListener('click', function(event) {
+            // Remove any existing listeners to prevent duplication
+            const newBtn = updateImageBtn.cloneNode(true);
+            if (updateImageBtn.parentNode) {
+                updateImageBtn.parentNode.replaceChild(newBtn, updateImageBtn);
+            }
+            
+            newBtn.addEventListener('click', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 const carId = card.getAttribute('data-car-id');
                 const carModel = card.getAttribute('data-model');
+                console.log(`Update Image button clicked for ${carModel} (ID: ${carId})`);
                 openImageModal(carId, carModel);
             });
         }
