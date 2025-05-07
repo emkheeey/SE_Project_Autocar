@@ -1,0 +1,157 @@
+/* Favorites Page Styling */
+
+/* Container styling */
+.favorites-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Heart icon styling */
+.heart-icon {
+    cursor: pointer;
+    transition: color 0.3s;
+    font-size: 1.2rem;
+}
+
+.heart-icon.far {
+    color: #999;
+}
+
+.heart-icon.fas {
+    color: #e74c3c;
+}
+
+.heart-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Compare styling */
+.compare-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.compare-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.compare-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.compare-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.compare-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.compare-card .price {
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.compare-card .specs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.compare-card .specs div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.compare-card .specs .label {
+    font-weight: bold;
+    color: #555;
+}
+
+.compare-card .specs .value {
+    color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .compare-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Favorite button styling for car cards */
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.favorite-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+}
+
+.favorite-btn i {
+    font-size: 1.1rem;
+    color: #e74c3c;
+}
+
+.favorite-btn i.far {
+    color: #666;
+}
+
+/* Toast notification */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    z-index: 9999;
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background-color: rgba(46, 204, 113, 0.9);
+}
+
+.toast.error {
+    background-color: rgba(231, 76, 60, 0.9);
+} 

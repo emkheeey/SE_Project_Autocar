@@ -80,11 +80,15 @@ try:
         static_root = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
         logger.info(f"Using Vercel static root: {static_root}")
     else:
+        # Use both staticfiles and static for development
         static_root = os.path.join(BASE_DIR, 'staticfiles')
         logger.info(f"Using development static root: {static_root}")
     
     application = WhiteNoise(django_application)
     application.add_files(static_root, prefix='static/')
+    
+    # Also serve files directly from the static directory to ensure all files are found
+    application.add_files(os.path.join(BASE_DIR, 'static'), prefix='static/')
     
     logger.info("WSGI application initialized successfully with WhiteNoise")
 except Exception as e:

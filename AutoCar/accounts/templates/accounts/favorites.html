@@ -4,7 +4,7 @@
 {% block title %}Saved Favorites | AutoCar{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/favorite.css' %}">
+<link rel="stylesheet" href="{% static 'css/favorite.css' %}?v={% now 'U' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     /* Override styles from base.html to prevent profile duplication */

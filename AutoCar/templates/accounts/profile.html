@@ -3,116 +3,395 @@
 
 {% block title %}My Profile | AutoCar{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}?v={% now 'U' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Ensure scrolling works properly */
+    html, body {
+        height: 100%;
+        overflow-y: auto !important;
+    }
+    
+    /* Tab System Styling */
+    .profile-tabs {
+        display: flex;
+        overflow-x: auto;
+        margin-bottom: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .tab-btn {
+        padding: 15px;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        white-space: nowrap;
+        font-weight: 600;
+        color: #555;
+        flex: 1;
+        min-width: 100px;
+        transition: all 0.3s;
+    }
+    
+    .tab-btn.active {
+        color: #d32f2f;
+        border-bottom: 3px solid #d32f2f;
+    }
+    
+    .tab-btn:hover:not(.active) {
+        background-color: #f9f9f9;
+        color: #333;
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    /* Profile Card improvements */
+    .profile-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+    
+    .profile-header {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .profile-header .profile-pic {
+        margin: 0;
+        margin-right: 20px;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .profile-info h2 {
+        margin: 0;
+        margin-bottom: 5px;
+    }
+    
+    .profile-info p {
+        margin: 0;
+        color: #666;
+    }
+    
+    /* Make sure the main container is properly sized */
+    .main-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    /* Additional mobile improvements */
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .profile-header .profile-pic {
+            margin-right: 0;
+            margin-bottom: 15px;
+        }
+        
+        .tab-btn {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="profile-section">
-                <h2 class="mb-4">Manage Your Profile</h2>
-                
-                <form method="post" novalidate>
-                    {% csrf_token %}
-                    
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h4 class="mb-0">Account Information</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="{{ u_form.username.id_for_label }}" class="form-label">Username</label>
-                                <input type="text" name="{{ u_form.username.name }}" id="{{ u_form.username.id_for_label }}" 
-                                       class="form-control {% if u_form.username.errors %}is-invalid{% endif %}" 
-                                       value="{{ u_form.username.value }}">
-                                {% if u_form.username.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in u_form.username.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ u_form.email.id_for_label }}" class="form-label">Email</label>
-                                <input type="email" name="{{ u_form.email.name }}" id="{{ u_form.email.id_for_label }}" 
-                                       class="form-control {% if u_form.email.errors %}is-invalid{% endif %}" 
-                                       value="{{ u_form.email.value }}">
-                                {% if u_form.email.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in u_form.email.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-header bg-secondary text-white">
-                            <h4 class="mb-0">Profile Details</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="{{ p_form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
-                                <input type="text" name="{{ p_form.phone_number.name }}" id="{{ p_form.phone_number.id_for_label }}" 
-                                       class="form-control {% if p_form.phone_number.errors %}is-invalid{% endif %}" 
-                                       value="{{ p_form.phone_number.value|default:'' }}">
-                                {% if p_form.phone_number.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in p_form.phone_number.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ p_form.address.id_for_label }}" class="form-label">Address</label>
-                                <input type="text" name="{{ p_form.address.name }}" id="{{ p_form.address.id_for_label }}" 
-                                       class="form-control {% if p_form.address.errors %}is-invalid{% endif %}" 
-                                       value="{{ p_form.address.value|default:'' }}">
-                                {% if p_form.address.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in p_form.address.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-lg">Save Changes</button>
-                    </div>
-                </form>
+<!-- Custom Header -->
+<header>
+    <button class="back-btn" onclick="window.location.href='{% url 'base' %}'">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <h1>My Profile</h1>
+    <div style="width: 30px;"></div> <!-- Empty div for balance -->
+</header>
+
+<div class="main-container">
+    <!-- Profile Header Card -->
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-pic">
+                <img src="{% static 'images/profileicon.png' %}" alt="Profile Picture">
+                <button class="edit-pic-btn" title="Change profile picture">
+                    <i class="fas fa-camera"></i>
+                </button>
             </div>
-            
-            <!-- Supabase Profile Information -->
-            {% if supabase_data %}
-            <div class="card mt-4 mb-4">
-                <div class="card-header bg-info text-white">
-                    <h4 class="mb-0">Additional Profile Information</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>User ID:</strong> {{ supabase_data.user_id }}</p>
-                            <p><strong>Username:</strong> {{ supabase_data.username }}</p>
-                            <p><strong>Email:</strong> {{ supabase_data.email }}</p>
+            <div class="profile-info">
+                <h2>{{ user.username }}</h2>
+                <p>{{ user.email }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tab Navigation -->
+    <div class="profile-tabs">
+        <button class="tab-btn active" data-tab="personal-info">
+            <i class="fas fa-user me-2"></i> Personal Info
+        </button>
+        <button class="tab-btn" data-tab="favorites">
+            <i class="fas fa-heart me-2"></i> Favorites
+        </button>
+        <button class="tab-btn" data-tab="account">
+            <i class="fas fa-cog me-2"></i> Account
+        </button>
+    </div>
+    
+    <!-- Tab Content -->
+    <div class="tab-content active" id="personal-info-tab">
+        <div class="profile-section">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-user-circle me-2"></i> Account Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ u_form.username.id_for_label }}" class="form-label">
+                                <i class="fas fa-user me-2"></i> Username
+                            </label>
+                            <input type="text" name="{{ u_form.username.name }}" id="{{ u_form.username.id_for_label }}" 
+                                   class="form-control {% if u_form.username.errors %}is-invalid{% endif %}" 
+                                   value="{{ u_form.username.value }}">
+                            {% if u_form.username.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in u_form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
-                        <div class="col-md-6">
-                            <p><strong>Created:</strong> {{ supabase_data.created_at|date:"F j, Y" }}</p>
-                            {% if supabase_data.updated_at %}
-                            <p><strong>Last Updated:</strong> {{ supabase_data.updated_at|date:"F j, Y" }}</p>
+                        
+                        <div class="mb-3">
+                            <label for="{{ u_form.email.id_for_label }}" class="form-label">
+                                <i class="fas fa-envelope me-2"></i> Email
+                            </label>
+                            <input type="email" name="{{ u_form.email.name }}" id="{{ u_form.email.id_for_label }}" 
+                                   class="form-control {% if u_form.email.errors %}is-invalid{% endif %}" 
+                                   value="{{ u_form.email.value }}">
+                            {% if u_form.email.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in u_form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endif %}
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="mb-0"><i class="fas fa-address-card me-2"></i> Profile Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ p_form.phone_number.id_for_label }}" class="form-label">
+                                <i class="fas fa-phone me-2"></i> Phone Number
+                            </label>
+                            <input type="text" name="{{ p_form.phone_number.name }}" id="{{ p_form.phone_number.id_for_label }}" 
+                                   class="form-control {% if p_form.phone_number.errors %}is-invalid{% endif %}" 
+                                   value="{{ p_form.phone_number.value|default:'' }}"
+                                   placeholder="Your contact number">
+                            {% if p_form.phone_number.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in p_form.phone_number.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ p_form.address.id_for_label }}" class="form-label">
+                                <i class="fas fa-map-marker-alt me-2"></i> Address
+                            </label>
+                            <input type="text" name="{{ p_form.address.name }}" id="{{ p_form.address.id_for_label }}" 
+                                   class="form-control {% if p_form.address.errors %}is-invalid{% endif %}" 
+                                   value="{{ p_form.address.value|default:'' }}"
+                                   placeholder="Your home address">
+                            {% if p_form.address.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in p_form.address.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fas fa-save me-2"></i> Save Changes
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+    
+    <div class="tab-content" id="favorites-tab">
+        <!-- Saved Favorites Section -->
+        <div class="saved-favorites">
+            <h2><i class="fas fa-heart me-2"></i> Saved Favorites</h2>
+            <p>Cars you've saved will appear here</p>
+            <a href="{% url 'favorites' %}" class="btn btn-success">
+                <i class="fas fa-star me-2"></i> View All Favorites
+            </a>
+            
+            <!-- Favorites grid will be loaded here -->
+            <div class="favorites-preview" id="favoritesPreview">
+                <!-- This will be populated via JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="account-tab">
+        <!-- Supabase Profile Information -->
+        {% if supabase_data %}
+        <div class="card mt-4 mb-4">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i> Account Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><i class="fas fa-fingerprint me-2"></i> <strong>User ID:</strong> {{ supabase_data.user_id }}</p>
+                        <p><i class="fas fa-user me-2"></i> <strong>Username:</strong> {{ supabase_data.username }}</p>
+                        <p><i class="fas fa-envelope me-2"></i> <strong>Email:</strong> {{ supabase_data.email }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="fas fa-calendar-plus me-2"></i> <strong>Created:</strong> {{ supabase_data.created_at|date:"F j, Y" }}</p>
+                        {% if supabase_data.updated_at %}
+                        <p><i class="fas fa-calendar-check me-2"></i> <strong>Last Updated:</strong> {{ supabase_data.updated_at|date:"F j, Y" }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Logout Button -->
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt me-2"></i> Log Out
+            </button>
+        </form>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide default header from base.html
+        const pageHeader = document.querySelector('body > header');
+        if (pageHeader) {
+            pageHeader.style.display = 'none';
+        }
+        
+        // Apply spacing to all icon elements
+        document.querySelectorAll('.me-2').forEach(function(element) {
+            element.style.marginRight = '0.5rem';
+        });
+        
+        // Tab system
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId + '-tab').classList.add('active');
+            });
+        });
+        
+        // Load favorites preview
+        loadFavoritesPreview();
+    });
+    
+    // Function to load favorites preview
+    function loadFavoritesPreview() {
+        const previewElement = document.getElementById('favoritesPreview');
+        if (!previewElement) return;
+        
+        // Get favorites from localStorage
+        const savedFavorites = localStorage.getItem('autocarFavorites');
+        if (savedFavorites) {
+            try {
+                const favorites = JSON.parse(savedFavorites);
+                
+                if (favorites.length === 0) {
+                    previewElement.innerHTML = '<p class="text-muted">No favorites saved yet.</p>';
+                    return;
+                }
+                
+                // Create a grid to display favorites
+                const grid = document.createElement('div');
+                grid.className = 'favorites-grid';
+                
+                // Add max 4 favorites
+                const previewFavorites = favorites.slice(0, 4);
+                
+                previewFavorites.forEach(car => {
+                    const card = document.createElement('div');
+                    card.className = 'favorite-card';
+                    
+                    card.innerHTML = `
+                        <img src="${car.image_url || '/static/images/cars/default.jpg'}" 
+                             alt="${car.model}" 
+                             onerror="this.onerror=null; this.src='/static/images/cars/default.jpg';">
+                        <p>${car.model}</p>
+                    `;
+                    
+                    grid.appendChild(card);
+                });
+                
+                previewElement.appendChild(grid);
+                
+                // Show count if there are more
+                if (favorites.length > 4) {
+                    const moreText = document.createElement('p');
+                    moreText.className = 'text-center mt-3';
+                    moreText.innerHTML = `<a href="{% url 'favorites' %}">+${favorites.length - 4} more favorites</a>`;
+                    previewElement.appendChild(moreText);
+                }
+                
+            } catch (e) {
+                console.error('Error parsing favorites:', e);
+                previewElement.innerHTML = '<p class="text-muted">Error loading favorites.</p>';
+            }
+        } else {
+            previewElement.innerHTML = '<p class="text-muted">No favorites saved yet.</p>';
+        }
+    }
+</script>
 {% endblock %}
