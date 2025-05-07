@@ -125,8 +125,25 @@ def home(request):
     error_message = None
     
     try:
-        featured_cars = fetch_data('cars', lambda q: q.eq('featured', True).limit(3))
-        cars = featured_cars.data if featured_cars and featured_cars.data else []
+        featured_cars = fetch_data('cars', lambda q: q.eq('featured', True).limit(6))
+        if featured_cars and featured_cars.data:
+            # Filter out variant cars - keep only parent models
+            main_models = []
+            for car in featured_cars.data:
+                # Only include car if it doesn't have a parent_model_id
+                # or doesn't have variant naming patterns
+                if car.get('parent_model_id') is None and not any(
+                    variant_word in car.get('model', '').lower() for variant_word in 
+                    ['mt', 'at', 'cvt', 'dsl', 'diesel', 'cargo', 'j ', 'e ', 'g ', 'gr-s', 'xe', 'xle']):
+                    main_models.append(car)
+            
+            # Only use filtered list if we have results, otherwise use original
+            if main_models:
+                cars = main_models
+            else:
+                cars = featured_cars.data
+        else:
+            cars = []
     except Exception as e:
         # Handle error more gracefully
         error_message = str(e)
@@ -238,12 +255,75 @@ def cars(request):
     """
     View to browse all cars with filtering capabilities
     """
-    # Fetch all cars from your database
-    # Make sure to include body_type and transmission fields
-    cars_data = fetch_cars_data()
+    try:
+        # Fetch all cars first to have complete data available
+        all_cars_result = fetch_data('cars')
+        all_cars = all_cars_result.data if all_cars_result and all_cars_result.data else []
+        
+        logger.info(f"Total cars fetched from database: {len(all_cars)}")
+        
+        if not all_cars:
+            logger.warning("No cars found in database")
+            return render(request, 'accounts/cars.html', {'cars': []})
+        
+        # Multi-level filtering to ensure we only get parent models
+        main_models = []
+        
+        # Step 1: First prioritize cars with featured=True (these should be main models)
+        featured_cars = [car for car in all_cars if car.get('featured') == True]
+        
+        # Step 2: Also include cars with parent_model_id = null (these are also main models)
+        null_parent_cars = [car for car in all_cars if car.get('parent_model_id') is None]
+        
+        # Combine both lists and remove duplicates by creating a dictionary keyed by car id
+        combined_cars = {car['id']: car for car in featured_cars + null_parent_cars}
+        
+        # Step 3: Final filtering - remove any cars with variant-like names
+        # More extensive list of variant indicators
+        variant_indicators = [
+            'mt', 'at', 'cvt', 'dsl', 'diesel', 'cargo', 'j mt', 'e mt', 'g mt', 
+            'j at', 'e at', 'g at', 'gr-s', 'xe cvt', 'xle cvt', 'j cvt', 'e cvt',
+            'zx at', 'gr sport', 'conquest', 'aluminum van'
+        ]
+        
+        for car_id, car in combined_cars.items():
+            model_name = car.get('model', '').lower()
+            
+            # Check if the model name contains any variant indicators
+            if not any(indicator in model_name for indicator in variant_indicators):
+                main_models.append(car)
+                
+        # If our filtering was too aggressive and removed all cars, use a fallback approach
+        if not main_models and all_cars:
+            logger.warning("Filtering removed all cars - using base models")
+            # Extract just the base model name without variants, like "Camry", "Hilux", etc.
+            # Group cars by their base model name and select one representative for each
+            base_models = {}
+            for car in all_cars:
+                model_parts = car.get('model', '').split(' ')
+                base_name = model_parts[0] if model_parts else ''
+                
+                # Only replace existing entry if current car is featured
+                if base_name and (base_name not in base_models or car.get('featured')):
+                    base_models[base_name] = car
+            
+            main_models = list(base_models.values())
+                
+        # Sort by model name
+        main_models.sort(key=lambda x: x.get('model', ''))
+        
+        logger.info(f"Filtered main models count: {len(main_models)}")
+        # Print first few car models to debug
+        if main_models:
+            for i, car in enumerate(main_models[:5]):
+                logger.info(f"Car {i+1}: id={car.get('id')}, model={car.get('model')}")
+        
+    except Exception as e:
+        logger.error(f"Error fetching cars: {e}")
+        main_models = []
     
     context = {
-        'cars': cars_data,
+        'cars': main_models,
     }
     
     return render(request, 'accounts/cars.html', context)
@@ -480,3 +560,246 @@ def debug_static(request):
         'request': request
     }
     return render(request, 'debug_static.html', context)
+
+def car_detail(request, car_id):
+    """
+    View to display a car and its variants
+    """
+    try:
+        # Fetch car details
+        car_result = fetch_data('cars', lambda q: q.eq('id', car_id))
+        if not car_result or not car_result.data:
+            messages.error(request, "Car not found")
+            return redirect('cars')
+            
+        car = car_result.data[0]
+        
+        # Fetch variants from the new car_variants table
+        variants_result = fetch_data('car_variants', lambda q: q.eq('parent_model_id', car_id).order('price'))
+        variants = variants_result.data if variants_result and variants_result.data else []
+        
+        # If no variants in new table, try the old approach as fallback
+        if not variants:
+            old_variants_result = fetch_data('cars', lambda q: q.eq('parent_model_id', car_id).order('price'))
+            variants = old_variants_result.data if old_variants_result and old_variants_result.data else []
+        
+        context = {
+            'car': car,
+            'variants': variants,
+        }
+        
+        return render(request, 'accounts/car_detail.html', context)
+    except Exception as e:
+        logger.error(f"Error in car_detail view: {e}")
+        messages.error(request, f"An error occurred: {str(e)}")
+        return redirect('cars')
+
+def fix_variant_relationships(request):
+    """
+    Admin utility to ensure all variants are properly linked to their parent models.
+    This should be run after importing new data or if variants are showing up on the main listing.
+    """
+    if not request.user.is_superuser:
+        messages.error(request, "You don't have permission to access this function.")
+        return redirect('home')
+        
+    try:
+        # Get all cars
+        all_cars_result = fetch_data('cars')
+        all_cars = all_cars_result.data if all_cars_result and all_cars_result.data else []
+        
+        if not all_cars:
+            messages.error(request, "No cars found in database.")
+            return redirect('cars')
+        
+        # Step 1: First identify clear parent models
+        parent_models = []
+        variants = []
+        
+        # These are keywords that typically indicate a variant
+        variant_indicators = [
+            'mt', 'at', 'cvt', 'dsl', 'diesel', 'cargo', 'j mt', 'j at', 'e mt', 'e at', 'g mt', 'g at', 
+            'gr-s', 'xe cvt', 'xle cvt', 'j cvt', 'e cvt', 'g cvt', 'zx at', 'gr sport', 'conquest', 
+            'aluminum van', 'hev', 'turbo'
+        ]
+        
+        # First pass - identify clear parents by featured flag and name
+        for car in all_cars:
+            model_name = car.get('model', '').lower()
+            
+            # Check if the model name contains any variant indicators
+            is_variant = any(indicator in model_name for indicator in variant_indicators)
+            
+            # Main models should be featured and not have variant indicators in name
+            if car.get('featured') and not is_variant:
+                parent_models.append(car)
+            # Everything else is a potential variant
+            else:
+                variants.append(car)
+        
+        # Step 2: For each variant, match to the correct parent model
+        updates_count = 0
+        for variant in variants:
+            variant_name = variant.get('model', '')
+            variant_id = variant.get('id')
+            
+            # Skip variants that already have correct parent_model_id
+            if variant.get('parent_model_id') is not None:
+                # Verify the parent exists
+                parent_id = variant.get('parent_model_id')
+                parent_exists = any(p.get('id') == parent_id for p in parent_models)
+                
+                if parent_exists:
+                    continue
+            
+            # Extract the base model name from the variant name (e.g., "Hilux" from "Hilux 2.4 Cargo 4x2 MT")
+            # We use the first word which typically is the base model name
+            base_name = variant_name.split(' ')[0] if variant_name else ''
+            
+            if not base_name:
+                continue
+                
+            # Find matching parent models
+            matching_parents = [
+                parent for parent in parent_models 
+                if base_name.lower() in parent.get('model', '').lower()
+            ]
+            
+            # If we found exact matches, use the first one
+            if matching_parents:
+                matching_parent = matching_parents[0]
+                # Update the variant to link to this parent
+                update_data('cars', {'parent_model_id': matching_parent.get('id')}, 'id', variant_id)
+                updates_count += 1
+            else:
+                # No exact match found - try to create a simple matching algorithm based on name
+                for parent in parent_models:
+                    parent_name = parent.get('model', '').lower()
+                    # Check if parent name is contained in variant name (usually true)
+                    if parent_name in variant_name.lower():
+                        update_data('cars', {'parent_model_id': parent.get('id')}, 'id', variant_id)
+                        updates_count += 1
+                        break
+        
+        # Step 3: If no parent models were found, create them from the variants
+        if not parent_models and variants:
+            # Group variants by base model name
+            model_groups = {}
+            for variant in variants:
+                variant_name = variant.get('model', '')
+                base_name = variant_name.split(' ')[0] if variant_name else ''
+                
+                if base_name:
+                    if base_name not in model_groups:
+                        model_groups[base_name] = []
+                    model_groups[base_name].append(variant)
+            
+            # For each group, select one to be the parent (the simplest named one)
+            for base_name, group in model_groups.items():
+                if not group:
+                    continue
+                    
+                # Sort by name length - shorter names are likely simpler base models
+                group.sort(key=lambda x: len(x.get('model', '')))
+                parent_candidate = group[0]
+                
+                # Update this variant to be a parent model
+                update_data('cars', {'featured': True, 'parent_model_id': None}, 'id', parent_candidate.get('id'))
+                
+                # Update all other variants in the group to link to this parent
+                for variant in group[1:]:
+                    if variant.get('id') != parent_candidate.get('id'):
+                        update_data('cars', {'parent_model_id': parent_candidate.get('id')}, 'id', variant.get('id'))
+                        updates_count += 1
+        
+        messages.success(request, f"Updated {updates_count} variants with correct parent model relationships.")
+    except Exception as e:
+        logger.error(f"Error fixing variant relationships: {e}")
+        messages.error(request, f"An error occurred: {str(e)}")
+    
+    return redirect('cars')
+
+def debug_car_detail(request, car_id):
+    """
+    Debug version of the car detail view to test direct access
+    """
+    try:
+        # Fetch car details
+        car_result = fetch_data('cars', lambda q: q.eq('id', car_id))
+        if not car_result or not car_result.data:
+            return HttpResponse(f"Car with ID {car_id} not found", content_type="text/plain")
+            
+        car = car_result.data[0]
+        
+        # Fetch variants from the new car_variants table
+        variants_result = fetch_data('car_variants', lambda q: q.eq('parent_model_id', car_id))
+        variants = variants_result.data if variants_result and variants_result.data else []
+        
+        # If no variants in new table, try the old approach as fallback
+        if not variants:
+            old_variants_result = fetch_data('cars', lambda q: q.eq('parent_model_id', car_id))
+            variants = old_variants_result.data if old_variants_result and old_variants_result.data else []
+        
+        # Debug output
+        response_text = f"""
+        <html>
+        <head><title>Debug Car Detail</title></head>
+        <body>
+            <h1>Car Detail Debug View</h1>
+            <h2>Car: {car.get('model')} (ID: {car.get('id')})</h2>
+            <p>Year: {car.get('year')}</p>
+            <p>Price: {car.get('price')}</p>
+            <p>Body Type: {car.get('body_type')}</p>
+            
+            <h3>Found {len(variants)} variants:</h3>
+            <ul>
+        """
+        
+        for variant in variants:
+            response_text += f"<li>{variant.get('model')} (ID: {variant.get('id')}) - Price: {variant.get('price')}</li>"
+        
+        response_text += """
+            </ul>
+            
+            <p><a href="/cars/">Back to Cars List</a></p>
+        </body>
+        </html>
+        """
+        
+        return HttpResponse(response_text)
+    except Exception as e:
+        logger.error(f"Error in debug_car_detail view: {e}")
+        return HttpResponse(f"Error: {str(e)}", content_type="text/plain")
+
+def car_variants_json(request, car_id):
+    """
+    JSON API endpoint to return variants for a car
+    """
+    try:
+        # Fetch variants from the new car_variants table
+        variants_result = fetch_data('car_variants', lambda q: q.eq('parent_model_id', car_id))
+        variants = variants_result.data if variants_result and variants_result.data else []
+        
+        # If no variants in new table, try the old approach as fallback
+        if not variants:
+            old_variants_result = fetch_data('cars', lambda q: q.eq('parent_model_id', car_id))
+            variants = old_variants_result.data if old_variants_result and old_variants_result.data else []
+        
+        # Format variant prices for display
+        for variant in variants:
+            if 'price' in variant:
+                try:
+                    variant['price'] = '{:,.2f}'.format(float(variant['price']))
+                except (ValueError, TypeError):
+                    pass
+        
+        return JsonResponse({
+            'success': True,
+            'variants': variants
+        })
+    except Exception as e:
+        logger.error(f"Error fetching variants: {e}")
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)

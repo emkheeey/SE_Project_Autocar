@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ car.model }} Details{% endblock %}
+
+{% block additional_styles %}
+<style>
+  .car-detail-container {
+    padding: 2rem 0;
+  }
+  
+  .car-details {
+    margin-bottom: 2rem;
+  }
+  
+  .variants-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .variants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .variant-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .variant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  .variant-selector {
+    margin: 1.5rem 0;
+  }
+  
+  .variant-selector select {
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    margin-top: 0.5rem;
+  }
+  
+  .comparison-table {
+    margin-top: 2rem;
+    overflow-x: auto;
+  }
+  
+  .comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .comparison-table th, 
+  .comparison-table td {
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    text-align: left;
+  }
+  
+  .comparison-table th {
+    background-color: #f1f3f5;
+  }
+  
+  .compare-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  .compare-button:hover {
+    background-color: #0069d9;
+  }
+  
+  .car-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container car-detail-container">
+  <h1>{{ car.model }}</h1>
+  
+  <div class="car-details">
+    <div class="row">
+      <div class="col-md-6">
+        {% if car.image_url %}
+          <img src="{{ car.image_url }}" alt="{{ car.model }}" class="car-image">
+        {% else %}
+          <div class="placeholder-image">No image available</div>
+        {% endif %}
+      </div>
+      <div class="col-md-6">
+        <h3>Specifications</h3>
+        <ul class="list-group">
+          <li class="list-group-item"><strong>Year:</strong> {{ car.year }}</li>
+          <li class="list-group-item"><strong>Price:</strong> ₱{{ car.price|floatformat:2 }}</li>
+          <li class="list-group-item"><strong>Body Type:</strong> {{ car.body_type }}</li>
+          <li class="list-group-item"><strong>Transmission:</strong> {{ car.transmission }}</li>
+          <li class="list-group-item"><strong>Fuel Type:</strong> {{ car.fuel_type }}</li>
+          <li class="list-group-item"><strong>Number of Seats:</strong> {{ car.num_seats }}</li>
+          <li class="list-group-item"><strong>Maximum Output:</strong> {{ car.max_output }}</li>
+          <li class="list-group-item"><strong>Drivetrain:</strong> {{ car.drivetrain }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Debug info -->
+  <div style="margin: 20px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+    <p><strong>Debug Information:</strong></p>
+    <p>Car ID: {{ car.id }}</p>
+    <p>Car Model: {{ car.model }}</p>
+    <p>Variants count: {{ variants|length }}</p>
+    {% if not variants %}
+      <p style="color: red;">No variants found for this model.</p>
+      <p>Possible reasons:</p>
+      <ul>
+        <li>This car doesn't have any variants in the database.</li>
+        <li>Variants exist but are not properly linked to this car.</li>
+        <li>There might be a mismatch between car IDs in the car_variants table and this car.</li>
+      </ul>
+      <p>Try checking variants for this car in Supabase with: <code>SELECT * FROM car_variants WHERE parent_model_id = {{ car.id }}</code></p>
+      <p>Try viewing the <a href="/accounts/cars/debug/{{ car.id }}/" target="_blank">debug version</a></p>
+    {% else %}
+      <p style="color: green;">Found {{ variants|length }} variants for this model!</p>
+    {% endif %}
+  </div>
+  <!-- End debug info -->
+  
+  {% if variants %}
+  <div class="variants-section">
+    <h2>Available Variants</h2>
+    
+    <div class="variant-selector">
+      <label for="variant-select">Select Variant:</label>
+      <select id="variant-select" onchange="showComparisonTable(this.value)">
+        <option value="">Select a variant to compare</option>
+        {% for variant in variants %}
+          <option value="{{ variant.id }}">{{ variant.model }} - ₱{{ variant.price|floatformat:2 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <div id="comparison-container" style="display: none;">
+      <h3>Comparison with Base Model</h3>
+      <div class="comparison-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>{{ car.model }} (Base)</th>
+              <th id="variant-model">Variant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Price</td>
+              <td>₱{{ car.price|floatformat:2 }}</td>
+              <td id="variant-price"></td>
+            </tr>
+            <tr>
+              <td>Transmission</td>
+              <td>{{ car.transmission }}</td>
+              <td id="variant-transmission"></td>
+            </tr>
+            <tr>
+              <td>Engine Output</td>
+              <td>{{ car.max_output }}</td>
+              <td id="variant-output"></td>
+            </tr>
+            <tr>
+              <td>Fuel Type</td>
+              <td>{{ car.fuel_type }}</td>
+              <td id="variant-fuel"></td>
+            </tr>
+            <tr>
+              <td>Wheel Size</td>
+              <td>{{ car.wheel_size }}</td>
+              <td id="variant-wheel"></td>
+            </tr>
+            <tr>
+              <td>Airbags</td>
+              <td>{{ car.airbags }}</td>
+              <td id="variant-airbags"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="variants-grid">
+      {% for variant in variants %}
+        <div class="variant-card">
+          <h3>{{ variant.model }}</h3>
+          <p class="price">₱{{ variant.price|floatformat:2 }}</p>
+          <div class="specs">
+            <p><strong>Engine:</strong> {{ variant.max_output }}</p>
+            <p><strong>Transmission:</strong> {{ variant.transmission }}</p>
+            <p><strong>Fuel Type:</strong> {{ variant.fuel_type }}</p>
+          </div>
+          <button class="compare-button" onclick="showComparisonWithVariant({{ variant.id }})">
+            Compare with Base Model
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  // Store variants data for JavaScript access
+  const variants = [
+    {% for variant in variants %}
+    {
+      id: {{ variant.id }},
+      model: "{{ variant.model }}",
+      price: "{{ variant.price|floatformat:2 }}",
+      transmission: "{{ variant.transmission }}",
+      maxOutput: "{{ variant.max_output }}",
+      fuelType: "{{ variant.fuel_type }}",
+      wheelSize: "{{ variant.wheel_size }}",
+      airbags: {{ variant.airbags }}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ];
+  
+  function showComparisonWithVariant(variantId) {
+    // Find the dropdown and set its value
+    document.getElementById('variant-select').value = variantId;
+    // Show the comparison
+    showComparisonTable(variantId);
+    
+    // Scroll to the comparison table
+    document.getElementById('comparison-container').scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+  
+  function showComparisonTable(variantId) {
+    if (!variantId) {
+      document.getElementById('comparison-container').style.display = 'none';
+      return;
+    }
+    
+    // Find the selected variant
+    const variant = variants.find(v => v.id == variantId);
+    if (!variant) return;
+    
+    // Update the comparison table
+    document.getElementById('variant-model').textContent = variant.model;
+    document.getElementById('variant-price').textContent = '₱' + variant.price;
+    document.getElementById('variant-transmission').textContent = variant.transmission;
+    document.getElementById('variant-output').textContent = variant.maxOutput;
+    document.getElementById('variant-fuel').textContent = variant.fuelType;
+    document.getElementById('variant-wheel').textContent = variant.wheelSize;
+    document.getElementById('variant-airbags').textContent = variant.airbags;
+    
+    // Show the comparison table
+    document.getElementById('comparison-container').style.display = 'block';
+  }
+</script>
+{% endblock %} 

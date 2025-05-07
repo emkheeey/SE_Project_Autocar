@@ -229,6 +229,117 @@
         min-height: 100vh;
     }
     
+    /* Header styling */
+    .header {
+        width: 100%;
+        background: #FF8383;
+        background-image: url({% static 'images/Navigation2.jpg' %});
+        height: 80px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 50px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .logo img {
+        height: 50px;
+    }
+    
+    .profile-icon {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 20px;
+    }
+    
+    .profile-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .user-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 0px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        z-index: 1000;
+    }
+    
+    .menu-header {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        background-color: #f9f9f9;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .user-name {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #333;
+    }
+    
+    .user-email {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    .menu-item {
+        padding: 12px 15px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+        font-size: 0.95em;
+        color: #444;
+    }
+    
+    .menu-item:last-child {
+        border-bottom: none;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .menu-item:hover {
+        background-color: #f1f1f1;
+    }
+    
+    nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    nav ul li {
+        margin-left: 20px;
+    }
+    
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.1em;
+        font-weight: bold;
+        transition: color 0.3s ease-in-out;
+    }
+    
+    nav ul li a:hover {
+        color: rgb(3, 3, 3);
+    }
+    
+    nav ul li a.active {
+        color: #ffcc00;
+        text-decoration: underline;
+    }
+    
     /* File input styling */
     .file-input-container {
         margin: 15px 0;
@@ -407,6 +518,120 @@
     .refresh-image {
         animation: refreshFade 0.5s ease-in-out;
     }
+    
+    /* Variants modal styling */
+    .variants-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .variant-item {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    
+    .variant-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .variant-item img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .variant-item h3 {
+        margin: 10px 0;
+        color: #333;
+    }
+    
+    .variant-item p {
+        color: #e74c3c;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    
+    .variant-item button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+    }
+    
+    .variant-item button:hover {
+        background-color: #c0392b;
+    }
+    
+    /* No cars message */
+    .no-cars-message {
+        text-align: center;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        color: #6c757d;
+        grid-column: 1 / -1;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .header {
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li {
+            margin-left: 10px;
+        }
+        
+        nav ul li a {
+            font-size: 0.9em;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .car-list {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            padding: 10px;
+        }
+        
+        .search-container {
+            flex-direction: column;
+            max-width: 90%;
+        }
+        
+        .search-container input {
+            border-radius: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .search-container button {
+            border-radius: 25px;
+            width: 100%;
+        }
+        
+        .variants-container {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -498,7 +723,7 @@
                  class="car-image"
                  onError="this.onerror=null; this.src='{% static 'images/cars/default.jpg' %}'; this.classList.add('fallback-image');">
             <p>{{ car.model }}</p>
-            <button class="btn btn-secondary update-image-btn">Add/Update Image</button>
+            <button class="update-image-btn">Add/Update Image</button>
         </div>
         {% endfor %}
     {% else %}
@@ -676,8 +901,95 @@ function refreshCarImages() {
     });
 }
 
+// Show car modal with variants
+function showCarModal(carId) {
+    const modal = document.getElementById('variantsModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const variantsContainer = document.getElementById('variantsContainer');
+    
+    // Find car data
+    const car = window.carsData.find(c => c.id === parseInt(carId));
+    
+    if (!car) {
+        console.error('Car not found with ID:', carId);
+        return;
+    }
+    
+    // Set modal title
+    modalTitle.textContent = car.model;
+    
+    // Show loading state
+    variantsContainer.innerHTML = '<p style="text-align:center">Loading variants...</p>';
+    
+    // Show modal
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    
+    // Fetch variants
+    fetch(`/accounts/cars/variants-json/${carId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.variants && data.variants.length > 0) {
+                // Build variants HTML
+                let variantsHTML = '';
+                
+                data.variants.forEach(variant => {
+                    variantsHTML += `
+                        <div class="variant-item">
+                            <img src="${variant.image_url || '/static/images/cars/default.jpg'}" 
+                                 alt="${variant.model}"
+                                 onerror="this.onerror=null;this.src='/static/images/cars/default.jpg';">
+                            <h3>${variant.model}</h3>
+                            <p>₱${variant.price}</p>
+                            <div>
+                                <p><strong>Engine:</strong> ${variant.max_output || 'N/A'}</p>
+                                <p><strong>Transmission:</strong> ${variant.transmission || 'N/A'}</p>
+                                <p><strong>Fuel Type:</strong> ${variant.fuel_type || 'N/A'}</p>
+                            </div>
+                            <button onclick="window.location.href='/accounts/cars/${variant.id}/'">View Details</button>
+                        </div>
+                    `;
+                });
+                
+                variantsContainer.innerHTML = variantsHTML;
+            } else {
+                variantsContainer.innerHTML = '<p style="text-align:center">No variants available for this model.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching variants:', error);
+            variantsContainer.innerHTML = `
+                <p style="text-align:center">Failed to load variants: ${error.message}</p>
+                <p style="text-align:center">
+                    <a href="/accounts/cars/${carId}/" style="color:#d32f2f;text-decoration:underline">
+                        View on detail page instead
+                    </a>
+                </p>
+            `;
+        });
+}
+
 // Set up event listeners
 document.addEventListener("DOMContentLoaded", function() {
+    // Store car data for JavaScript access
+    window.carsData = [
+        {% for car in cars %}
+        {
+            id: {{ car.id }},
+            model: "{{ car.model }}",
+            year: {{ car.year }},
+            price: "{{ car.price|floatformat:2 }}",
+            image_url: "{{ car.image_url|default:'none' }}",
+            body_type: "{{ car.body_type }}",
+            transmission: "{{ car.transmission }}",
+            fuel_type: "{{ car.fuel_type }}",
+            num_seats: "{{ car.num_seats }}",
+            max_output: "{{ car.max_output }}",
+            drivetrain: "{{ car.drivetrain }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+    
     // Refresh car images on page load
     refreshCarImages();
     
@@ -747,6 +1059,16 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
     
+    // Car card clicks for showing variants
+    document.querySelectorAll('.car-card').forEach(card => {
+        card.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('update-image-btn')) {
+                const carId = this.getAttribute('data-car-id');
+                showCarModal(carId);
+            }
+        });
+    });
+    
     // Close modals
     document.getElementById('closeImageModal').addEventListener('click', closeImageModal);
     document.getElementById('closeVariantsModal').addEventListener('click', closeModal);
@@ -763,6 +1085,12 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('imageModal').addEventListener('click', function(event) {
         if (event.target === this) {
             closeImageModal();
+        }
+    });
+    
+    document.getElementById('variantsModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeModal();
         }
     });
     
@@ -808,7 +1136,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 statusMsg.className = 'upload-status';
                 this.appendChild(statusMsg);
             }
-            statusMsg.textContent = 'Uploading image to Supabase storage...';
+            statusMsg.textContent = 'Uploading image...';
             statusMsg.className = 'upload-status uploading';
             
             const formData = new FormData(this);
@@ -929,4 +1257,4 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
-{% endblock %}
+{% endblock %} 
