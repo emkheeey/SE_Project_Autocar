@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Compare Cars | AutoCar{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Hide elements from base template that we don't need */
+    header.main-header, footer, #home {
+        display: none !important;
+    }
+    
+    body {
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Custom header */
+    header {
+        background-color: #d32f2f;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    
+    .back-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-right: 15px;
+    }
+    
+    header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    
+    /* Main content */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    /* Comparison table */
+    .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .comparison-table th {
+        background-color: #d32f2f;
+        color: white;
+        padding: 12px;
+        text-align: center;
+    }
+    
+    .comparison-table td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .comparison-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .spec-label {
+        font-weight: bold;
+        background-color: #f9f9f9;
+        text-align: left !important;
+        width: 180px;
+    }
+    
+    .car-image {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        border-radius: 8px;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .winner-cell {
+        background-color: #e8f5e9;
+        font-weight: bold;
+        position: relative;
+    }
+    
+    .winner-badge {
+        color: #4caf50;
+        margin-left: 5px;
+    }
+    
+    /* Legend */
+    .comparison-legend {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .legend-title {
+        color: #d32f2f;
+        margin-top: 0;
+    }
+    
+    .legend-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border-radius: 4px;
+    }
+    
+    .legend-color.winner {
+        background-color: #e8f5e9;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .comparison-table {
+            font-size: 0.9rem;
+        }
+        
+        .spec-label {
+            width: 120px;
+        }
+        
+        .car-image {
+            max-width: 120px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Header with Back Button -->
+<header>
+    <button class="back-btn" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <h1>Compare Cars</h1>
+</header>
+
+<div class="container">
+    {% if cars %}
+        <!-- Comparison Legend -->
+        <div class="comparison-legend">
+            <h3 class="legend-title">How to Read This Comparison</h3>
+            <div class="legend-row">
+                <div class="legend-color winner"></div>
+                <div>Highlighted cells indicate better specifications for that category</div>
+            </div>
+            <p>For Price: Lower is better</p>
+            <p>For Year, Power, Seats, Cargo Space, and Fuel Economy: Higher is better</p>
+        </div>
+    
+        <!-- Comparison Table -->
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    {% for car in cars %}
+                        <th>{{ car.make }} {{ car.model }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Car Images -->
+                <tr>
+                    <td class="spec-label">Image</td>
+                    {% for car in cars %}
+                        <td>
+                            <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/default-car.png' %}{% endif %}" 
+                                 alt="{{ car.make }} {{ car.model }}" class="car-image">
+                        </td>
+                    {% endfor %}
+                </tr>
+                
+                <!-- Basic Info -->
+                <tr>
+                    <td class="spec-label">Make & Model</td>
+                    {% for car in cars %}
+                        <td>{{ car.make }} {{ car.model }}</td>
+                    {% endfor %}
+                </tr>
+                
+                <!-- Specs with Winners -->
+                {% for spec, data in comparison_results.items %}
+                    <tr>
+                        <td class="spec-label">{{ data.label }}</td>
+                        {% for index, value in data.values|enumerate %}
+                            <td class="{% if index in data.winners and data.better != 'none' %}winner-cell{% endif %}">
+                                {{ value }}
+                                {% if index in data.winners and data.better != 'none' %}
+                                    <span class="winner-badge"><i class="fas fa-check-circle"></i></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Decision Help -->
+        <div class="comparison-legend">
+            <h3 class="legend-title">Making Your Decision</h3>
+            <p>The highlighted features show which car performs better in each category, but your final decision should be based on which features matter most to you personally.</p>
+            
+            <!-- Winners Summary -->
+            <h4>Summary of Strengths</h4>
+            <ul>
+                {% for car in cars %}
+                <li>
+                    <strong>{{ car.make }} {{ car.model }}</strong> is better in: 
+                    {% with car_index=forloop.counter0 %}
+                        {% with strengths=comparison_results|get_strengths:car_index %}
+                            {% if strengths %}
+                                {{ strengths|join:", " }}
+                            {% else %}
+                                No standout features
+                            {% endif %}
+                        {% endwith %}
+                    {% endwith %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h2>No Cars Selected for Comparison</h2>
+            <p>Please select at least two cars to compare.</p>
+            <a href="{% url 'favorites_page' %}" class="btn">Go to Favorites</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // For debugging - log the comparison results
+    console.log("Comparison results:", {{ comparison_results|json_script:"comparison_data" }});
+</script>
+{% endblock %}

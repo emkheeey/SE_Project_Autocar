@@ -1048,60 +1048,144 @@ def favorites_page(request):
 # Compare cars page view
 @login_required
 def compare_cars(request):
+    """
+    Compare 2-3 cars with rule-based logic to highlight which car is better in each category
+    """
     # Get the IDs from query parameters
     car_ids = request.GET.getlist('id')
-    car_types = request.GET.getlist('type')
     
-    # Ensure we have matching pairs of IDs and types
-    if len(car_ids) != len(car_types) or len(car_ids) < 2 or len(car_ids) > 3:
-        messages.error(request, 'Invalid comparison request. Select 2-3 cars to compare.')
-        return redirect('favorites')
+    # Ensure we have at least 2 cars to compare
+    if not car_ids or len(car_ids) < 2:
+        messages.error(request, 'Please select at least two cars to compare.')
+        return redirect('favorites_page')
     
-    # Fetch car data for comparison
-    compare_items = []
+    # Limit to maximum 3 cars for better UI
+    if len(car_ids) > 3:
+        car_ids = car_ids[:3]
+        messages.info(request, 'Maximum 3 cars can be compared at once. Using the first 3 selected cars.')
     
-    for i in range(len(car_ids)):
-        car_id = car_ids[i]
-        car_type = car_types[i]
-        
-        try:
-            # Fetch car/variant data based on type
-            if car_type == 'car':
-                car = Car.objects.get(id=car_id)
-                compare_items.append({
-                    'id': car.id,
-                    'model': car.model,
-                    'price': car.price,
-                    'image_url': car.image_url,
-                    'body_type': car.body_type,
-                    'transmission': car.transmission,
-                    'fuel_type': car.fuel_type,
-                    'max_output': car.max_output,
-                    'num_seats': car.num_seats,
-                    'drivetrain': car.drivetrain,
-                    'type': 'car'
-                })
-            else:  # variant
-                variant = Car.objects.get(id=car_id)
-                compare_items.append({
-                    'id': variant.id,
-                    'model': variant.model,
-                    'price': variant.price,
-                    'image_url': variant.image_url,
-                    'body_type': variant.body_type, 
-                    'transmission': variant.transmission,
-                    'fuel_type': variant.fuel_type,
-                    'max_output': variant.max_output,
-                    'num_seats': variant.num_seats,
-                    'drivetrain': variant.drivetrain,
-                    'type': 'variant'
-                })
-        except Car.DoesNotExist:
-            messages.error(request, f'Car with ID {car_id} not found.')
-            return redirect('favorites')
+    # Fetch car data
+    cars_to_compare = []
+    try:
+        for car_id in car_ids:
+            car = Car.objects.get(id=car_id)
+            cars_to_compare.append(car)
+    except Car.DoesNotExist:
+        messages.error(request, 'One or more selected cars could not be found.')
+        return redirect('favorites_page')
+    
+    # Apply rule-based comparison logic
+    comparison_results = compare_specifications(cars_to_compare)
     
     context = {
-        'compare_items': compare_items
+        'cars': cars_to_compare,
+        'comparison_results': comparison_results
     }
     
     return render(request, 'accounts/compare.html', context)
+
+def compare_specifications(cars):
+    """
+    Apply rule-based comparison to determine which car is better for each specification
+    Returns a dictionary with results for each comparison point
+    """
+    # Define the rules for comparison
+    comparison_rules = {
+        'price': {'better': 'lower', 'label': 'Price ($)', 'format': '{:,.2f}', 'unit': ''},
+        'year': {'better': 'higher', 'label': 'Year', 'format': '{}', 'unit': ''},
+        'max_output': {'better': 'higher', 'label': 'Power', 'format': '{}', 'unit': 'hp'},
+        'num_seats': {'better': 'higher', 'label': 'Seats', 'format': '{}', 'unit': ''},
+        'cargo_capacity': {'better': 'higher', 'label': 'Cargo Space', 'format': '{:.1f}', 'unit': 'cu ft'},
+        'fuel_economy': {'better': 'higher', 'label': 'Fuel Economy', 'format': '{:.1f}', 'unit': 'mpg'},
+        
+        # Qualitative comparisons (no clear "better")
+        'body_type': {'better': 'none', 'label': 'Body Type', 'format': '{}', 'unit': ''},
+        'transmission': {'better': 'none', 'label': 'Transmission', 'format': '{}', 'unit': ''},
+        'fuel_type': {'better': 'none', 'label': 'Fuel Type', 'format': '{}', 'unit': ''},
+        'drivetrain': {'better': 'none', 'label': 'Drivetrain', 'format': '{}', 'unit': ''},
+        
+        # Optional qualitative preferences (if you want to define preferences)
+        # 'transmission': {'better': 'qualitative', 'label': 'Transmission', 'format': '{}', 'unit': '', 
+        #     'preferences': {'CVT': 5, 'Automatic': 4, 'DCT': 4, 'Semi-Auto': 3, 'Manual': 2}},
+        # 'fuel_type': {'better': 'qualitative', 'label': 'Fuel Type', 'format': '{}', 'unit': '',
+        #     'preferences': {'Electric': 5, 'Hybrid': 4, 'Gasoline': 3, 'Diesel': 2, 'LPG': 1}},
+    }
+    
+    # Initialize result dictionary
+    results = {}
+    
+    # Compare each specification
+    for spec, rule in comparison_rules.items():
+        # Get values for each car
+        values = []
+        formatted_values = []
+        all_none = True
+        
+        for car in cars:
+            value = getattr(car, spec, None)
+            values.append(value)
+            
+            # Check if at least one car has this specification
+            if value is not None:
+                all_none = False
+            
+            # Format the value according to the rule
+            if value is not None:
+                try:
+                    formatted_value = rule['format'].format(value)
+                    # Add unit if specified
+                    if rule['unit']:
+                        formatted_value = f"{formatted_value} {rule['unit']}"
+                except (ValueError, TypeError):
+                    formatted_value = str(value)
+            else:
+                formatted_value = "N/A"
+                
+            formatted_values.append(formatted_value)
+        
+        # Skip if all cars have None for this spec
+        if all_none:
+            continue
+        
+        # Find winner(s) based on the rule
+        winners = []
+        
+        if rule['better'] == 'lower':
+            # Find the minimum value, ignoring None
+            valid_values = [v for v in values if v is not None]
+            if valid_values:
+                min_value = min(valid_values)
+                winners = [i for i, v in enumerate(values) if v == min_value]
+                
+        elif rule['better'] == 'higher':
+            # Find the maximum value, ignoring None
+            valid_values = [v for v in values if v is not None]
+            if valid_values:
+                max_value = max(valid_values)
+                winners = [i for i, v in enumerate(values) if v == max_value]
+                
+        elif rule['better'] == 'qualitative' and 'preferences' in rule:
+            # Use the preference mapping to determine the winner
+            scores = []
+            for val in values:
+                if val is not None:
+                    score = rule['preferences'].get(str(val), 0)
+                    scores.append(score)
+                else:
+                    scores.append(0)
+                    
+            if any(s > 0 for s in scores):
+                max_score = max(scores)
+                winners = [i for i, s in enumerate(scores) if s == max_score]
+        
+        # Store the result
+        results[spec] = {
+            'label': rule['label'],
+            'values': formatted_values,
+            'raw_values': values,
+            'winners': winners,
+            'better': rule['better'],
+            'unit': rule['unit']
+        }
+    
+    return results

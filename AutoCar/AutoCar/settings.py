@@ -110,7 +110,7 @@ DATABASES = {
         'PORT': '6543',
         'OPTIONS': {
             'sslmode': 'require',
-            'connect_timeout': 10,
+            'connect_timeout': 30,
         }
     }
 }
