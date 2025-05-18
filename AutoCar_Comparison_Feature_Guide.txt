@@ -1,0 +1,75 @@
+====================================
+AUTOCAR CAR COMPARISON FEATURE GUIDE
+====================================
+
+Overview
+--------
+The AutoCar comparison feature allows users to compare different vehicle models side-by-side with an intelligent scoring system that provides objective recommendations based on weighted factors. This document explains how the comparison system works.
+
+Key Features
+-----------
+1. SIDE-BY-SIDE COMPARISON
+   - Clean, visual comparison of two vehicles in a card-based layout
+   - Vehicle images displayed in properly sized containers
+   - All important specifications shown for both vehicles in an organized manner
+   - Responsive design that works well on all screen sizes
+
+2. INTELLIGENT SCORING ALGORITHM
+   - Weighted scoring system that evaluates vehicles across multiple dimensions:
+     • Price (30% weight) - Lower price earns more points
+     • Year (20% weight) - Newer model year earns more points
+     • Fuel Efficiency (20% weight) - Better fuel economy earns more points
+     • Seating Capacity (10% weight) - More seats earn more points
+     • Other factors (20% weight) - Various specifications like safety features, technology, etc.
+   - Normalized scores ensure fair comparison regardless of the scale of individual metrics
+
+3. VISUAL INDICATORS
+   - Progress bars show the relative scores for each category
+   - Trophy icons highlight the overall winning vehicle
+   - "Better" tags clearly mark which vehicle wins in each category
+   - Color-coded indicators for strengths and weaknesses
+   - Loading animation while comparison calculations are performed
+
+4. SMART RECOMMENDATIONS
+   - Personalized recommendation explaining why one car might be better suited
+   - Highlights key advantages of the recommended vehicle
+   - Considers price-to-value ratio in the final assessment
+   - Provides context for why specific features matter
+
+5. LOCALIZATION
+   - All prices displayed in Philippine Pesos (₱)
+   - Measurements and specifications shown in locally relevant units
+
+User Experience
+--------------
+1. Users navigate to the comparison page from anywhere in the application
+2. They select two vehicles to compare from dropdown menus
+3. The system instantly calculates scores and displays the comparison
+4. Users can easily see which car wins in each category
+5. A final recommendation helps guide their decision-making process
+
+Technical Implementation
+----------------------
+- Front-end rendering using HTML, CSS, and JavaScript
+- Bootstrap for responsive layout and styling
+- Custom scoring algorithm implemented in JavaScript
+- Data retrieval from Supabase database
+- Visual elements including progress bars and icons from Font Awesome
+- Currency formatting using Intl.NumberFormat API
+
+Benefits for Users
+----------------
+- Make more informed car buying decisions
+- Understand the trade-offs between different models
+- See objective comparisons rather than just marketing claims
+- Focus on factors that truly matter for their specific needs
+- Save time by quickly identifying the better option based on their priorities
+
+Future Enhancements
+-----------------
+- User-configurable weighting of comparison factors
+- Ability to compare more than two vehicles simultaneously
+- Saving comparison results to user profile
+- Sharing comparison results with others
+- More detailed specifications and feature comparisons
+- Integration with dealer inventory and pricing data 

@@ -1,3 +1,308 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Favorite Cars | AutoCar{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/browse.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Override styles from base.html to prevent profile duplication */
+    header {
+        display: none !important;
+    }
+    
+    /* Ensure top margin is reset */
+    body {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        overflow-y: auto !important; /* Fix scrolling */
+    }
+    
+    /* Hide any content from base.html that might cause problems */
+    #home, footer {
+        display: none !important;
+    }
+
+    /* Favorite page specific styles */
+    .page-title {
+        text-align: center;
+        margin: 30px 0;
+        color: #333;
+        font-size: 2em;
+        font-weight: bold;
+    }
+    
+    .empty-favorites {
+        text-align: center;
+        padding: 50px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        margin: 40px auto;
+        max-width: 600px;
+    }
+    
+    .empty-favorites i {
+        font-size: 4em;
+        color: #e74c3c;
+        margin-bottom: 20px;
+    }
+    
+    .empty-favorites h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    
+    .empty-favorites p {
+        color: #777;
+        margin-bottom: 20px;
+    }
+    
+    .empty-favorites .browse-btn {
+        display: inline-block;
+        background-color: #e74c3c;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    
+    .empty-favorites .browse-btn:hover {
+        background-color: #c0392b;
+    }
+    
+    /* Remove from favorites button */
+    .remove-favorite-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(231, 76, 60, 0.85);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        transition: all 0.3s;
+        z-index: 10;
+    }
+    
+    .remove-favorite-btn i {
+        margin-right: 4px;
+    }
+    
+    .remove-favorite-btn:hover {
+        background-color: #c0392b;
+        transform: scale(1.05);
+    }
+    
+    .car-card {
+        position: relative;
+    }
+    
+    /* Car details modal styling */
+    .car-details-container {
+        padding: 15px 0;
+        max-height: 350px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        scrollbar-width: thin;
+    }
+    
+    /* Custom scrollbar for the details container */
+    .car-details-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .car-details-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .car-details-container::-webkit-scrollbar-thumb {
+        background: #e74c3c;
+        border-radius: 10px;
+    }
+    
+    .car-details-container::-webkit-scrollbar-thumb:hover {
+        background: #c0392b;
+    }
+    
+    /* Make the modal content wider for car details */
+    #carDetailsModal .modal-content {
+        max-width: 600px;
+        width: 95%;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+        margin: 0 auto;
+    }
+    
+    /* Modal title styling */
+    #carDetailsModal .modal-title {
+        font-size: 1.8em;
+        color: #e74c3c;
+        text-align: center;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 15px;
+        flex-shrink: 0;
+    }
+    
+    /* Car image in details modal */
+    .car-image-container {
+        width: 100%;
+        margin-bottom: 20px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    
+    .details-car-image {
+        max-width: 100%;
+        height: auto;
+        max-height: 280px;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Modal footer styles */
+    .modal-footer {
+        margin-top: 10px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        text-align: right;
+        flex-shrink: 0;
+    }
+    
+    /* Fix modal scrolling */
+    .modal, .variants-modal {
+        position: fixed;
+        z-index: 1050;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        padding: 20px 0;
+    }
+    
+    /* Detail row styling */
+    .detail-row {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+    }
+    
+    .detail-row strong {
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+    
+    .detail-row strong i {
+        margin-right: 10px;
+        font-size: 1.2em;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .detail-row span {
+        color: #e74c3c;
+        font-weight: 500;
+    }
+    
+    /* Different icon colors for different categories */
+    .icon-basic {
+        color: #3498db !important; /* blue */
+    }
+    
+    .icon-technical {
+        color: #e74c3c !important; /* red */
+    }
+    
+    .icon-safety {
+        color: #2ecc71 !important; /* green */
+    }
+    
+    .icon-comfort {
+        color: #f39c12 !important; /* orange */
+    }
+    
+    /* Modal close button */
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #999;
+        z-index: 10;
+    }
+    
+    .close-modal:hover {
+        color: #333;
+    }
+    
+    /* Close button in footer */
+    .close-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    
+    .close-btn:hover {
+        background-color: #c0392b;
+    }
+    
+    /* Remove button in modal footer */
+    .remove-modal-btn {
+        background-color: #f8f9fa;
+        border: 1px solid #dc3545;
+        color: #dc3545;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+        margin-right: 10px;
+    }
+    
+    .remove-modal-btn:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    /* Modal footer layout */
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}
+
+{% block body_class %}browse-page{% endblock %}
+
+{% block content %}
 <div class="header">
     <div class="logo"><img src="{% static 'images/logo.png' %}"></div>  
     <nav>
@@ -11,4 +316,330 @@
     <div class="profile-icon" id="profileIcon">
         <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon" onError="this.onerror=null; this.src='{% static 'images/profileicon.png' %}';">
     </div> 
-</div> 
+    
+    <div class="user-menu" id="userMenu">
+        <div class="menu-header">
+            <div class="user-name">{{ user.first_name|default:user.username }}</div>
+            <div class="user-email">{{ user.email }}</div>
+        </div>
+        <div class="menu-item" onclick="window.location.href='{% url 'profile' %}'">Account</div>
+        <div class="menu-item" onclick="window.location.href='{% url 'favorites' %}'" style="background-color: #f0f0f0;">Saved Favorite</div>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="menu-item">Log Out</button>
+        </form>
+    </div>
+</div>
+
+<h1 class="page-title">My Favorite Cars</h1>
+
+<div class="search-container">
+    <input type="text" id="search-input" placeholder="Search your favorites...">
+    <button id="search-button">Search</button>
+</div>
+
+<div class="car-list" id="car-list">
+    {% if favorite_cars %}
+        {% for car in favorite_cars %}
+        <div class="car-card" 
+             data-car-id="{{ car.id }}" 
+             data-model="{{ car.model }}"
+             data-year="{{ car.year }}"
+             data-price="{{ car.price }}"
+             data-image-url="{{ car.image_url }}"
+             data-body-type="{{ car.body_type }}"
+             data-transmission="{{ car.transmission }}"
+             data-fuel-type="{{ car.fuel_type|default:'Not specified' }}"
+             data-num-seats="{{ car.num_seats|default:'Not specified' }}"
+             data-max-output="{{ car.max_output|default:'Not specified' }}"
+             data-drivetrain="{{ car.drivetrain|default:'Not specified' }}"
+             data-wheel-size="{{ car.wheel_size|default:'Not specified' }}"
+             data-airbags="{{ car.airbags|default:'Not specified' }}"
+             data-isofix="{{ car.isofix|default:'Not specified' }}"
+             data-front-parking-sensors="{{ car.front_parking_sensors|default:'Not specified' }}"
+             data-rear-parking-sensors="{{ car.rear_parking_sensors|default:'Not specified' }}"
+             data-connectivity="{{ car.connectivity|default:'Not specified' }}">
+            <button class="remove-favorite-btn" data-car-id="{{ car.id }}">
+                <i class="fas fa-trash-alt"></i> Remove
+            </button>
+            <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" 
+                 alt="{{ car.model }}"
+                 class="car-image"
+                 onError="this.onerror=null; this.src='{% static 'images/cars/default.jpg' %}'; this.classList.add('fallback-image');">
+            <p>{{ car.model }}</p>
+            <button class="btn btn-secondary view-details-btn">View Details</button>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-favorites">
+            <i class="fas fa-heart-broken"></i>
+            <h3>No Favorite Cars Yet</h3>
+            <p>You haven't added any cars to your favorites yet. Browse our collection and add cars you like!</p>
+            <a href="{% url 'cars' %}" class="browse-btn">Browse Cars</a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Car Details Modal -->
+<div class="variants-modal" id="carDetailsModal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-modal" id="closeDetailsModal">&times;</span>
+        <h2 id="detailsModalTitle" class="modal-title"></h2>
+        <div class="car-image-container">
+            <img id="detailsCarImage" class="details-car-image" alt="Car Image">
+        </div>
+        <div class="car-details-container">
+            <div class="detail-row">
+                <strong><i class="fas fa-calendar-alt icon-basic"></i> Year:</strong>
+                <span id="detailsYear"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-tag icon-basic"></i> Price:</strong>
+                <span id="detailsPrice"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-car icon-basic"></i> Body Type:</strong>
+                <span id="detailsBodyType"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-cogs icon-technical"></i> Transmission:</strong>
+                <span id="detailsTransmission"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-gas-pump icon-technical"></i> Fuel Type:</strong>
+                <span id="detailsFuelType"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-users icon-basic"></i> Number of Seats:</strong>
+                <span id="detailsNumSeats"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-tachometer-alt icon-technical"></i> Maximum Output:</strong>
+                <span id="detailsMaxOutput"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-truck-monster icon-technical"></i> Drivetrain:</strong>
+                <span id="detailsDrivetrain"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-circle-notch icon-technical"></i> Wheel Size:</strong>
+                <span id="detailsWheelSize"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-shield-alt icon-safety"></i> Airbags:</strong>
+                <span id="detailsAirbags"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-baby-carriage icon-safety"></i> ISOFIX:</strong>
+                <span id="detailsIsofix"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-parking icon-safety"></i> Front Parking Sensors:</strong>
+                <span id="detailsFrontSensors"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-parking icon-safety"></i> Rear Parking Sensors:</strong>
+                <span id="detailsRearSensors"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-wifi icon-comfort"></i> Connectivity:</strong>
+                <span id="detailsConnectivity"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="remove-modal-btn" id="removeFromFavoritesBtn">
+                <i class="fas fa-trash-alt"></i> Remove from Favorites
+            </button>
+            <button class="close-btn" id="closeDetailsBtn">Close</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Function to show car details in modal
+function showCarDetails(cardElement) {
+    // Get all data attributes from the card
+    const carId = cardElement.getAttribute('data-car-id');
+    const carModel = cardElement.getAttribute('data-model');
+    const year = cardElement.getAttribute('data-year');
+    const price = cardElement.getAttribute('data-price');
+    const bodyType = cardElement.getAttribute('data-body-type');
+    const transmission = cardElement.getAttribute('data-transmission');
+    const fuelType = cardElement.getAttribute('data-fuel-type');
+    const numSeats = cardElement.getAttribute('data-num-seats');
+    const maxOutput = cardElement.getAttribute('data-max-output');
+    const drivetrain = cardElement.getAttribute('data-drivetrain');
+    const wheelSize = cardElement.getAttribute('data-wheel-size');
+    const airbags = cardElement.getAttribute('data-airbags');
+    const isofix = cardElement.getAttribute('data-isofix');
+    const frontSensors = cardElement.getAttribute('data-front-parking-sensors');
+    const rearSensors = cardElement.getAttribute('data-rear-parking-sensors');
+    const connectivity = cardElement.getAttribute('data-connectivity');
+    const imageUrl = cardElement.getAttribute('data-image-url') || '{% static "images/cars/default.jpg" %}';
+    
+    // Store the current car ID for the remove button
+    document.getElementById('removeFromFavoritesBtn').setAttribute('data-car-id', carId);
+    
+    // Format the price with commas
+    const formattedPrice = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(price);
+    
+    // Populate the modal with car details
+    document.getElementById('detailsModalTitle').textContent = carModel;
+    document.getElementById('detailsCarImage').src = imageUrl;
+    document.getElementById('detailsYear').textContent = year;
+    document.getElementById('detailsPrice').textContent = formattedPrice;
+    document.getElementById('detailsBodyType').textContent = bodyType;
+    document.getElementById('detailsTransmission').textContent = transmission;
+    document.getElementById('detailsFuelType').textContent = fuelType;
+    document.getElementById('detailsNumSeats').textContent = numSeats;
+    document.getElementById('detailsMaxOutput').textContent = maxOutput;
+    document.getElementById('detailsDrivetrain').textContent = drivetrain;
+    document.getElementById('detailsWheelSize').textContent = wheelSize;
+    document.getElementById('detailsAirbags').textContent = airbags;
+    document.getElementById('detailsIsofix').textContent = isofix === "True" ? "Yes" : "No";
+    document.getElementById('detailsFrontSensors').textContent = frontSensors === "True" ? "Yes" : "No";
+    document.getElementById('detailsRearSensors').textContent = rearSensors === "True" ? "Yes" : "No";
+    document.getElementById('detailsConnectivity').textContent = connectivity.replace(/[\[\]"']/g, '').replace(/,/g, ', ');
+    
+    // Show the modal
+    document.getElementById('carDetailsModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeModal() {
+    document.getElementById('carDetailsModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Re-enable scrolling
+}
+
+function toggleMenu() {
+    const menu = document.getElementById("userMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+// Function to remove a car from favorites
+async function removeFavorite(carId) {
+    try {
+        const response = await fetch('/accounts/toggle_favorite/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({
+                car_id: carId,
+                action: 'remove'
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Remove the car card from the UI
+            const cardToRemove = document.querySelector(`.car-card[data-car-id="${carId}"]`);
+            if (cardToRemove) {
+                cardToRemove.style.opacity = '0';
+                setTimeout(() => {
+                    cardToRemove.remove();
+                    
+                    // Check if there are no more favorites
+                    if (document.querySelectorAll('.car-card').length === 0) {
+                        // Show the empty favorites message
+                        const emptyMessage = document.createElement('div');
+                        emptyMessage.className = 'empty-favorites';
+                        emptyMessage.innerHTML = `
+                            <i class="fas fa-heart-broken"></i>
+                            <h3>No Favorite Cars Yet</h3>
+                            <p>You haven't added any cars to your favorites yet. Browse our collection and add cars you like!</p>
+                            <a href="{% url 'cars' %}" class="browse-btn">Browse Cars</a>
+                        `;
+                        document.getElementById('car-list').appendChild(emptyMessage);
+                    }
+                }, 300);
+                
+                // Add transition for smooth removal
+                cardToRemove.style.transition = 'opacity 0.3s';
+            }
+        } else {
+            console.error('Error removing favorite:', data.error);
+            alert('Failed to remove from favorites: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while removing from favorites');
+    }
+}
+
+// Set up event listeners
+document.addEventListener("DOMContentLoaded", function() {
+    // View details buttons
+    document.querySelectorAll('.view-details-btn').forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const card = this.closest('.car-card');
+            showCarDetails(card);
+        });
+    });
+    
+    // Close modal button
+    document.getElementById('closeDetailsModal').addEventListener('click', closeModal);
+    document.getElementById('closeDetailsBtn').addEventListener('click', closeModal);
+    
+    // Remove from favorites button in modal
+    document.getElementById('removeFromFavoritesBtn').addEventListener('click', function() {
+        const carId = this.getAttribute('data-car-id');
+        
+        if (confirm('Are you sure you want to remove this car from your favorites?')) {
+            removeFavorite(carId);
+            closeModal(); // Close the modal after removing
+        }
+    });
+    
+    // Close modal when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+    
+    // Close modal when clicking outside modal content
+    document.getElementById('carDetailsModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeModal();
+        }
+    });
+    
+    // Remove from favorites buttons on cards
+    document.querySelectorAll('.remove-favorite-btn').forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const carId = this.getAttribute('data-car-id');
+            
+            if (confirm('Are you sure you want to remove this car from your favorites?')) {
+                removeFavorite(carId);
+            }
+        });
+    });
+    
+    // Profile icon
+    document.getElementById('profileIcon').addEventListener('click', toggleMenu);
+    
+    // Search functionality
+    document.getElementById('search-button').addEventListener('click', function() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+        document.querySelectorAll('.car-card').forEach(card => {
+            const carName = card.querySelector('p').textContent.toLowerCase();
+            card.style.display = carName.includes(searchInput) ? 'block' : 'none';
+        });
+    });
+    
+    // Enable search on Enter key
+    document.getElementById('search-input').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('search-button').click();
+        }
+    });
+});
+</script>
+{% endblock %} 
