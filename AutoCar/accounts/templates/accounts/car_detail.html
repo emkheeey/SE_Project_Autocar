@@ -4,230 +4,215 @@
 {% block title %}{{ car.model }} Details{% endblock %}
 
 {% block additional_styles %}
-<style>
-  .car-detail-container {
-    padding: 2rem 0;
-  }
-  
-  .car-details {
-    margin-bottom: 2rem;
-  }
-  
-  .variants-section {
-    margin-top: 2rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-  }
-  
-  .variants-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  
-  .variant-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
-  }
-  
-  .variant-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  }
-  
-  .variant-selector {
-    margin: 1.5rem 0;
-  }
-  
-  .variant-selector select {
-    padding: 0.5rem;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 4px;
-    border: 1px solid #ced4da;
-    margin-top: 0.5rem;
-  }
-  
-  .comparison-table {
-    margin-top: 2rem;
-    overflow-x: auto;
-  }
-  
-  .comparison-table table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .comparison-table th, 
-  .comparison-table td {
-    padding: 0.75rem;
-    border: 1px solid #dee2e6;
-    text-align: left;
-  }
-  
-  .comparison-table th {
-    background-color: #f1f3f5;
-  }
-  
-  .compare-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 1rem;
-  }
-  
-  .compare-button:hover {
-    background-color: #0069d9;
-  }
-  
-  .car-image {
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-  }
-</style>
+<link rel="stylesheet" href="{% static 'css/car_detail.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
-<div class="container car-detail-container">
-  <h1>{{ car.model }}</h1>
-  
-  <div class="car-details">
-    <div class="row">
-      <div class="col-md-6">
-        {% if car.image_url %}
-          <img src="{{ car.image_url }}" alt="{{ car.model }}" class="car-image">
-        {% else %}
-          <div class="placeholder-image">No image available</div>
-        {% endif %}
-      </div>
-      <div class="col-md-6">
-        <h3>Specifications</h3>
-        <ul class="list-group">
-          <li class="list-group-item"><strong>Year:</strong> {{ car.year }}</li>
-          <li class="list-group-item"><strong>Price:</strong> ₱{{ car.price|floatformat:2 }}</li>
-          <li class="list-group-item"><strong>Body Type:</strong> {{ car.body_type }}</li>
-          <li class="list-group-item"><strong>Transmission:</strong> {{ car.transmission }}</li>
-          <li class="list-group-item"><strong>Fuel Type:</strong> {{ car.fuel_type }}</li>
-          <li class="list-group-item"><strong>Number of Seats:</strong> {{ car.num_seats }}</li>
-          <li class="list-group-item"><strong>Maximum Output:</strong> {{ car.max_output }}</li>
-          <li class="list-group-item"><strong>Drivetrain:</strong> {{ car.drivetrain }}</li>
-        </ul>
+<div class="car-detail-page">
+  <div class="container">
+    <!-- Car Hero Section -->
+    <div class="car-hero">
+      {% if car.image_url %}
+        <img src="{{ car.image_url }}" alt="{{ car.model }}" class="car-hero-image">
+      {% else %}
+        <div class="car-hero-image" style="background-color: #333;"></div>
+      {% endif %}
+      <div class="car-hero-overlay">
+        <h1>{{ car.model }}</h1>
+        <div class="car-price">₱{{ car.price|floatformat:2 }}</div>
       </div>
     </div>
-  </div>
-  
-  <!-- Debug info -->
-  <div style="margin: 20px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
-    <p><strong>Debug Information:</strong></p>
-    <p>Car ID: {{ car.id }}</p>
-    <p>Car Model: {{ car.model }}</p>
-    <p>Variants count: {{ variants|length }}</p>
-    {% if not variants %}
-      <p style="color: red;">No variants found for this model.</p>
-      <p>Possible reasons:</p>
-      <ul>
-        <li>This car doesn't have any variants in the database.</li>
-        <li>Variants exist but are not properly linked to this car.</li>
-        <li>There might be a mismatch between car IDs in the car_variants table and this car.</li>
-      </ul>
-      <p>Try checking variants for this car in Supabase with: <code>SELECT * FROM car_variants WHERE parent_model_id = {{ car.id }}</code></p>
-      <p>Try viewing the <a href="/accounts/cars/debug/{{ car.id }}/" target="_blank">debug version</a></p>
-    {% else %}
-      <p style="color: green;">Found {{ variants|length }} variants for this model!</p>
+    
+    <!-- Car Specifications -->
+    <div class="car-specs-container">
+      <h2>Specifications</h2>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-calendar-alt fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Year</div>
+            <div class="spec-value">{{ car.year }}</div>
+          </div>
+        </div>
+        
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-car fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Body Type</div>
+            <div class="spec-value">{{ car.body_type }}</div>
+          </div>
+        </div>
+        
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-cogs fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Transmission</div>
+            <div class="spec-value">{{ car.transmission }}</div>
+          </div>
+        </div>
+        
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-gas-pump fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Fuel Type</div>
+            <div class="spec-value">{{ car.fuel_type }}</div>
+          </div>
+        </div>
+        
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-users fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Seating Capacity</div>
+            <div class="spec-value">{{ car.num_seats }} Seats</div>
+          </div>
+        </div>
+        
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-tachometer-alt fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Maximum Output</div>
+            <div class="spec-value">{{ car.max_output }}</div>
+          </div>
+        </div>
+        
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-dharmachakra fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Drivetrain</div>
+            <div class="spec-value">{{ car.drivetrain }}</div>
+          </div>
+        </div>
+        
+        <div class="spec-item">
+          <div class="spec-icon">
+            <i class="fas fa-circle fa-2x"></i>
+          </div>
+          <div class="spec-details">
+            <div class="spec-label">Wheel Size</div>
+            <div class="spec-value">{{ car.wheel_size }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Debug info - Hidden in production by CSS -->
+    <div class="debug-section">
+      <p><strong>Debug Information:</strong></p>
+      <p>Car ID: {{ car.id }}</p>
+      <p>Car Model: {{ car.model }}</p>
+      <p>Variants count: {{ variants|length }}</p>
+      {% if not variants %}
+        <p style="color: red;">No variants found for this model.</p>
+        <p>Possible reasons:</p>
+        <ul>
+          <li>This car doesn't have any variants in the database.</li>
+          <li>Variants exist but are not properly linked to this car.</li>
+          <li>There might be a mismatch between car IDs in the car_variants table and this car.</li>
+        </ul>
+        <p>Try checking variants for this car in Supabase with: <code>SELECT * FROM car_variants WHERE parent_model_id = {{ car.id }}</code></p>
+        <p>Try viewing the <a href="/accounts/cars/debug/{{ car.id }}/" target="_blank">debug version</a></p>
+      {% else %}
+        <p style="color: green;">Found {{ variants|length }} variants for this model!</p>
+      {% endif %}
+    </div>
+    
+    <!-- Variants Section -->
+    {% if variants %}
+    <div class="variants-section">
+      <h2>Available Variants</h2>
+      
+      <div class="variant-selector">
+        <label for="variant-select">Select a variant to compare with base model:</label>
+        <select id="variant-select" onchange="showComparisonTable(this.value)">
+          <option value="">Select a variant</option>
+          {% for variant in variants %}
+            <option value="{{ variant.id }}">{{ variant.model }} - ₱{{ variant.price|floatformat:2 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div id="comparison-container" class="comparison-container" style="display: none;">
+        <h3>Comparison with Base Model</h3>
+        <div class="comparison-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>{{ car.model }} (Base)</th>
+                <th id="variant-model">Variant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Price</td>
+                <td>₱{{ car.price|floatformat:2 }}</td>
+                <td id="variant-price"></td>
+              </tr>
+              <tr>
+                <td>Transmission</td>
+                <td>{{ car.transmission }}</td>
+                <td id="variant-transmission"></td>
+              </tr>
+              <tr>
+                <td>Engine Output</td>
+                <td>{{ car.max_output }}</td>
+                <td id="variant-output"></td>
+              </tr>
+              <tr>
+                <td>Fuel Type</td>
+                <td>{{ car.fuel_type }}</td>
+                <td id="variant-fuel"></td>
+              </tr>
+              <tr>
+                <td>Wheel Size</td>
+                <td>{{ car.wheel_size }}</td>
+                <td id="variant-wheel"></td>
+              </tr>
+              <tr>
+                <td>Airbags</td>
+                <td>{{ car.airbags }}</td>
+                <td id="variant-airbags"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <h3>All Available Variants</h3>
+      <div class="variants-grid">
+        {% for variant in variants %}
+          <div class="variant-card">
+            <h3>{{ variant.model }}</h3>
+            <p class="price">₱{{ variant.price|floatformat:2 }}</p>
+            <div class="specs">
+              <p><i class="fas fa-tachometer-alt"></i> <strong>Engine:</strong> {{ variant.max_output }}</p>
+              <p><i class="fas fa-cogs"></i> <strong>Transmission:</strong> {{ variant.transmission }}</p>
+              <p><i class="fas fa-gas-pump"></i> <strong>Fuel Type:</strong> {{ variant.fuel_type }}</p>
+            </div>
+            <button class="compare-button" onclick="showComparisonWithVariant({{ variant.id }})">
+              Compare with Base Model
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
     {% endif %}
   </div>
-  <!-- End debug info -->
-  
-  {% if variants %}
-  <div class="variants-section">
-    <h2>Available Variants</h2>
-    
-    <div class="variant-selector">
-      <label for="variant-select">Select Variant:</label>
-      <select id="variant-select" onchange="showComparisonTable(this.value)">
-        <option value="">Select a variant to compare</option>
-        {% for variant in variants %}
-          <option value="{{ variant.id }}">{{ variant.model }} - ₱{{ variant.price|floatformat:2 }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    
-    <div id="comparison-container" style="display: none;">
-      <h3>Comparison with Base Model</h3>
-      <div class="comparison-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Feature</th>
-              <th>{{ car.model }} (Base)</th>
-              <th id="variant-model">Variant</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Price</td>
-              <td>₱{{ car.price|floatformat:2 }}</td>
-              <td id="variant-price"></td>
-            </tr>
-            <tr>
-              <td>Transmission</td>
-              <td>{{ car.transmission }}</td>
-              <td id="variant-transmission"></td>
-            </tr>
-            <tr>
-              <td>Engine Output</td>
-              <td>{{ car.max_output }}</td>
-              <td id="variant-output"></td>
-            </tr>
-            <tr>
-              <td>Fuel Type</td>
-              <td>{{ car.fuel_type }}</td>
-              <td id="variant-fuel"></td>
-            </tr>
-            <tr>
-              <td>Wheel Size</td>
-              <td>{{ car.wheel_size }}</td>
-              <td id="variant-wheel"></td>
-            </tr>
-            <tr>
-              <td>Airbags</td>
-              <td>{{ car.airbags }}</td>
-              <td id="variant-airbags"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-    <div class="variants-grid">
-      {% for variant in variants %}
-        <div class="variant-card">
-          <h3>{{ variant.model }}</h3>
-          <p class="price">₱{{ variant.price|floatformat:2 }}</p>
-          <div class="specs">
-            <p><strong>Engine:</strong> {{ variant.max_output }}</p>
-            <p><strong>Transmission:</strong> {{ variant.transmission }}</p>
-            <p><strong>Fuel Type:</strong> {{ variant.fuel_type }}</p>
-          </div>
-          <button class="compare-button" onclick="showComparisonWithVariant({{ variant.id }})">
-            Compare with Base Model
-          </button>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
 </div>
 
 <script>
