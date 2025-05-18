@@ -176,12 +176,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# For development
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# For Vercel production
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 # WhiteNoise configuration for static file serving
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

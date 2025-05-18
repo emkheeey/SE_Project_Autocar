@@ -75,6 +75,7 @@ try:
     BASE_DIR = Path(__file__).resolve().parent.parent
     
     # Configure WhiteNoise with proper static file paths
+<<<<<<< HEAD
     # Check for production environment (Vercel)
     if os.environ.get('VERCEL', False):
         static_root = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
@@ -84,8 +85,10 @@ try:
         static_root = os.path.join(BASE_DIR, 'staticfiles')
         logger.info(f"Using development static root: {static_root}")
     
+=======
+>>>>>>> parent of 344e5c0 (asdonfksadfjnsdafs)
     application = WhiteNoise(django_application)
-    application.add_files(static_root, prefix='static/')
+    application.add_files(os.path.join(BASE_DIR, 'staticfiles'), prefix='static/')
     
     # Also serve files directly from the static directory to ensure all files are found
     application.add_files(os.path.join(BASE_DIR, 'static'), prefix='static/')
