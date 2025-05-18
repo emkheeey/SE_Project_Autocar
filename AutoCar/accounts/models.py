@@ -44,3 +44,14 @@ class Car(models.Model):
         ('Electric', 'Electric'),
         ('Hybrid', 'Hybrid'),
     ])
+
+class FavoriteCar(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
+    car_id = models.CharField(max_length=100)  # Store the car ID from Supabase
+    date_added = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('user', 'car_id')  # Prevent duplicate favorites
+        
+    def __str__(self):
+        return f"{self.user.username}'s favorite: {self.car_id}"

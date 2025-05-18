@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/browse.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     /* Override styles from base.html to prevent profile duplication */
     header {
@@ -107,6 +108,7 @@
         box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
+        position: relative;
     }
     
     .car-card:hover {
@@ -129,7 +131,7 @@
         font-size: 1.2em;
     }
     
-    .update-image-btn {
+    .view-details-btn {
         width: 100%;
         background-color: #e74c3c;
         color: white;
@@ -140,8 +142,41 @@
         transition: background-color 0.3s ease;
     }
     
-    .update-image-btn:hover {
+    .view-details-btn:hover {
         background-color: #c0392b;
+    }
+    
+    /* Favorite button styling */
+    .favorite-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(255, 255, 255, 0.7);
+        color: #e74c3c;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+    
+    .favorite-btn:hover {
+        background-color: white;
+        transform: scale(1.1);
+    }
+    
+    .favorite-btn.active {
+        color: #e74c3c;
+    }
+    
+    .favorite-btn.active i {
+        font-weight: 900;
     }
     
     /* Better search styling */
@@ -407,6 +442,138 @@
     .refresh-image {
         animation: refreshFade 0.5s ease-in-out;
     }
+    
+    /* Car details modal styling */
+    .car-details-container {
+        padding: 15px 0;
+        max-height: 350px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        scrollbar-width: thin;
+    }
+    
+    /* Custom scrollbar for the details container */
+    .car-details-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .car-details-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .car-details-container::-webkit-scrollbar-thumb {
+        background: #e74c3c;
+        border-radius: 10px;
+    }
+    
+    .car-details-container::-webkit-scrollbar-thumb:hover {
+        background: #c0392b;
+    }
+    
+    .detail-row {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+    }
+    
+    .detail-row strong {
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+    
+    .detail-row strong i {
+        margin-right: 10px;
+        color: #e74c3c;
+        font-size: 1.2em;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .detail-row span {
+        color: #e74c3c;
+        font-weight: 500;
+    }
+    
+    /* Different icon colors for different categories */
+    .icon-basic {
+        color: #3498db !important; /* blue */
+    }
+    
+    .icon-technical {
+        color: #e74c3c !important; /* red */
+    }
+    
+    .icon-safety {
+        color: #2ecc71 !important; /* green */
+    }
+    
+    .icon-comfort {
+        color: #f39c12 !important; /* orange */
+    }
+    
+    /* Make the modal content wider for car details */
+    #carDetailsModal .modal-content {
+        max-width: 600px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+    }
+    
+    /* Style the modal title */
+    #carDetailsModal .modal-title {
+        font-size: 1.8em;
+        color: #e74c3c;
+        text-align: center;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 15px;
+    }
+    
+    /* Car image in details modal */
+    .car-image-container {
+        width: 100%;
+        margin-bottom: 20px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    
+    .details-car-image {
+        max-width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Modal footer styles */
+    .modal-footer {
+        margin-top: 10px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        text-align: right;
+        flex-shrink: 0;
+    }
+    
+    .close-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    
+    .close-btn:hover {
+        background-color: #c0392b;
+    }
 </style>
 {% endblock %}
 
@@ -419,8 +586,8 @@
         <ul>
             <li><a href="{% url 'home' %}">HOME</a></li>
             <li><a href="{% url 'cars' %}" class="active">BROWSE CARS</a></li>
-            <li><a href="#recommend">RECOMMENDATIONS</a></li>
-            <li><a href="#compare-cars">COMPARE CAR</a></li>
+            <li><a href="{% url 'favorites' %}">MY FAVORITES</a></li>
+            <li><a href="{% url 'compare' %}">COMPARE CARS</a></li>
         </ul>
     </nav>
     <div class="profile-icon" id="profileIcon">
@@ -433,7 +600,7 @@
             <div class="user-email">{{ user.email }}</div>
         </div>
         <div class="menu-item" onclick="window.location.href='{% url 'profile' %}'">Account</div>
-        <div class="menu-item" onclick="window.location.href='{% url 'cars' %}'">Saved Favorite</div>
+        <div class="menu-item" onclick="window.location.href='{% url 'favorites' %}'">Saved Favorite</div>
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="menu-item">Log Out</button>
@@ -489,16 +656,31 @@
         {% for car in cars %}
         <div class="car-card" 
              data-car-id="{{ car.id }}" 
-             data-body-type="{{ car.body_type }}" 
+             data-model="{{ car.model }}"
+             data-year="{{ car.year }}"
              data-price="{{ car.price }}"
+             data-image-url="{{ car.image_url }}"
+             data-body-type="{{ car.body_type }}"
              data-transmission="{{ car.transmission }}"
-             data-model="{{ car.model }}">
+             data-fuel-type="{{ car.fuel_type|default:'Not specified' }}"
+             data-num-seats="{{ car.num_seats|default:'Not specified' }}"
+             data-max-output="{{ car.max_output|default:'Not specified' }}"
+             data-drivetrain="{{ car.drivetrain|default:'Not specified' }}"
+             data-wheel-size="{{ car.wheel_size|default:'Not specified' }}"
+             data-airbags="{{ car.airbags|default:'Not specified' }}"
+             data-isofix="{{ car.isofix|default:'Not specified' }}"
+             data-front-parking-sensors="{{ car.front_parking_sensors|default:'Not specified' }}"
+             data-rear-parking-sensors="{{ car.rear_parking_sensors|default:'Not specified' }}"
+             data-connectivity="{{ car.connectivity|default:'Not specified' }}">
+            <button class="favorite-btn {% if car.id in favorite_car_ids %}active{% endif %}" data-car-id="{{ car.id }}">
+                <i class="{% if car.id in favorite_car_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+            </button>
             <img src="{% if car.image_url %}{{ car.image_url }}{% else %}{% static 'images/cars/default.jpg' %}{% endif %}" 
                  alt="{{ car.model }}"
                  class="car-image"
                  onError="this.onerror=null; this.src='{% static 'images/cars/default.jpg' %}'; this.classList.add('fallback-image');">
             <p>{{ car.model }}</p>
-            <button class="btn btn-secondary update-image-btn">Add/Update Image</button>
+            <button class="btn btn-secondary view-details-btn">View Details</button>
         </div>
         {% endfor %}
     {% else %}
@@ -531,12 +713,75 @@
     </div>
 </div>
 
-<!-- Car Variants Modal -->
-<div class="variants-modal" id="variantsModal">
+<!-- Car Details Modal -->
+<div class="variants-modal" id="carDetailsModal" style="display:none;">
     <div class="modal-content">
-        <span class="close-modal" id="closeVariantsModal">&times;</span>
-        <h2 id="modalTitle"></h2>
-        <div class="variants-container" id="variantsContainer"></div>
+        <span class="close-modal" id="closeDetailsModal">&times;</span>
+        <h2 id="detailsModalTitle" class="modal-title"></h2>
+        <div class="car-image-container">
+            <img id="detailsCarImage" class="details-car-image" alt="Car Image">
+        </div>
+        <div class="car-details-container">
+            <div class="detail-row">
+                <strong><i class="fas fa-calendar-alt icon-basic"></i> Year:</strong>
+                <span id="detailsYear"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-tag icon-basic"></i> Price:</strong>
+                <span id="detailsPrice"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-car icon-basic"></i> Body Type:</strong>
+                <span id="detailsBodyType"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-cogs icon-technical"></i> Transmission:</strong>
+                <span id="detailsTransmission"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-gas-pump icon-technical"></i> Fuel Type:</strong>
+                <span id="detailsFuelType"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-users icon-basic"></i> Number of Seats:</strong>
+                <span id="detailsNumSeats"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-tachometer-alt icon-technical"></i> Maximum Output:</strong>
+                <span id="detailsMaxOutput"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-truck-monster icon-technical"></i> Drivetrain:</strong>
+                <span id="detailsDrivetrain"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-circle-notch icon-technical"></i> Wheel Size:</strong>
+                <span id="detailsWheelSize"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-shield-alt icon-safety"></i> Airbags:</strong>
+                <span id="detailsAirbags"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-baby-carriage icon-safety"></i> ISOFIX:</strong>
+                <span id="detailsIsofix"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-parking icon-safety"></i> Front Parking Sensors:</strong>
+                <span id="detailsFrontSensors"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-parking icon-safety"></i> Rear Parking Sensors:</strong>
+                <span id="detailsRearSensors"></span>
+            </div>
+            <div class="detail-row">
+                <strong><i class="fas fa-wifi icon-comfort"></i> Connectivity:</strong>
+                <span id="detailsConnectivity"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="close-btn" id="closeDetailsBtn">Close</button>
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -603,8 +848,54 @@ function closeImageModal() {
     document.body.style.overflow = 'auto'; // Re-enable scrolling
 }
 
+function showCarDetails(cardElement) {
+    // Get all data attributes from the card
+    const carId = cardElement.getAttribute('data-car-id');
+    const carModel = cardElement.getAttribute('data-model');
+    const year = cardElement.getAttribute('data-year');
+    const price = cardElement.getAttribute('data-price');
+    const bodyType = cardElement.getAttribute('data-body-type');
+    const transmission = cardElement.getAttribute('data-transmission');
+    const fuelType = cardElement.getAttribute('data-fuel-type');
+    const numSeats = cardElement.getAttribute('data-num-seats');
+    const maxOutput = cardElement.getAttribute('data-max-output');
+    const drivetrain = cardElement.getAttribute('data-drivetrain');
+    const wheelSize = cardElement.getAttribute('data-wheel-size');
+    const airbags = cardElement.getAttribute('data-airbags');
+    const isofix = cardElement.getAttribute('data-isofix');
+    const frontSensors = cardElement.getAttribute('data-front-parking-sensors');
+    const rearSensors = cardElement.getAttribute('data-rear-parking-sensors');
+    const connectivity = cardElement.getAttribute('data-connectivity');
+    const imageUrl = cardElement.getAttribute('data-image-url') || '{% static "images/cars/default.jpg" %}';
+    
+    // Format the price with commas
+    const formattedPrice = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(price);
+    
+    // Populate the modal with car details
+    document.getElementById('detailsModalTitle').textContent = carModel;
+    document.getElementById('detailsCarImage').src = imageUrl;
+    document.getElementById('detailsYear').textContent = year;
+    document.getElementById('detailsPrice').textContent = formattedPrice;
+    document.getElementById('detailsBodyType').textContent = bodyType;
+    document.getElementById('detailsTransmission').textContent = transmission;
+    document.getElementById('detailsFuelType').textContent = fuelType;
+    document.getElementById('detailsNumSeats').textContent = numSeats;
+    document.getElementById('detailsMaxOutput').textContent = maxOutput;
+    document.getElementById('detailsDrivetrain').textContent = drivetrain;
+    document.getElementById('detailsWheelSize').textContent = wheelSize;
+    document.getElementById('detailsAirbags').textContent = airbags;
+    document.getElementById('detailsIsofix').textContent = isofix === "True" ? "Yes" : "No";
+    document.getElementById('detailsFrontSensors').textContent = frontSensors === "True" ? "Yes" : "No";
+    document.getElementById('detailsRearSensors').textContent = rearSensors === "True" ? "Yes" : "No";
+    document.getElementById('detailsConnectivity').textContent = connectivity.replace(/[\[\]"']/g, '').replace(/,/g, ', ');
+    
+    // Show the modal
+    document.getElementById('carDetailsModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
 function closeModal() {
-    document.getElementById('variantsModal').style.display = 'none';
+    document.getElementById('carDetailsModal').style.display = 'none';
     document.body.style.overflow = 'auto'; // Re-enable scrolling
 }
 
@@ -678,6 +969,9 @@ function refreshCarImages() {
 
 // Set up event listeners
 document.addEventListener("DOMContentLoaded", function() {
+    // Sort cars alphabetically on page load
+    sortCarsAlphabetically();
+    
     // Refresh car images on page load
     refreshCarImages();
     
@@ -717,6 +1011,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
     
+    // Favorite buttons
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const carId = this.getAttribute('data-car-id');
+            toggleFavorite(carId, this);
+        });
+    });
+    
     // Profile icon
     document.getElementById('profileIcon').addEventListener('click', toggleMenu);
     
@@ -736,20 +1039,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-    // Image buttons
-    document.querySelectorAll('.update-image-btn').forEach(btn => {
+    // View details buttons
+    document.querySelectorAll('.view-details-btn').forEach(btn => {
         btn.addEventListener('click', function(event) {
             event.stopPropagation();
             const card = this.closest('.car-card');
-            const carId = card.getAttribute('data-car-id');
-            const carModel = card.getAttribute('data-model');
-            openImageModal(carId, carModel);
+            showCarDetails(card);
         });
     });
     
     // Close modals
     document.getElementById('closeImageModal').addEventListener('click', closeImageModal);
-    document.getElementById('closeVariantsModal').addEventListener('click', closeModal);
+    document.getElementById('closeDetailsModal').addEventListener('click', closeModal);
+    document.getElementById('closeDetailsBtn').addEventListener('click', closeModal);
 
     // Close modals on Escape key
     document.addEventListener('keydown', function(event) {
@@ -763,6 +1065,13 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('imageModal').addEventListener('click', function(event) {
         if (event.target === this) {
             closeImageModal();
+        }
+    });
+    
+    // Close details modal when clicking outside modal content
+    document.getElementById('carDetailsModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeModal();
         }
     });
     
@@ -928,5 +1237,96 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+// Function to toggle favorite status for a car
+async function toggleFavorite(carId, buttonElement) {
+    try {
+        // Get current state
+        const isCurrentlyFavorite = buttonElement.classList.contains('active');
+        const action = isCurrentlyFavorite ? 'remove' : 'add';
+        
+        // Optimistic UI update
+        if (action === 'add') {
+            buttonElement.classList.add('active');
+            buttonElement.querySelector('i').classList.remove('far');
+            buttonElement.querySelector('i').classList.add('fas');
+        } else {
+            buttonElement.classList.remove('active');
+            buttonElement.querySelector('i').classList.remove('fas');
+            buttonElement.querySelector('i').classList.add('far');
+        }
+        
+        // Send request to server
+        const response = await fetch('/accounts/toggle_favorite/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({
+                car_id: carId,
+                action: action
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            // Revert UI if request failed
+            console.error('Error toggling favorite:', data.error);
+            
+            // Revert optimistic update
+            if (action === 'add') {
+                buttonElement.classList.remove('active');
+                buttonElement.querySelector('i').classList.remove('fas');
+                buttonElement.querySelector('i').classList.add('far');
+            } else {
+                buttonElement.classList.add('active');
+                buttonElement.querySelector('i').classList.remove('far');
+                buttonElement.querySelector('i').classList.add('fas');
+            }
+            
+            // Show error
+            alert('Failed to update favorites: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while updating favorites');
+        
+        // Revert UI change on error
+        if (buttonElement.classList.contains('active')) {
+            buttonElement.classList.remove('active');
+            buttonElement.querySelector('i').classList.remove('fas');
+            buttonElement.querySelector('i').classList.add('far');
+        } else {
+            buttonElement.classList.add('active');
+            buttonElement.querySelector('i').classList.remove('far');
+            buttonElement.querySelector('i').classList.add('fas');
+        }
+    }
+}
+
+// Sort cars alphabetically
+function sortCarsAlphabetically() {
+    const carList = document.getElementById('car-list');
+    const carCards = Array.from(carList.querySelectorAll('.car-card'));
+    
+    // Sort car cards based on model name text
+    carCards.sort((a, b) => {
+        const modelA = a.querySelector('p').textContent.toLowerCase();
+        const modelB = b.querySelector('p').textContent.toLowerCase();
+        return modelA.localeCompare(modelB);
+    });
+    
+    // Clear the car list container
+    while (carList.firstChild) {
+        carList.removeChild(carList.firstChild);
+    }
+    
+    // Append sorted cards back to the container
+    carCards.forEach(card => {
+        carList.appendChild(card);
+    });
+}
 </script>
 {% endblock %}

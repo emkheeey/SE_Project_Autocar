@@ -16,4 +16,8 @@ urlpatterns = [
     path('update_car_image/', views.update_car_image, name='update_car_image'),
     path('debug/', views.debug_info, name='debug_info'),
     path('static-test/', views.debug_static, name='debug_static'),
+    path('favorites/', views.favorites, name='favorites'),
+    path('toggle_favorite/', views.toggle_favorite, name='toggle_favorite'),
+    path('compare/', views.compare, name='compare'),
+    path('api/cars/', views.api_cars, name='api_cars'),
 ]

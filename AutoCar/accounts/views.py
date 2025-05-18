@@ -13,6 +13,8 @@ import uuid
 import traceback
 from django.conf import settings
 import os
+from .models import FavoriteCar
+from django.views.decorators.http import require_POST
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -242,20 +244,41 @@ def cars(request):
     # Make sure to include body_type and transmission fields
     cars_data = fetch_cars_data()
     
+    # Get the user's favorite car IDs
+    favorite_car_ids = []
+    if request.user.is_authenticated:
+        favorite_car_ids = list(FavoriteCar.objects.filter(user=request.user).values_list('car_id', flat=True))
+    
     context = {
         'cars': cars_data,
+        'favorite_car_ids': favorite_car_ids,
     }
     
     return render(request, 'accounts/cars.html', context)
 
-def fetch_cars_data():
+def fetch_cars_data(car_ids=None):
     """
     Fetch car data from Supabase including the additional fields for filtering
+    
+    Args:
+        car_ids: Optional list of car IDs to filter by
     """
     try:
+        if car_ids is not None and len(car_ids) == 0:
+            # Return empty list if car_ids is an empty list
+            return []
+            
+        # Basic query
         result = fetch_data('cars')
+        
         if result and hasattr(result, 'data'):
-            return result.data
+            cars = result.data
+            
+            # Filter by car_ids if provided
+            if car_ids is not None:
+                cars = [car for car in cars if str(car.get('id')) in [str(car_id) for car_id in car_ids]]
+                
+            return cars
         return []
     except Exception as e:
         logger.error(f"Error fetching cars: {e}")
@@ -480,3 +503,84 @@ def debug_static(request):
         'request': request
     }
     return render(request, 'debug_static.html', context)
+
+@login_required
+def favorites(request):
+    """
+    View to show user's favorite cars
+    """
+    favorite_car_ids = FavoriteCar.objects.filter(user=request.user).values_list('car_id', flat=True)
+    favorite_cars = fetch_cars_data(car_ids=favorite_car_ids)
+    
+    context = {
+        'favorite_cars': favorite_cars
+    }
+    
+    return render(request, 'accounts/favorites.html', context)
+
+@login_required
+def compare(request):
+    """
+    View to compare cars
+    """
+    return render(request, 'accounts/compare.html')
+
+@login_required
+def api_cars(request):
+    """
+    API endpoint to get all car data
+    """
+    cars_data = fetch_cars_data()
+    return JsonResponse({'cars': cars_data})
+
+@require_POST
+def toggle_favorite(request):
+    """
+    Toggle a car as favorite for the current user
+    """
+    if request.method == 'POST':
+        try:
+            # Parse JSON data from the request
+            data = json.loads(request.body)
+            car_id = data.get('car_id')
+            action = data.get('action', 'add')  # Default action is 'add'
+            
+            # Debug logging
+            logger.info(f"Received favorite toggle request: car_id={car_id}, action={action}")
+            
+            if not car_id:
+                return JsonResponse({'error': 'Missing car_id'}, status=400)
+            
+            if action not in ['add', 'remove']:
+                return JsonResponse({'error': 'Invalid action'}, status=400)
+                
+            # Check if the favorite exists
+            favorite_exists = FavoriteCar.objects.filter(user=request.user, car_id=car_id).exists()
+            
+            if action == 'add' and not favorite_exists:
+                # Add to favorites
+                FavoriteCar.objects.create(user=request.user, car_id=car_id)
+                return JsonResponse({'success': True, 'message': 'Added to favorites'})
+                
+            elif action == 'remove' and favorite_exists:
+                # Remove from favorites
+                FavoriteCar.objects.filter(user=request.user, car_id=car_id).delete()
+                return JsonResponse({'success': True, 'message': 'Removed from favorites'})
+                
+            else:
+                # No changes needed
+                status = 'already a favorite' if favorite_exists else 'not in favorites'
+                return JsonResponse({'success': True, 'message': f'No change needed (car is {status}).'})
+                
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            
+        except Exception as e:
+            logger.error(f"Error toggling favorite: {e}")
+            logger.error(traceback.format_exc())
+            return JsonResponse({
+                'error': str(e),
+                'detail': traceback.format_exc()
+            }, status=500)
+            
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

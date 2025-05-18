@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Handle profile menu
     setupProfileMenu();
+    
+    // Sort cars alphabetically on page load
+    sortCarsAlphabetically();
 });
 
 // Set up navigation links
@@ -360,4 +363,32 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+// Sort cars alphabetically by model name
+function sortCarsAlphabetically() {
+    const carList = document.getElementById('car-list');
+    const carCards = Array.from(carList.querySelectorAll('.car-card'));
+    
+    // Sort car cards based on model name text
+    carCards.sort((a, b) => {
+        const modelA = a.querySelector('p').textContent.toLowerCase();
+        const modelB = b.querySelector('p').textContent.toLowerCase();
+        return modelA.localeCompare(modelB);
+    });
+    
+    // Clear the car list container
+    while (carList.firstChild) {
+        carList.removeChild(carList.firstChild);
+    }
+    
+    // Append sorted cards back to the container
+    carCards.forEach(card => {
+        carList.appendChild(card);
+    });
+    
+    // Hide all dropdowns
+    document.querySelectorAll('.dropdown-content').forEach(el => {
+        el.style.display = 'none';
+    });
 }
